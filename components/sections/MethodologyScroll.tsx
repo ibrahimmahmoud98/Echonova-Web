@@ -119,7 +119,7 @@ export function MethodologyScroll() {
       {/* Header (Optional, stays fixed or moves) */}
       <div className="absolute top-10 left-0 right-0 z-20 text-center pointer-events-none">
         <h2 className="text-3xl md:text-4xl font-bold text-white/90 drop-shadow-md">منهجية العمل</h2>
-        <p className="text-white/60 text-sm">التجربة السينمائية للإنتاج</p>
+
       </div>
 
       {/* Progress Bar */}
