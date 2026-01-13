@@ -35,9 +35,7 @@ export function Portfolio() {
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-4">
             <div>
-                 <h2 className="text-sm font-bold tracking-widest text-[var(--color-copper)] mb-2">
-                    أعمالنا المختارة
-                </h2>
+
                 <h3 className="text-4xl md:text-5xl font-bold text-[var(--color-ivory)]">
                     بصمتنا في <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-copper)] to-[var(--color-champagne)]">المستقبل</span>
                 </h3>
