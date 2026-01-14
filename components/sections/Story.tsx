@@ -33,17 +33,7 @@ export function Story() {
                نحن هنا لنكسر قيود الميزانيات التقليدية وعوائق الوقت، لنمنح علامتك التجارية قصصاً سينمائية عالمية المستوى، تُصاغ بروح عربية مبتكرة كانت بالأمس ضرباً من الخيال.
             </p>
             
-            <div className="flex gap-4">
-                 <div className="flex flex-col">
-                    <span className="text-3xl font-bold text-[var(--color-copper)]">+50</span>
-                    <span className="text-sm text-[var(--color-ivory)]/60">مشروع ناجح</span>
-                 </div>
-                 <div className="w-[1px] h-12 bg-white/10 mx-4" />
-                 <div className="flex flex-col">
-                    <span className="text-3xl font-bold text-[var(--color-copper)]">+10M</span>
-                    <span className="text-sm text-[var(--color-ivory)]/60">مشاهدة</span>
-                 </div>
-            </div>
+
           </motion.div>
 
           {/* Visual Side */}
