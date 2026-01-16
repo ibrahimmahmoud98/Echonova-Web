@@ -90,13 +90,13 @@ export function HomeServicesSection() {
                         <p className="text-lg text-[var(--color-ivory)]/80 leading-relaxed mb-8 max-w-lg">
                             {activeLevel.desc}
                         </p>
-                        <div className="flex flex-wrap gap-4 mt-8">
+                        <div className="flex flex-wrap gap-4 mt-8 justify-center md:justify-start">
                             <Link href="/services/reels">
-                                <LiquidButton variant="secondary">
+                                <LiquidButton variant="secondary" className="px-5 py-2 text-sm md:px-8 md:py-3.5 md:text-base">
                                     تفاصيل أكثر
                                 </LiquidButton>
                             </Link>
-                            <LiquidButton variant="primary" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}>
+                            <LiquidButton variant="primary" onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })} className="px-5 py-2 text-sm md:px-8 md:py-3.5 md:text-base">
                                 تواصل معنا
                             </LiquidButton>
                         </div>
@@ -189,12 +189,12 @@ export function HomeServicesSection() {
                                 
                                 <div className="w-full flex justify-center xl:justify-end gap-4">
                                      <Link href="/services/aura">
-                                         <LiquidButton variant="secondary" className="px-8">
+                                         <LiquidButton variant="secondary" className="px-5 py-2 text-sm md:px-8 md:py-3.5 md:text-base">
                                              اعرف أكثر
                                          </LiquidButton>
                                      </Link>
                                      <Link href="/services/aura">
-                                         <LiquidButton variant="primary">
+                                         <LiquidButton variant="primary" className="px-5 py-2 text-sm md:px-8 md:py-3.5 md:text-base">
                                              اطلب هويتك
                                          </LiquidButton>
                                      </Link>

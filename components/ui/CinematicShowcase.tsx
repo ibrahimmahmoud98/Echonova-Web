@@ -172,12 +172,12 @@ export const CinematicShowcase = () => {
             
              <div className="flex gap-4 justify-center w-full">
                   <Link href="/services/cinema">
-                    <LiquidButton variant="secondary" className="px-6">
+                    <LiquidButton variant="secondary" className="px-5 py-2 text-sm md:px-8 md:py-3.5 md:text-base">
                         اعرف أكثر
                     </LiquidButton>
                  </Link>
                  <Link href="/services/cinema">
-                    <LiquidButton variant={activeMode === 'saga' ? 'primary' : 'primary'}>
+                    <LiquidButton variant={activeMode === 'saga' ? 'primary' : 'primary'} className="px-5 py-2 text-sm md:px-8 md:py-3.5 md:text-base">
                         {currentData.ctaText}
                     </LiquidButton>
                 </Link>

@@ -856,8 +856,9 @@ export const ContactReveal = () => {
                  transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
                  className={cn(
                      "absolute inset-0 z-20 container mx-auto px-4 flex h-full",
-                     isMobile ? "items-start justify-center pt-20 overflow-y-auto scrollbar-hide pb-20" : "items-center justify-end"
+                     isMobile ? "items-start justify-center pt-20 overflow-y-auto scrollbar-hide pb-40" : "items-center justify-end"
                  )}
+                 style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
                >
                    <div 
                        ref={formContainerRef} // FIXED: Attached ref for hiding
@@ -1013,7 +1014,7 @@ export const ContactReveal = () => {
                                    type="submit"
                                    disabled={formProgress < 100}
                                    className={cn(
-                                       "px-12 py-3 rounded-full font-bold flex items-center gap-2 transition-all duration-500 shadow-lg min-w-[140px] justify-center overflow-hidden",
+                                       "px-8 py-2 md:px-12 md:py-3 rounded-full font-bold flex items-center gap-2 transition-all duration-500 shadow-lg min-w-[120px] md:min-w-[140px] justify-center overflow-hidden",
                                        formProgress === 100 
                                            ? "bg-[var(--color-copper)] text-white hover:bg-orange-600 shadow-[0_0_20px_rgba(217,112,64,0.4)] cursor-pointer translate-y-0" 
                                            : "bg-white/10 text-white/40 border border-white/10 cursor-not-allowed"
