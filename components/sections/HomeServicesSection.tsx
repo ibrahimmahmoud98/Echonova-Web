@@ -53,13 +53,13 @@ export function HomeServicesSection() {
         </div>
 
         {/* Levels Tabs */}
-        <div className="flex flex-wrap justify-center gap-4 mb-8">
+        <div className="flex flex-nowrap md:flex-wrap justify-center gap-2 md:gap-4 mb-8 overflow-x-auto no-scrollbar pb-2 mask-linear">
           {levels.map((level) => (
             <button
               key={level.id}
               onClick={() => setActiveLevel(level)}
               className={cn(
-                "px-8 py-4 rounded-full text-lg font-medium transition-all duration-300 border backdrop-blur-md",
+                "px-4 py-2 md:px-8 md:py-4 rounded-full text-xs md:text-lg font-medium transition-all duration-300 border backdrop-blur-md whitespace-nowrap flex-shrink-0",
                 activeLevel.id === level.id 
                   ? "bg-[var(--color-copper)]/80 border-[var(--color-copper)] text-white shadow-[0_0_20px_rgba(217,112,64,0.4)]" 
                   : "bg-white/5 border-white/10 text-[var(--color-ivory)]/70 hover:bg-white/10"
@@ -79,10 +79,10 @@ export function HomeServicesSection() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, y: -20 }}
                     transition={{ duration: 0.5 }}
-                    className="grid md:grid-cols-2 gap-8 items-center bg-transparent rounded-3xl p-8 md:p-12 border border-white/5 backdrop-blur-sm overflow-hidden"
+                    className="grid md:grid-cols-2 gap-8 items-center bg-transparent rounded-3xl p-6 md:p-12 border border-white/5 backdrop-blur-sm overflow-hidden"
                 >
                     <div className="relative z-10">
-                        <h3 className="text-6xl md:text-7xl font-bold mb-4 tracking-tighter uppercase">
+                        <h3 className="text-4xl md:text-7xl font-bold mb-4 tracking-tighter uppercase">
                             <span className="text-white">NOVA </span>
                             <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-copper)] to-orange-400">{activeLevel.title.replace('NOVA ', '')}</span>
                         </h3>
@@ -102,7 +102,7 @@ export function HomeServicesSection() {
                         </div>
                     </div>
                     {/* Visual Side */}
-                    <div className="relative h-[400px] rounded-2xl overflow-hidden shadow-2xl">
+                    <div className="relative h-[300px] md:h-[400px] rounded-2xl overflow-hidden shadow-2xl">
                         <Tilt className="w-full h-full" perspective={1000} tiltMaxAngleX={10} tiltMaxAngleY={10}>
                          <Image 
                             src={activeLevel.image} 

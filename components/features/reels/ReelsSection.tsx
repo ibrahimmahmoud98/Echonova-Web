@@ -41,7 +41,7 @@ export const ReelsSection = () => {
                         <div className="hidden" />
 
                         {/* Title */}
-                        <h1 className="text-6xl md:text-8xl lg:text-9xl font-black tracking-tighter uppercase leading-none">
+                        <h1 className="text-5xl md:text-8xl lg:text-9xl font-black tracking-tighter uppercase leading-none">
                             {activeLevel.brandName.split(' ').map((word, i) => (
                                 <span key={i} className="block text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60">
                                     {word}
@@ -113,8 +113,8 @@ export const ReelsSection = () => {
 
             {/* Bottom Navigation - Sliding Tabs (Fixed Layout) */}
             <div className="absolute bottom-12 left-0 w-full z-20">
-                <div className="container mx-auto px-4 flex justify-center">
-                    <div className="relative flex items-center p-1.5 bg-white/5 backdrop-blur-md border border-white/10 rounded-full w-full max-w-3xl">
+                <div className="container mx-auto px-2 md:px-4 flex justify-center">
+                    <div className="relative w-full max-w-3xl bg-white/5 backdrop-blur-md border border-white/10 rounded-full p-1 md:p-1.5 grid grid-cols-3 md:flex md:items-center">
                         
                         {/* Buttons with shared layoutId for sliding effect */}
                         {COMMERCIAL_LEVELS.map((level, idx) => {
@@ -124,7 +124,7 @@ export const ReelsSection = () => {
                                     key={level.id}
                                     onClick={() => setActiveIndex(idx)}
                                     className={cn(
-                                        "relative flex-1 h-20 rounded-full flex items-center justify-center gap-4 transition-colors duration-300 z-10",
+                                        "relative h-10 md:h-20 rounded-full flex items-center justify-center gap-1 md:gap-4 transition-colors duration-300 z-10 w-full md:flex-1", 
                                         isActive ? "text-black" : "text-white/50 hover:text-white"
                                     )}
                                 >
@@ -138,19 +138,19 @@ export const ReelsSection = () => {
                                     )}
 
                                     {/* Content */}
-                                    <div className="flex items-center gap-3">
+                                    <div className="flex items-center justify-center gap-1.5 md:gap-3 px-1 w-full overflow-hidden">
                                         <div className={cn(
-                                            "w-8 h-8 rounded-full flex items-center justify-center font-mono text-sm border transition-colors",
+                                            "w-5 h-5 md:w-8 md:h-8 rounded-full flex-shrink-0 flex items-center justify-center font-mono text-[9px] md:text-sm border transition-colors", 
                                             isActive ? "bg-black text-white border-black" : "bg-white/10 text-white/50 border-white/10"
                                         )}>
                                             {isActive ? (
-                                                <div className="w-2 h-2 bg-[var(--nova-gold)] rounded-full animate-pulse" />
+                                                <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-[var(--nova-gold)] rounded-full animate-pulse" />
                                             ) : (
                                                 <span>0{idx + 1}</span>
                                             )}
                                         </div>
                                         
-                                        <span className="font-bold uppercase tracking-tight text-lg md:text-xl">
+                                        <span className="font-bold uppercase tracking-tight text-[9px] sm:text-xs md:text-xl whitespace-nowrap overflow-hidden text-ellipsis block max-w-full">
                                             {level.brandName}
                                         </span>
                                     </div>

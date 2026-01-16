@@ -14,7 +14,7 @@ export function Story() {
 
       <div className="container mx-auto px-4 relative z-10">
         <ScrollReveal variant="slide-in-right">
-        <div className="grid md:grid-cols-2 gap-16 items-center">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-16 items-center">
           {/* Text Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -37,7 +37,7 @@ export function Story() {
           </motion.div>
 
           {/* Visual Side */}
-          <div className="relative h-[600px] rounded-2xl overflow-hidden hidden md:block group border border-white/5 shadow-2xl">
+          <div className="relative h-[300px] md:h-[600px] rounded-2xl overflow-hidden block group border border-white/5 shadow-2xl mt-6 md:mt-0">
             <div className="absolute inset-0 bg-gradient-to-t from-[#020B16] via-transparent to-transparent z-10" />
             {/* Cinematic Image */}
             <img 

@@ -45,16 +45,11 @@ function GlobalEffects() {
 
 import { Atmosphere } from "./Atmosphere";
 import { Sentinel } from "../3d/Sentinel";
-import { VideoMonolith } from "../3d/VideoMonolith";
+
 import { GhostParticles } from "./GhostParticles";
 import { usePathname } from "next/navigation";
 
-function HomeVideo() {
-    const pathname = usePathname();
-    if (pathname !== "/") return null;
-    
-    return <VideoMonolith videoUrl="/videos/hero-background.mp4" position={[0, -15, -40]} scale={[2, 2, 2]} rotation={[0, -0.2, 0]} />;
-}
+
 
 function SceneContent() {
     return (
@@ -68,9 +63,7 @@ function SceneContent() {
             {/* The World Content */}
             {/* Atmosphere removed per user request */}
             {/* <Sentinel /> Removed per user request */}
-            <Suspense fallback={null}>
-                <HomeVideo />
-            </Suspense>
+
             {/* <GhostParticles /> Removed per user request (Cyan Blob) */}
 
             

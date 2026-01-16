@@ -265,6 +265,15 @@ const COUNTRY_KEYS = [
 ];
 
 export const ContactReveal = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []); // Added Mobile Check
+
   const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
@@ -702,7 +711,7 @@ export const ContactReveal = () => {
         id="contact-reveal" 
         ref={containerRef}
         onClick={triggerSimulation}
-        className="relative h-screen w-full overflow-hidden bg-black cursor-pointer"
+        className="relative min-h-screen w-full overflow-hidden bg-black cursor-pointer"
     >
        
        {/* 1. WebGL Background Layer */}
@@ -761,7 +770,14 @@ export const ContactReveal = () => {
             {showError && !isSubmitted && formProgress < 100 && (
                  <div className="absolute inset-0 z-40 pointer-events-none overflow-hidden">
                      <motion.div 
-                        initial={{ 
+                        initial={isMobile ? {
+                            top: 0,
+                            left: 0,
+                            right: 0,
+                            y: -100,
+                            opacity: 0,
+                            scale: 1
+                        } : { 
                             top: "50%", 
                             left: "50%", 
                             x: "-50%", 
@@ -769,7 +785,13 @@ export const ContactReveal = () => {
                             scale: 1.5,
                             opacity: 0 
                         }}
-                        animate={showForm ? { 
+                        animate={showForm ? (isMobile ? {
+                            top: 0,
+                            y: 0,
+                            scale: 1,
+                            opacity: 1,
+                            boxShadow: "0 4px 20px rgba(0,0,0,0.5)"
+                        } : { 
                             top: "50%", 
                             left: "90%", 
                             x: "-100%", 
@@ -777,6 +799,11 @@ export const ContactReveal = () => {
                             scale: 1,
                             opacity: 1,
                             boxShadow: ["0 0 20px rgba(239,68,68,0.2)", "0 0 60px rgba(239,68,68,0.6)", "0 0 20px rgba(239,68,68,0.2)"]
+                        }) : (isMobile ? {
+                             top: 0,
+                             y: 0,
+                             scale: 1,
+                             opacity: 1
                         } : { 
                             top: "50%", 
                             left: "50%", 
@@ -785,8 +812,8 @@ export const ContactReveal = () => {
                             scale: 1.5,
                             opacity: 1,
                             boxShadow: ["0 0 50px rgba(239,68,68,0.4)", "0 0 100px rgba(239,68,68,0.8)", "0 0 50px rgba(239,68,68,0.4)"]
-                        }}
-                        transition={{ 
+                        })}
+                        transition={isMobile ? { duration: 0.5, type: "spring" } : { 
                             duration: 1, 
                             ease: "easeInOut",
                             boxShadow: {
@@ -796,14 +823,22 @@ export const ContactReveal = () => {
                             }
                         }}
                         className={cn(
-                            "absolute bg-red-500/10 backdrop-blur-md border border-red-500/50 text-red-100 px-8 py-6 rounded-2xl flex flex-col items-center gap-4 text-center min-w-[300px]",
-                            showForm ? "items-start text-right max-w-sm" : "items-center"
+                            "absolute flex flex-col items-center gap-4 text-center z-50",
+                            isMobile 
+                                ? "w-full bg-red-900/95 border-b border-red-500/50 py-3 px-4 flex-row justify-center gap-2 backdrop-blur-xl"
+                                : "bg-red-500/10 backdrop-blur-md border border-red-500/50 text-red-100 px-8 py-6 rounded-2xl min-w-[300px]",
+                            showForm && !isMobile ? "items-start text-right max-w-sm" : "items-center"
                         )}
                      >
-                        <AlertCircle className={cn("text-red-500 transition-all", showForm ? "w-8 h-8" : "w-16 h-16")} />
-                        <div>
-                            <span className={cn("block font-bold mb-2", showForm ? "text-lg" : "text-3xl")}>خطأ في التوليد</span>
-                            <span className={cn("block opacity-80", showForm ? "text-sm" : "text-xl")}>البيانات غير مكتملة (78%). المرجو إكمال النموذج يدوياً.</span>
+                        <AlertCircle className={cn("text-red-500", isMobile ? "w-6 h-6 flex-shrink-0" : "w-12 h-12")} />
+                        
+                        <div className={cn("flex flex-col", isMobile ? "text-right items-start" : "")}>
+                            <h3 className={cn("font-bold text-red-400", isMobile ? "text-sm" : "text-xl mb-2")}>
+                                خطأ في التوليد
+                            </h3>
+                            <p className={cn("text-red-200/80 leading-relaxed", isMobile ? "text-xs" : "text-sm")}>
+                                البيانات غير مكتملة (78%). المرجو إكمال النموذج يدوياً.
+                            </p>
                         </div>
                      </motion.div>
                  </div>
@@ -819,7 +854,10 @@ export const ContactReveal = () => {
                  animate={{ x: 0, opacity: 1 }}
                  exit={{ x: -100, opacity: 0, transition: { duration: 0.5 } }} // Slide out on submit
                  transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-                 className="absolute inset-0 z-20 container mx-auto px-4 flex items-center justify-end h-full"
+                 className={cn(
+                     "absolute inset-0 z-20 container mx-auto px-4 flex h-full",
+                     isMobile ? "items-start justify-center pt-20 overflow-y-auto scrollbar-hide pb-20" : "items-center justify-end"
+                 )}
                >
                    <div 
                        ref={formContainerRef} // FIXED: Attached ref for hiding

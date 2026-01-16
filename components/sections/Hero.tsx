@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useAudio } from "@/components/audio/AudioEngine";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { LiquidButton } from "@/components/ui/LiquidButton";
 // import { LiquidGlass } from "@/components/3d/LiquidGlass"; // Postponed/Removed for Cinematic Text
 import { ScrollReveal } from "@/components/ui/ScrollReveal";
@@ -12,6 +12,8 @@ import { HeroCinematic } from "./HeroCinematic";
 export function Hero() {
   const { playHover, playClick } = useAudio();
   const [showContent, setShowContent] = React.useState(false);
+  const { scrollY } = useScroll();
+  const scrollOpacity = useTransform(scrollY, [0, 100], [1, 0]);
 
   const scrollTo = (id: string) => {
     const el = document.getElementById(id);
@@ -60,18 +62,21 @@ export function Hero() {
         )}
       </AnimatePresence>
 
-      {/* Scroll indicator */}
+      {/* Scroll indicator (Fades out on scroll) */}
       {showContent && (
         <motion.div
-            className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[var(--color-ivory)]/50 text-sm pointer-events-none"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1, y: [0, 10, 0] }}
-            transition={{ opacity: { duration: 1 }, y: { repeat: Infinity, duration: 2 } }}
+            style={{ opacity: scrollOpacity }}
+            className="absolute bottom-10 left-1/2 -translate-x-1/2 text-[var(--color-ivory)]/50 text-sm pointer-events-none z-20"
         >
-            <div className="flex flex-col items-center gap-2">
-            <span className="text-xs uppercase tracking-widest opacity-70">Scroll Down</span>
-            <div className="w-[1px] h-24 bg-gradient-to-b from-transparent via-[var(--color-copper)] to-transparent" />
-            </div>
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1, y: [0, 10, 0] }}
+                transition={{ opacity: { duration: 1 }, y: { repeat: Infinity, duration: 2 } }}
+                className="flex flex-col items-center gap-2"
+            >
+                <span className="text-xs uppercase tracking-widest opacity-70">مرر للأسفل</span>
+                <div className="w-[1px] h-24 bg-gradient-to-b from-transparent via-[var(--color-copper)] to-transparent" />
+            </motion.div>
         </motion.div>
       )}
     </section>

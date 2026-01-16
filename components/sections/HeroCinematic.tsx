@@ -82,7 +82,7 @@ export const HeroCinematic = ({
                     transition={{ duration: 1.5, ease: [0.6, 0.05, 0.05, 0.9] }}
                 >
                     <motion.h1
-                        className="font-black text-white text-9xl tracking-tighter select-none whitespace-nowrap"
+                        className="font-black text-white text-[13vw] md:text-9xl tracking-tighter select-none whitespace-nowrap"
                         initial={{ scale: 1 }}
                         animate={{ scale: stage === 'zoom' ? 150 : 1 }} // Massively increased scale to ensure solid part covers screen
                         transition={{ duration: 1.5, ease: [0.6, 0.05, 0.05, 0.9] }}

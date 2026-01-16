@@ -92,7 +92,7 @@ export const CinematicShowcase = () => {
                 <button
                     onClick={() => toggleMode('saga')}
                     className={cn(
-                        "flex-1 py-4 rounded-xl text-lg md:text-xl font-bold transition-all duration-500 flex items-center justify-center gap-3",
+                        "flex-1 py-3 md:py-4 rounded-xl text-sm md:text-xl font-bold transition-all duration-500 flex items-center justify-center gap-2 md:gap-3",
                         activeMode === 'saga' 
                             ? "bg-[var(--color-copper)] text-white shadow-lg shadow-orange-900/40" 
                             : "text-white/50 hover:bg-white/5 hover:text-white"
@@ -104,7 +104,7 @@ export const CinematicShowcase = () => {
                 <button
                     onClick={() => toggleMode('cinema')}
                     className={cn(
-                        "flex-1 py-4 rounded-xl text-lg md:text-xl font-bold transition-all duration-500 flex items-center justify-center gap-3",
+                        "flex-1 py-3 md:py-4 rounded-xl text-sm md:text-xl font-bold transition-all duration-500 flex items-center justify-center gap-2 md:gap-3",
                         activeMode === 'cinema' 
                             ? "bg-[var(--color-copper)] text-white shadow-lg shadow-orange-900/40" 
                             : "text-white/50 hover:bg-white/5 hover:text-white"
@@ -245,7 +245,7 @@ export const CinematicShowcase = () => {
             </div>
 
             {/* Thumbnails Strip (5 Items) */}
-            <div className="grid grid-cols-5 gap-3">
+            <div className="grid grid-cols-5 gap-1.5 md:gap-3">
                  {currentImages.map((img, idx) => (
                      <button
                         key={idx}
