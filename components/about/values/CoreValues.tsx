@@ -21,7 +21,7 @@ export const CoreValues = () => {
                 </p>
             </div>
 
-            <div className="flex flex-col lg:flex-row gap-4 h-[600px] lg:h-[500px]">
+            <div className="grid grid-cols-2 lg:flex lg:flex-row gap-3 md:gap-4 lg:h-[500px]">
                 {CORE_VALUES.map((value) => {
                     const isHovered = hoveredId === value.id;
 
@@ -32,11 +32,11 @@ export const CoreValues = () => {
                             onHoverStart={() => setHoveredId(value.id)}
                             onHoverEnd={() => setHoveredId(null)}
                             className={cn(
-                                "relative rounded-3xl overflow-hidden cursor-pointer border border-white/5 transition-colors duration-500",
+                                "relative rounded-2xl md:rounded-3xl overflow-hidden cursor-pointer border border-white/5 transition-colors duration-500 h-[180px] lg:h-auto",
                                 isHovered ? "border-[var(--nova-gold)]/50 bg-white/10" : "bg-white/5 hover:border-white/20"
                             )}
                             style={{
-                                flex: isHovered ? 3 : 1,
+                                flex: isHovered ? 3 : 1, // Only applies in flex mode (desktop)
                             }}
                         >
                             {/* Background Image */}
@@ -56,15 +56,15 @@ export const CoreValues = () => {
                             )}
 
                              {/* Background Number */}
-                             <span className="absolute top-4 right-6 text-8xl font-bold text-white/5 select-none pointer-events-none z-10">
+                             <span className="absolute top-2 right-4 md:top-4 md:right-6 text-4xl md:text-8xl font-bold text-white/5 select-none pointer-events-none z-10">
                                 {value.id}
                             </span>
 
-                            <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                            <div className="absolute inset-0 p-4 md:p-8 flex flex-col justify-end">
                                 <motion.h3 
                                     layout="position"
                                     className={cn(
-                                        "text-2xl font-bold mb-2 whitespace-nowrap",
+                                        "text-sm md:text-2xl font-bold mb-1 md:mb-2 whitespace-nowrap",
                                         isHovered ? "text-white" : "text-white/70"
                                     )}
                                 >
@@ -77,7 +77,7 @@ export const CoreValues = () => {
                                             initial={{ opacity: 0, height: 0 }}
                                             animate={{ opacity: 1, height: 'auto' }}
                                             exit={{ opacity: 0, height: 0 }}
-                                            className="text-white/80 leading-relaxed overflow-hidden"
+                                            className="text-[10px] md:text-base text-white/80 leading-relaxed overflow-hidden hidden lg:block"
                                         >
                                             {value.description}
                                         </motion.p>

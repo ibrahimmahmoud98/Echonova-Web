@@ -26,7 +26,7 @@ const ManifestoLine = ({ text, index, progress }: { text: string; index: number;
         <motion.p 
             style={{ opacity, y, scale, filter: blur as unknown as string }}
             className={cn(
-                "text-4xl md:text-6xl font-bold leading-tight transition-colors duration-500 text-center",
+                "text-2xl md:text-6xl font-bold leading-tight transition-colors duration-500 text-center",
                 index % 2 === 0 ? "text-white" : "text-[var(--nova-gold)]"
             )}
         >

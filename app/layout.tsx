@@ -4,6 +4,7 @@ import { WorldWrapper } from "@/components/canvas/WorldWrapper";
 import { MagneticCursor } from "@/components/ui/MagneticCursor";
 import "./globals.css";
 import { AudioProvider } from "@/components/audio/AudioEngine";
+import { ScrollToTop } from "@/components/utils/ScrollToTop";
 
 const cairo = Cairo({
   subsets: ["arabic"],
@@ -61,6 +62,7 @@ export default function RootLayout({
         <OrganizationSchema />
         <ReactLenis root>
           <AudioProvider>
+              <ScrollToTop />
               <MagneticCursor />
 
               

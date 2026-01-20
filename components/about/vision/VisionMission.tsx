@@ -20,7 +20,7 @@ const FlipCard = ({
 
     return (
         <div 
-            className="relative h-[350px] w-full [perspective:1000px] group"
+            className="relative h-[250px] md:h-[350px] w-full [perspective:1000px] group"
             onMouseEnter={() => setIsFlipped(true)}
             onMouseLeave={() => setIsFlipped(false)}
             onClick={() => setIsFlipped(!isFlipped)}
@@ -70,14 +70,14 @@ export const VisionMission = () => {
                     className=""
                     frontContent={
                         <>
-                            <h2 className="text-5xl font-bold text-white mb-2">{VISION_MISSION.vision.title}</h2>
-                            <h3 className="text-xl text-[#A78BFA] tracking-[0.5em] font-bold uppercase">{VISION_MISSION.vision.subtitle}</h3>
+                            <h2 className="text-3xl md:text-5xl font-bold text-white mb-2">{VISION_MISSION.vision.title}</h2>
+                            <h3 className="text-sm md:text-xl text-[#A78BFA] tracking-[0.3em] md:tracking-[0.5em] font-bold uppercase">{VISION_MISSION.vision.subtitle}</h3>
                         </>
                     }
                     backContent={
                         <>
-                            <h2 className="text-3xl font-bold text-[#A78BFA] mb-6">{VISION_MISSION.vision.title}</h2>
-                            <p className="text-xl text-white/90 leading-relaxed font-light">
+                            <h2 className="text-xl md:text-3xl font-bold text-[#A78BFA] mb-4 md:mb-6">{VISION_MISSION.vision.title}</h2>
+                            <p className="text-base md:text-xl text-white/90 leading-relaxed font-light">
                                 {VISION_MISSION.vision.description}
                             </p>
                         </>
@@ -90,14 +90,14 @@ export const VisionMission = () => {
                     className=""
                     frontContent={
                         <>
-                            <h2 className="text-5xl font-bold text-white mb-2">{VISION_MISSION.mission.title}</h2>
-                            <h3 className="text-xl text-[#FFD6A5] tracking-[0.5em] font-bold uppercase">{VISION_MISSION.mission.subtitle}</h3>
+                            <h2 className="text-3xl md:text-5xl font-bold text-white mb-2">{VISION_MISSION.mission.title}</h2>
+                            <h3 className="text-sm md:text-xl text-[#FFD6A5] tracking-[0.3em] md:tracking-[0.5em] font-bold uppercase">{VISION_MISSION.mission.subtitle}</h3>
                         </>
                     }
                     backContent={
                         <>
-                            <h2 className="text-3xl font-bold text-[#FFD6A5] mb-6">{VISION_MISSION.mission.title}</h2>
-                            <p className="text-xl text-white/90 leading-relaxed font-light">
+                            <h2 className="text-xl md:text-3xl font-bold text-[#FFD6A5] mb-4 md:mb-6">{VISION_MISSION.mission.title}</h2>
+                            <p className="text-base md:text-xl text-white/90 leading-relaxed font-light">
                                 {VISION_MISSION.mission.description}
                             </p>
                         </>

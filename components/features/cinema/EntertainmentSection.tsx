@@ -12,7 +12,7 @@ export const EntertainmentSection = () => {
 
     return (
         <section className={cn(
-            "relative py-32 transition-colors duration-1000",
+            "relative py-12 md:py-32 transition-colors duration-1000",
             cinemaMode ? "bg-black" : "bg-transparent"
         )}>
             {/* Cinema Mode Overlay */}
@@ -22,12 +22,12 @@ export const EntertainmentSection = () => {
 
             <div className="max-w-7xl mx-auto px-4 relative z-50">
                 {/* Header */}
-                <div className="flex flex-col md:flex-row justify-between items-end mb-24 gap-12">
+                <div className="flex flex-col md:flex-row justify-between items-end mb-8 md:mb-24 gap-4 md:gap-12">
                     <div>
-                        <h2 className="text-4xl md:text-6xl font-bold text-white mb-6">
+                        <h2 className="text-2xl md:text-6xl font-bold text-white mb-2 md:mb-6">
                             الإنتاج <span className="text-[var(--nova-gold)]">السينمائي</span>
                         </h2>
-                        <p className="text-white/60 max-w-lg text-lg leading-relaxed">
+                        <p className="text-white/60 max-w-lg text-sm md:text-lg leading-relaxed">
                             لا نقوم فقط بوضع منتجك في الفيلم، بل نجعله جزءاً من الحكاية.
                         </p>
                     </div>
@@ -36,10 +36,10 @@ export const EntertainmentSection = () => {
                 </div>
 
                 {/* Posters Grid */}
-                <div className="grid md:grid-cols-2 gap-16">
+                <div className="grid grid-cols-2 gap-3 md:gap-16">
                     {ENTERTAINMENT_DATA.map((item, idx) => (
                         <div key={item.id} className={cn(
-                            "group transition-all duration-700 max-w-sm mx-auto w-full",
+                            "group transition-all duration-700 w-full min-w-0",
                             cinemaMode && idx === 0 ? "md:translate-x-10" : "",
                             cinemaMode && idx === 1 ? "md:-translate-x-10" : ""
                         )}>
@@ -49,17 +49,17 @@ export const EntertainmentSection = () => {
                             />
                             
                             {/* Narrative Context */}
-                            <div className="mt-8 relative pr-8 border-r-2 border-[var(--nova-gold)]/30">
-                                <h4 className="text-[var(--nova-gold)] text-lg font-bold mb-3 tracking-wide">
+                            <div className="mt-4 md:mt-8 relative md:pr-8 md:border-r-2 md:border-[var(--nova-gold)]/30 text-center md:text-right">
+                                <h4 className="hidden md:block text-[var(--nova-gold)] text-lg font-bold mb-3 tracking-wide">
                                     القصة
                                 </h4>
-                                <p className="text-white/80 text-base leading-relaxed max-w-sm mb-6">
+                                <p className="hidden md:block text-white/80 text-base leading-relaxed max-w-sm mb-6">
                                     {item["scriptExcerpt"]}
                                 </p>
-                                <Link href="/services/cinema" className="inline-flex items-center gap-2 text-[var(--color-copper)] hover:text-white transition-colors group/link">
-                                    <span className="text-sm font-bold border-b border-[var(--color-copper)] pb-1 group-hover/link:border-white">
+                                <Link href="/services/cinema" className="inline-block mt-2 md:mt-0">
+                                    <button className="px-4 py-2 md:px-8 md:py-4 text-xs md:text-sm rounded-full border border-[var(--color-copper)] text-[var(--color-copper)] hover:bg-[var(--color-copper)] hover:text-white transition-all duration-300 font-bold whitespace-nowrap">
                                         اعرف أكثر
-                                    </span>
+                                    </button>
                                 </Link>
                             </div>
                         </div>

@@ -20,7 +20,7 @@ export const IdentitySection = () => {
                 {/* Visual Side (The Model & HUD) */}
                 <div className="relative flex justify-center lg:justify-end">
                     {/* Placeholder for Model Image */}
-                    <div className="relative w-full max-w-lg aspect-[3/4] rounded-2xl overflow-hidden bg-white/5 border border-white/10 group -translate-x-[-50px]">
+                    <div className="relative w-full max-w-[280px] md:max-w-lg aspect-[3/4] rounded-2xl overflow-hidden bg-white/5 border border-white/10 group md:-translate-x-[-50px]">
                         <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80" />
                         
                         {/* Scanning Line */}
@@ -32,7 +32,7 @@ export const IdentitySection = () => {
                         />
                         
                         {/* HUD Overlay */}
-                        <div className="absolute bottom-8 left-8 right-8 z-30">
+                        <div className="absolute bottom-4 left-4 right-4 md:bottom-8 md:left-8 md:right-8 z-30">
                             <IdentityHUD />
                         </div>
                     </div>
@@ -50,18 +50,18 @@ export const IdentitySection = () => {
                         {VIRTUAL_IDENTITY.description}
                     </p>
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-8">
+                    <div className="grid grid-cols-2 gap-3 pt-4 md:pt-8 text-right">
                         {VIRTUAL_IDENTITY.features.map(feature => (
-                            <div key={feature.title} className="bg-white/5 border border-white/5 p-6 rounded-2xl hover:bg-white/10 transition-colors group">
-                                <h4 className="text-lg font-bold text-white mb-2 group-hover:text-[var(--nova-gold)] transition-colors">{feature.title}</h4>
-                                <p className="text-sm text-white/50">{feature.description}</p>
+                            <div key={feature.title} className="bg-white/5 border border-white/5 p-3 md:p-6 rounded-xl md:rounded-2xl hover:bg-white/10 transition-colors group">
+                                <h4 className="text-xs md:text-lg font-bold text-white mb-1.5 md:mb-2 group-hover:text-[var(--nova-gold)] transition-colors">{feature.title}</h4>
+                                <p className="text-[10px] md:text-sm text-white/50 leading-relaxed">{feature.description}</p>
                             </div>
                         ))}
                     </div>
 
-                    <div className="pt-8">
+                    <div className="pt-6 md:pt-8 flex justify-end">
                         <Link href="/services/aura" className="inline-block">
-                            <button className="px-8 py-4 rounded-full border border-[var(--color-copper)] text-[var(--color-copper)] hover:bg-[var(--color-copper)] hover:text-white transition-all duration-300 font-bold">
+                            <button className="px-5 py-2.5 md:px-8 md:py-4 text-sm md:text-base rounded-full border border-[var(--color-copper)] text-[var(--color-copper)] hover:bg-[var(--color-copper)] hover:text-white transition-all duration-300 font-bold">
                                 اعرف أكثر
                             </button>
                         </Link>

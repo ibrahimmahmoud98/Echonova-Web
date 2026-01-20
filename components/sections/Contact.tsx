@@ -32,20 +32,14 @@ export function Contact() {
                   <ContactCard 
                     icon={<Mail className="w-6 h-6" />}
                     title="البريد الإلكتروني"
-                    value="info@echonova.sa"
-                    link="mailto:info@echonova.sa"
+                    value="contact@echonovastudio.com"
+                    link="mailto:contact@echonovastudio.com"
                   />
                   <ContactCard 
                     icon={<Phone className="w-6 h-6" />}
-                    title="الهاتف"
-                    value="+966 50 000 0000"
-                    link="tel:+966500000000"
-                  />
-                  <ContactCard 
-                    icon={<MapPin className="w-6 h-6" />}
-                    title="العنوان"
-                    value="الرياض، المملكة العربية السعودية"
-                    subval="حي الملقا، طريق الملك فهد"
+                    title="واتساب"
+                    value="ابدأ المحادثة الآن"
+                    link="https://wa.me/message/UQYX7YGKDTPHN1"
                   />
               </div>
             </ScrollReveal>

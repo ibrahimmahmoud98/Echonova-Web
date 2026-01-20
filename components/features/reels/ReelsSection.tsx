@@ -13,7 +13,7 @@ export const ReelsSection = () => {
     const activeLevel = COMMERCIAL_LEVELS[activeIndex];
 
     return (
-        <section className="relative h-screen min-h-[800px] bg-black text-white overflow-hidden flex flex-col justify-center">
+        <section className="relative min-h-screen md:h-screen bg-black text-white overflow-hidden flex flex-col justify-center">
             
             {/* Background Gradient / Atmosphere */}
             <div className="absolute inset-0 z-0">
@@ -23,7 +23,7 @@ export const ReelsSection = () => {
             </div>
 
             {/* Main Content */}
-            <div className="container mx-auto px-4 md:px-8 relative z-10 grid md:grid-cols-2 gap-12 items-center h-full pb-32">
+            <div className="container mx-auto px-4 md:px-8 relative z-10 grid md:grid-cols-2 gap-8 md:gap-12 items-center pt-12 pb-4 md:py-0 md:pb-32">
                 
                 {/* Text Content */}
                 <div className="order-2 md:order-1 flex flex-col items-start md:items-end text-right md:pr-12">
@@ -55,14 +55,14 @@ export const ReelsSection = () => {
                         </p>
 
                         {/* CTA - Adjusted Position */}
-                        <div className="flex items-center justify-end gap-6 pt-8 -mb-4 relative z-20">
+                        <div className="flex items-center justify-end gap-6 pt-0 md:pt-8 -mb-4 relative z-20">
                              {/* Decorative Circle Removed */}
                              <div className="hidden" />
 
                             <Link href="/contact">
-                                <button className="group flex items-center gap-4 px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-full transition-all duration-300 backdrop-blur-sm">
-                                    <span className="font-bold tracking-wide">اعرف اكثر</span>
-                                    <ArrowRight className="w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+                                <button className="group flex items-center gap-2 md:gap-4 px-5 py-2.5 md:px-8 md:py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-full transition-all duration-300 backdrop-blur-sm">
+                                    <span className="font-bold tracking-wide text-sm md:text-base">اعرف اكثر</span>
+                                    <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:-translate-x-1 transition-transform" />
                                 </button>
                             </Link>
 
@@ -112,7 +112,7 @@ export const ReelsSection = () => {
             </div>
 
             {/* Bottom Navigation - Sliding Tabs (Fixed Layout) */}
-            <div className="absolute bottom-12 left-0 w-full z-20">
+            <div className="relative w-full z-20 mt-2 pb-12 md:mt-0 md:absolute md:bottom-12 md:pb-0">
                 <div className="container mx-auto px-2 md:px-4 flex justify-center">
                     <div className="relative w-full max-w-3xl bg-white/5 backdrop-blur-md border border-white/10 rounded-full p-1 md:p-1.5 grid grid-cols-3 md:flex md:items-center">
                         
@@ -150,8 +150,9 @@ export const ReelsSection = () => {
                                             )}
                                         </div>
                                         
-                                        <span className="font-bold uppercase tracking-tight text-[9px] sm:text-xs md:text-xl whitespace-nowrap overflow-hidden text-ellipsis block max-w-full">
-                                            {level.brandName}
+                                        <span className="font-bold uppercase tracking-tight text-sm sm:text-sm md:text-xl whitespace-nowrap overflow-hidden text-ellipsis block max-w-full">
+                                            <span className="md:hidden">{level.brandName.replace('NOVA ', '')}</span>
+                                            <span className="hidden md:inline">{level.brandName}</span>
                                         </span>
                                     </div>
                                 </button>
