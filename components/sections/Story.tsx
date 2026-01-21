@@ -26,9 +26,9 @@ export function Story() {
             <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-ivory)] mb-6">
               قصتنا
             </h2>
-            <p className="text-lg text-[var(--color-ivory)]/80 leading-relaxed mb-6 font-light">
-              في إيكونوڤو ستديو، نحن لا نستبدل الإبداع، بل نمنحه أجنحة رقمية. انطلقنا برؤية عربية طموحة لنعيد تعريف معايير الإنتاج الفني في المنطقة، حيث يلتقي خيال المبدعين والكتّاب العرب بأحدث تقنيات الذكاء الاصطناعي التوليدي.
-            </p>
+                <p className="text-sm md:text-xl text-[var(--color-ivory)]/70 leading-relaxed mb-6 md:mb-8 font-light max-w-2xl mx-auto">
+                    في <span className="text-[var(--color-copper)] font-medium">إيكونوڤا</span> ستديو، نحن لا نستبدل الإبداع، بل نمنحه أجنحة رقمية. انطلقنا برؤية عربية طموحة لنعيد تعريف معايير الإنتاج الفني في المنطقة، حيث يلتقي خيال المبدعين والكُتّاب العرب بأحدث تقنيات الذكاء الاصطناعي التوليدي.
+                </p>
             <p className="text-lg text-[var(--color-ivory)]/80 leading-relaxed mb-8 font-light">
                نحن هنا لنكسر قيود الميزانيات التقليدية وعوائق الوقت، لنمنح علامتك التجارية قصصاً سينمائية عالمية المستوى، تُصاغ بروح عربية مبتكرة كانت بالأمس ضرباً من الخيال.
             </p>

@@ -23,7 +23,10 @@ export function Hero() {
   return (
     <section id="hero" className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-black">
       {/* Cinematic Intro Background */}
-      <HeroCinematic onAnimationComplete={() => setShowContent(true)} />
+      <HeroCinematic 
+        videoSrc="https://res.cloudinary.com/da1dtiu2x/video/upload/v1769000737/hero_BG_eiwfnb.mp4"
+        onAnimationComplete={() => setShowContent(true)} 
+      />
 
       {/* Content Fade-In */}
       <AnimatePresence>

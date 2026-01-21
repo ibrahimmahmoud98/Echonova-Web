@@ -59,7 +59,7 @@ export const ReelsSection = () => {
                              {/* Decorative Circle Removed */}
                              <div className="hidden" />
 
-                            <Link href="/contact">
+                            <Link href={`/services/reels?level=${activeLevel.id}`}>
                                 <button className="group flex items-center gap-2 md:gap-4 px-5 py-2.5 md:px-8 md:py-4 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 rounded-full transition-all duration-300 backdrop-blur-sm">
                                     <span className="font-bold tracking-wide text-sm md:text-base">اعرف اكثر</span>
                                     <ArrowRight className="w-4 h-4 md:w-5 md:h-5 group-hover:-translate-x-1 transition-transform" />

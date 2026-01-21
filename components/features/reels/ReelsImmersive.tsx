@@ -7,8 +7,17 @@ import Image from "next/image";
 import { Maximize2, X, ChevronRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+import { useSearchParams } from 'next/navigation';
+
 export const ReelsImmersive = () => {
-  const [activeIndex, setActiveIndex] = useState(0);
+  const searchParams = useSearchParams();
+  const initialLevelId = searchParams.get('level');
+  
+  const [activeIndex, setActiveIndex] = useState(() => {
+    if (!initialLevelId) return 0;
+    const index = COMMERCIAL_LEVELS.findIndex(l => l.id === initialLevelId);
+    return index !== -1 ? index : 0;
+  });
   const [showDetails, setShowDetails] = useState(false);
   const activeLevel = COMMERCIAL_LEVELS[activeIndex];
 

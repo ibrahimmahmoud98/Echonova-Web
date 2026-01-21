@@ -99,7 +99,7 @@ const RevealBackground = ({ progress }: { progress: number }) => {
   const materialRef = useRef<any>(null);
   const { viewport } = useThree();
   
-  const texture = useVideoTexture("/videos/hero-background.mp4", {
+  const texture = useVideoTexture("https://res.cloudinary.com/da1dtiu2x/video/upload/v1769000737/hero_BG_eiwfnb.mp4", {
       start: false,
       muted: true,
       loop: true,

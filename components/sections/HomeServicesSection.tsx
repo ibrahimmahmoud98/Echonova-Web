@@ -48,7 +48,7 @@ export function HomeServicesSection() {
         <div className="text-center mb-8">
           <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-ivory)] mb-4 drop-shadow-lg">إعلانك بمستوى سينمائي</h2>
           <p className="text-[var(--color-ivory)]/80 max-w-2xl mx-auto text-lg">
-            هنا نكسر حاجز المستحيل تعرف على القوة الإبداعية التي يمنحها إيكونوڤو ستديو لعلامتك التجارية.
+            هنا نكسر حاجز المستحيل تعرف على القوة الإبداعية التي يمنحها إيكونوڤا ستديو لعلامتك التجارية.
           </p>
         </div>
 
@@ -130,11 +130,25 @@ export function HomeServicesSection() {
                         {/* Visual Core: Interactive 3D Carousel */}
                         <div className="w-full xl:w-1/2 min-h-[600px] flex items-center justify-center relative order-2 xl:order-1">
                              <InteractiveCarousel images={[
-                                 "/images/model_portrait.png",
-                                 "/images/model_fashion.png",
-                                 "/images/model_beauty.png",
-                                 "/images/model_lifestyle.png",
-                                 "/images/model_editorial.png"
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769006859/I_want_you_2k_202601161917_3_2_x5g9n9.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769006856/I_want_you_2k_202601130303_3_sjzmuj.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1768999900/I_want_you_2k_202601130301_5_vwxape.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1768999900/I_want_you_2k_202601130301_3_ajvqcr.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769006852/I_want_you_2k_202601161921_1_2_yw7mxl.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769006759/I_want_you_2k_202601161928_1_2_j2oify.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1768999908/I_want_you_2k_202601161922_4_2_a7lgin.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1768999905/I_want_you_2k_202601161919_1_2_sdi4ml.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1768999877/I_want_you_2k_202601130255_11_lgzxmz.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1768999877/A_young_saudi_2k_202512272205_1_r52ko2.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769006861/I_want_you_2k_202601130256_1_tusvts.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1768999883/I_want_you_2k_202601130258_2_mdz7rr.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1768999885/I_want_you_2k_202601130257_7_z87xej.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1768999889/I_want_you_2k_202601130259_5_ld4epe.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1768999897/I_want_you_2k_202601161918_4_2_qddhlu.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1768999894/I_want_you_2k_202601130258_4_kl3fcz.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1768999877/A_closeup_cinematic_2k_202512270313_b9yagy.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1768999889/I_want_you_2k_202601130259_2_fccen6.jpg",
+                                 "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769007610/I_want_you_2k_202601130258_7_iunmuu.jpg"
                              ]} />
                         </div>
 
