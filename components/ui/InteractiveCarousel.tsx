@@ -136,20 +136,56 @@ export const InteractiveCarousel: React.FC<ImageCarouselProps> = ({ images, auto
          })}
       </div>
 
-      {/* Manual Controls Hint (Dots) */}
+      {/* Manual Controls Hint (Dynamic Sliding Dots) */}
       <div className="absolute bottom-8 flex gap-3 z-40">
-          {images.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setCurrentIndex(idx)}
-                className={`transition-all duration-300 rounded-full shadow-lg backdrop-blur-sm border border-white/10 ${
-                    idx === currentIndex 
-                    ? "w-8 h-2 bg-[var(--color-copper)]" 
-                    : "w-2 h-2 bg-white/30 hover:bg-white/60"
-                }`}
-                aria-label={`Go to slide ${idx + 1}`}
-              />
-          ))}
+          {(() => {
+            const maxDots = 5;
+            const halfMax = Math.floor(maxDots / 2);
+            
+            // Only calculate sliding window if we have more images than maxDots
+            if (images.length <= maxDots) {
+                return images.map((_, idx) => (
+                   <button
+                        key={idx}
+                        onClick={() => setCurrentIndex(idx)}
+                        className={`transition-all duration-300 rounded-full shadow-lg backdrop-blur-sm border border-white/10 ${
+                            idx === currentIndex 
+                            ? "w-8 h-2 bg-[var(--color-copper)]" 
+                            : "w-2 h-2 bg-white/30 hover:bg-white/60"
+                        }`}
+                        aria-label={`Go to slide ${idx + 1}`}
+                    />
+                ));
+            }
+
+            // Sliding window logic
+            return Array.from({ length: maxDots }).map((_, i) => {
+                // Determine which real index this dot represents
+                // We want the center dot to be the currentIndex
+                // i ranges 0 to 4. Center is 2.
+                // offset = i - 2 (-2, -1, 0, 1, 2)
+                const offset = i - halfMax;
+                let targetIndex = (currentIndex + offset) % images.length;
+                
+                // Handle negative modulo correctly in JS
+                if (targetIndex < 0) targetIndex += images.length;
+
+                const isCenter = i === halfMax;
+
+                return (
+                    <button
+                        key={`dot-${targetIndex}`}
+                        onClick={() => setCurrentIndex(targetIndex)}
+                        className={`transition-all duration-300 rounded-full shadow-lg backdrop-blur-sm border border-white/10 ${
+                            isCenter 
+                            ? "w-8 h-2 bg-[var(--color-copper)] scale-110" 
+                            : "w-2 h-2 bg-white/30 hover:bg-white/60"
+                        }`}
+                        aria-label={`Go to slide ${targetIndex + 1}`}
+                    />
+                );
+            });
+          })()}
       </div>
     </div>
   );
