@@ -12,23 +12,33 @@ interface ImageCarouselProps {
 export const InteractiveCarousel: React.FC<ImageCarouselProps> = ({ images, autoPlayInterval = 3000 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
 
-  // Auto-play logic
+  // Robust Auto-play logic
   useEffect(() => {
-    if (isPaused) return;
+    // Don't auto-play if paused (hovered) or currently being dragged
+    if (isPaused || isDragging) return;
 
     const timer = setInterval(() => {
       setCurrentIndex((prev) => (prev + 1) % images.length);
     }, autoPlayInterval);
 
     return () => clearInterval(timer);
-  }, [images.length, autoPlayInterval, isPaused]);
+  }, [images.length, autoPlayInterval, isPaused, isDragging]);
 
   const handleDragEnd = (event: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    setIsPaused(false); // Resume after drag
-    if (info.offset.x > 50) {
+    setIsDragging(false);
+    // Note: We don't hard-reset isPaused here because MouseLeave handles the resume for mouse users.
+    // For touch users, the interaction loop is simpler. 
+    // However, if we are on touch, we might want to ensure it resumes.
+    // Let's rely on the state updates.
+    
+    const SWIPE_THRESHOLD = 50;
+    if (info.offset.x > SWIPE_THRESHOLD) {
+      // Swiped Right -> Go Previous
       setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
-    } else if (info.offset.x < -50) {
+    } else if (info.offset.x < -SWIPE_THRESHOLD) {
+      // Swiped Left -> Go Next
       setCurrentIndex((prev) => (prev + 1) % images.length);
     }
   };
@@ -73,9 +83,10 @@ export const InteractiveCarousel: React.FC<ImageCarouselProps> = ({ images, auto
     }
 
     // Hidden others
+    {/* Minimal visibility for smoother transition */}
     return {
       zIndex: 10,
-      scale: 0.7,
+      scale: 0.5,
       opacity: 0,
       x: '0%', 
       rotateY: 0,
@@ -84,7 +95,7 @@ export const InteractiveCarousel: React.FC<ImageCarouselProps> = ({ images, auto
 
   return (
     <div 
-      className="relative w-full h-[600px] flex items-center justify-center perspective-[1200px] overflow-hidden group"
+      className="relative w-full h-[600px] flex items-center justify-center perspective-[1200px] overflow-hidden group touch-pan-y"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
     >
@@ -96,15 +107,16 @@ export const InteractiveCarousel: React.FC<ImageCarouselProps> = ({ images, auto
             return (
               <motion.div
                 key={index}
-                className="absolute w-full h-full rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl bg-[#020B16]"
+                className="absolute w-full h-full rounded-[2.5rem] overflow-hidden border border-white/10 shadow-2xl bg-[#020B16] cursor-grab active:cursor-grabbing"
                 initial={false}
                 animate={style}
-                transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 drag="x"
                 dragConstraints={{ left: 0, right: 0 }}
                 dragElastic={0.2}
-                onDragStart={() => setIsPaused(true)}
+                onDragStart={() => setIsDragging(true)}
                 onDragEnd={handleDragEnd}
+                whileTap={{ cursor: "grabbing" }}
                 style={{ 
                    pointerEvents: index === currentIndex ? 'auto' : 'none',
                    background: '#000',
@@ -124,17 +136,18 @@ export const InteractiveCarousel: React.FC<ImageCarouselProps> = ({ images, auto
          })}
       </div>
 
-      {/* Manual Controls Hint (Optional - Dots) */}
+      {/* Manual Controls Hint (Dots) */}
       <div className="absolute bottom-8 flex gap-3 z-40">
           {images.map((_, idx) => (
               <button
                 key={idx}
                 onClick={() => setCurrentIndex(idx)}
-                className={`transition-all duration-300 rounded-full shadow-lg backdrop-blur-sm ${
+                className={`transition-all duration-300 rounded-full shadow-lg backdrop-blur-sm border border-white/10 ${
                     idx === currentIndex 
                     ? "w-8 h-2 bg-[var(--color-copper)]" 
                     : "w-2 h-2 bg-white/30 hover:bg-white/60"
                 }`}
+                aria-label={`Go to slide ${idx + 1}`}
               />
           ))}
       </div>
