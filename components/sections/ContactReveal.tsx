@@ -509,16 +509,36 @@ export const ContactReveal = () => {
     };
   }, [formProgress, animationStatus]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSending, setIsSending] = useState(false);
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
       if (formProgress < 100) return; 
-      
-      if (animationStatus !== 'idle') return;
+      if (animationStatus !== 'idle' || isSending) return;
 
-      // 2. RELEASE THE TETHER
-      // Changing status to 'morph' automatically unmounts the Ticker useEffect.
-      // The plane is now free-floating at its last known position (atop the button).
-      setAnimationStatus('morph');
+      setIsSending(true);
+      setSubmitError(null);
+
+      try {
+        const response = await fetch('/api/send-email', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(formData),
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to send message');
+        }
+
+        // --- SUCCESS: Trigger Animation Sequence ---
+        
+        // 2. RELEASE THE TETHER
+        // Changing status to 'morph' automatically unmounts the Ticker useEffect.
+        // The plane is now free-floating at its last known position (atop the button).
+        setAnimationStatus('morph');
 
       const btn = buttonRef.current;
       const flyer = flyerRef.current;
@@ -704,6 +724,13 @@ export const ContactReveal = () => {
           delay: 0.3,
           duration: 0.3
       });
+      
+      } catch (error) {
+          console.error('Submission error:', error);
+          setSubmitError('حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.');
+      } finally {
+          setIsSending(false);
+      }
   };
 
   return (
@@ -1007,28 +1034,43 @@ export const ContactReveal = () => {
                                 />
                             </div>
 
-                            {/* Submit Button */}
-                            <div className="flex justify-center pt-2">
-                                <button 
-                                   ref={buttonRef} // Attach Ref Here
-                                   type="submit"
-                                   disabled={formProgress < 100}
-                                   className={cn(
-                                       "px-8 py-2 md:px-12 md:py-3 rounded-full font-bold flex items-center gap-2 transition-all duration-500 shadow-lg min-w-[120px] md:min-w-[140px] justify-center overflow-hidden",
-                                       formProgress === 100 
-                                           ? "bg-[var(--color-copper)] text-white hover:bg-orange-600 shadow-[0_0_20px_rgba(217,112,64,0.4)] cursor-pointer translate-y-0" 
-                                           : "bg-white/10 text-white/40 border border-white/10 cursor-not-allowed"
-                                   )}
-                                >
-                                    {formProgress === 100 ? (
-                                       <div className="flex items-center gap-2">
-                                           <span>ارسال</span>
-                                       </div>
-                                    ) : (
-                                       <span className="text-sm">({formProgress}%)</span>
-                                    )}
-                                </button>
-                            </div>
+                            <div className="relative group">
+                        <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-copper)] to-orange-600 rounded-xl blur opacity-25 group-hover:opacity-50 transition-opacity" />
+                        <button
+                            ref={buttonRef}
+                            type="submit"
+                            disabled={formProgress < 100 || isSending}
+                            className={cn(
+                                "relative w-full py-4 rounded-xl font-bold tracking-wider uppercase transition-all duration-300 flex items-center justify-center gap-3 overflow-hidden",
+                                formProgress === 100 && !isSending
+                                    ? "bg-[var(--color-copper)] text-white shadow-lg hover:shadow-[var(--color-copper)]/50 hover:scale-[1.02]"
+                                    : "bg-white/5 text-white/30 cursor-not-allowed"
+                            )}
+                        >
+                            {isSending ? (
+                                <span className="animate-pulse">جاري الإرسال...</span>
+                            ) : (
+                                <>
+                                    <span className="relative z-10">إرسال الرحلة</span>
+                                    <div className="w-5 h-5 relative z-10" /> {/* Spacer for plane */}
+                                </>
+                            )}
+                            
+                            {/* PROGRESS BAR BG */}
+                            <div 
+                                className="absolute left-0 top-0 bottom-0 bg-white/10 transition-all duration-500 ease-out z-0"
+                                style={{ width: `${formProgress}%` }}
+                            />
+                        </button>
+                    </div>
+
+                    {/* Error Message Display */}
+                    {submitError && (
+                        <div className="mt-4 p-3 bg-red-500/20 border border-red-500/50 rounded-lg text-red-200 text-sm text-center">
+                            {submitError}
+                        </div>
+                    )}
+
 
                         </form>
                         </div>
