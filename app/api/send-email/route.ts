@@ -32,7 +32,16 @@ export async function POST(request: Request) {
 
     return NextResponse.json(data);
   } catch (error: any) {
-    console.error('API Route Error:', error);
-    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
+    console.error('API Route Error Detailed:', JSON.stringify(error, null, 2));
+    
+    // Return the full error object for inspection
+    return NextResponse.json(
+      { 
+        error: 'Internal Server Error', 
+        details: error.message, 
+        fullError: error 
+      }, 
+      { status: 500 }
+    );
   }
 }
