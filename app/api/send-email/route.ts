@@ -2,18 +2,17 @@ import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
 export async function POST(request: Request) {
-  const apiKey = process.env.RESEND_API_KEY;
-
-  if (!apiKey) {
-    return NextResponse.json(
-      { error: 'Missing Resend API Key' },
-      { status: 500 }
-    );
-  }
-
-  const resend = new Resend(apiKey);
-
   try {
+    console.log('API Key present:', !!process.env.RESEND_API_KEY);
+    
+    const apiKey = process.env.RESEND_API_KEY;
+
+    if (!apiKey) {
+      throw new Error('Missing Resend API Key');
+    }
+
+    const resend = new Resend(apiKey);
+
     const { name, email, phone, services, message, countryKey } = await request.json();
 
     const data = await resend.emails.send({
@@ -32,7 +31,8 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json(data);
-  } catch (error) {
-    return NextResponse.json({ error }, { status: 500 });
+  } catch (error: any) {
+    console.error('API Route Error:', error);
+    return NextResponse.json({ error: error.message || 'Internal Server Error' }, { status: 500 });
   }
 }
