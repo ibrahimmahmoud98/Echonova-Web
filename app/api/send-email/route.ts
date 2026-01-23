@@ -42,7 +42,7 @@ export async function POST(request: Request) {
 
     // 4. Send Email
     const data = await resend.emails.send({
-      from: 'Echonova Website <website@echonovastudio.com>',
+      from: 'Echonova Website <website@send.echonovastudio.com>',
       to: ['contact@echonovastudio.com'],
       subject: `New Project Inquiry: ${name}`,
       replyTo: email,
