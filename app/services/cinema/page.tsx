@@ -85,7 +85,7 @@ export default function EntertainmentPage() {
       </section>
 
       {/* Navigation Tabs */}
-      <section className="sticky top-20 z-40 bg-[#020B16]/90 backdrop-blur-md border-b border-[#F7F5F0]/5 shadow-2xl">
+      <section className="relative z-10 bg-[#020B16]/90 backdrop-blur-md border-b border-[#F7F5F0]/5 shadow-2xl">
         <div className="max-w-7xl mx-auto px-6">
           <div className="flex justify-center gap-12">
             {ENTERTAINMENT_PAGE_CONTENT.services.map((service) => (
@@ -131,9 +131,9 @@ export default function EntertainmentPage() {
             >
               <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
                 {/* Left Column: Visuals */}
-                <div className="lg:col-span-5 space-y-8 sticky top-40 self-start">
+                <div className="lg:col-span-5 space-y-8 lg:sticky lg:top-40 self-start">
                   <motion.div 
-                    className="relative aspect-[9/16] rounded-lg overflow-hidden border border-[#F7F5F0]/10 shadow-2xl group cursor-pointer"
+                    className="relative aspect-[4/5] lg:aspect-[9/16] rounded-lg overflow-hidden border border-[#F7F5F0]/10 shadow-2xl group cursor-pointer"
                     whileHover={{ scale: 1.02, rotateY: 2 }}
                     transition={{ type: "spring", stiffness: 200, damping: 20 }}
                   >
