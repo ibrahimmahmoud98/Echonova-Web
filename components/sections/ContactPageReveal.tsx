@@ -144,9 +144,9 @@ function ContactCard({ icon, title, value, subval, link }: any) {
             <div className="w-10 h-10 flex-shrink-0 rounded-full bg-[var(--color-copper)]/10 flex items-center justify-center text-[var(--color-copper)] group-hover:scale-110 transition-transform shadow-[0_0_15px_rgba(217,112,64,0.2)]">
                 {icon}
             </div>
-            <div>
+            <div className="min-w-0 flex-1">
                 <h4 className="text-[var(--color-ivory)]/60 text-xs mb-1">{title}</h4>
-                <p className="text-sm md:text-base text-[var(--color-ivory)] font-medium group-hover:text-[var(--color-copper)] transition-colors">{value}</p>
+                <p className="text-sm md:text-base text-[var(--color-ivory)] font-medium group-hover:text-[var(--color-copper)] transition-colors break-all">{value}</p>
                 {subval && <p className="text-[var(--color-ivory)]/40 text-xs mt-1">{subval}</p>}
             </div>
         </div>
