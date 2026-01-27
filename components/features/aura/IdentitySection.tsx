@@ -5,6 +5,8 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { IdentityHUD } from './IdentityHUD';
 import { VIRTUAL_IDENTITY } from '@/lib/data/services-content';
+import { InteractiveCarousel } from '@/components/ui/InteractiveCarousel';
+import { AURA_SERVICES_IMAGES } from '@/lib/data/identity-portfolio';
 
 export const IdentitySection = () => {
     return (
@@ -19,22 +21,8 @@ export const IdentitySection = () => {
             <div className="max-w-7xl mx-auto grid lg:grid-cols-2 gap-16 items-start relative z-10">
                 {/* Visual Side (The Model & HUD) */}
                 <div className="relative flex justify-center lg:justify-end">
-                    {/* Placeholder for Model Image */}
-                    <div className="relative w-full max-w-[280px] md:max-w-lg aspect-[3/4] rounded-2xl overflow-hidden bg-white/5 border border-white/10 group md:-translate-x-[-50px]">
-                        <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/80" />
-                        
-                        {/* Scanning Line */}
-                        <motion.div 
-                            initial={{ top: "0%" }}
-                            animate={{ top: "100%" }}
-                            transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-                            className="absolute left-0 right-0 h-[2px] bg-[var(--nova-gold)] shadow-[0_0_20px_var(--nova-gold)] z-20"
-                        />
-                        
-                        {/* HUD Overlay */}
-                        <div className="absolute bottom-4 left-4 right-4 md:bottom-8 md:left-8 md:right-8 z-30">
-                            <IdentityHUD />
-                        </div>
+                    <div className="w-full max-w-[400px] h-[500px] relative">
+                        <InteractiveCarousel images={AURA_SERVICES_IMAGES} />
                     </div>
                 </div>
 

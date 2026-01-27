@@ -30,8 +30,8 @@ const steps = [
   },
   {
     num: "03",
-    title: "هندسة التخيل",
-    desc: "ترجمة السيناريو إلى أكواد بصرية (Prompts).",
+    title: "هندسة الخيال",
+    desc: "تحويل خيال و رؤية العميل الى اصول بصرية جذابة",
     color: "#0a0b1e", // Deep Dark Indigo (Tech/Magic)
     image: "/images/nova_cinema_anamorphic_lens_flare_1766262442202.png",
     video: "/placeholders/magic-loop.mp4"

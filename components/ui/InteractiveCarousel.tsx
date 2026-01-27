@@ -93,11 +93,53 @@ export const InteractiveCarousel: React.FC<ImageCarouselProps> = ({ images, auto
     };
   }; 
 
+  // Wheel navigation state
+  const wheelAccumulator = React.useRef(0);
+  const lastWheelTime = React.useRef(0);
+  const WHEEL_THRESHOLD = 50; // Sensitivity threshold
+  const WHEEL_COOLDOWN = 150; // ms between slides (faster for main carousel)
+
+  /**
+   * Handle mouse wheel for smooth horizontal scroll navigation
+   */
+  const handleWheel = (e: React.WheelEvent) => {
+    // Only handle if horizontal scroll is dominant
+    if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+      const now = Date.now();
+      
+      // Accumulate
+      wheelAccumulator.current += e.deltaX;
+
+      // Check cooldown
+      if (now - lastWheelTime.current > WHEEL_COOLDOWN) {
+        if (wheelAccumulator.current > WHEEL_THRESHOLD) {
+          // Navigating "Forward" in time/index means Next
+          setCurrentIndex((prev) => (prev + 1) % images.length);
+          wheelAccumulator.current = 0;
+          lastWheelTime.current = now;
+        } else if (wheelAccumulator.current < -WHEEL_THRESHOLD) {
+          // Navigating "Back"
+          setCurrentIndex((prev) => (prev - 1 + images.length) % images.length);
+          wheelAccumulator.current = 0;
+          lastWheelTime.current = now;
+        }
+      }
+
+       // Reset accumulator prevents getting stuck if direction changes
+      if (Math.abs(wheelAccumulator.current) > WHEEL_THRESHOLD * 2) {
+          wheelAccumulator.current = 0;
+      }
+    } else {
+        wheelAccumulator.current = 0;
+    }
+  };
+
   return (
     <div 
       className="relative w-full h-[600px] flex items-center justify-center perspective-[1200px] overflow-hidden group touch-pan-y"
       onMouseEnter={() => setIsPaused(true)}
       onMouseLeave={() => setIsPaused(false)}
+      onWheel={handleWheel}
     >
       {/* 3D Scene Container */}
       <div className="relative w-[320px] h-[500px] flex items-center justify-center preserve-3d">

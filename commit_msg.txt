@@ -1,0 +1,18 @@
+
+# Commit Message Content
+
+## Summary
+Updated Aura section images and enhanced carousel interactivity.
+
+## Details
+- **Aura Images:**
+    - Segregated images for Home page and Services page.
+    - Updated `identity-portfolio.ts` with distinct `AURA_IMAGES` (40 assets) and `AURA_SERVICES_IMAGES` (33 assets) verified from Cloudinary.
+    - Updated `HomeServicesSection.tsx` and `IdentitySection.tsx` to use respective image sets.
+- **Carousel Interaction:**
+    - Implemented throttled trackpad/mouse wheel scrolling for `InteractiveCarousel` and `IdentityCarousel`.
+    - Improved user experience with smooth, non-rapid-fire navigation.
+- **Methodology Text:**
+    - Verified and updated Methodology section text as per previous requests.
+- **Cloudinary Integration:**
+    - Added `cloudinary` SDK and utility functions.

@@ -83,13 +83,44 @@ export const IdentityCarousel: React.FC<IdentityCarouselProps> = ({ items, onSel
     }
   };
 
+  // Wheel navigation state
+  const wheelAccumulator = React.useRef(0);
+  const lastWheelTime = React.useRef(0);
+  const WHEEL_THRESHOLD = 50; // Sensitivity threshold
+  const WHEEL_COOLDOWN = 250; // ms between slides
+
   /**
-   * Handle mouse wheel for horizontal scroll navigation
+   * Handle mouse wheel for smooth horizontal scroll navigation
+   * Implements accumulation and throttling to handle trackpad momentum
    */
   const handleWheel = (e: React.WheelEvent) => {
+    // Only handle if horizontal scroll is dominant to allow vertical page scrolling
     if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
-      if (e.deltaX > 0) goToNext();
-      else goToPrevious();
+      const now = Date.now();
+      
+      // Accumulate delta
+      wheelAccumulator.current += e.deltaX;
+
+      // Check cooldown
+      if (now - lastWheelTime.current > WHEEL_COOLDOWN) {
+        if (wheelAccumulator.current > WHEEL_THRESHOLD) {
+          goToNext();
+          wheelAccumulator.current = 0;
+          lastWheelTime.current = now;
+        } else if (wheelAccumulator.current < -WHEEL_THRESHOLD) {
+          goToPrevious();
+          wheelAccumulator.current = 0;
+          lastWheelTime.current = now;
+        }
+      }
+
+      // Reset accumulator if scrolling acts weird or direction changes abruptly
+      if (Math.abs(wheelAccumulator.current) > WHEEL_THRESHOLD * 2) {
+          wheelAccumulator.current = 0;
+      }
+    } else {
+        // Reset if vertical scrolling happens
+        wheelAccumulator.current = 0;
     }
   };
 
