@@ -1,3 +1,4 @@
+import archiveData from './archive-data.json';
 
 export interface PortfolioItem {
   id: string;
@@ -104,74 +105,32 @@ const generateMockData = (): PortfolioItem[] => {
      "إعادة ابتكار للعلامة التجارية التقليدية بلمسة مستقبلية، تناسب العصر الرقمي الجديد."
   ];
 
-  // Image Pool (Saudi Content)
-  // Image Pool (Saudi Content - Cloudinary)
-  const allImages = AURA_IMAGES;
+  // Use imported JSON data from archive-data.json
+  const archiveImages = archiveData as string[];
 
-  // 10 Collections
-  for (let i = 1; i <= 10; i++) {
-    const cat = categories[i % categories.length];
-    // Use modulo to cycle through images deterministically
-    const mainImg = allImages[i % allImages.length];
-    const subImg1 = allImages[(i + 1) % allImages.length];
-    const subImg2 = allImages[(i + 2) % allImages.length];
-    const subImg3 = allImages[(i + 3) % allImages.length];
+  // Generate 207 Single Items
+  archiveImages.forEach((img, index) => {
+    // Deterministic random category
+    const cat = categories[index % categories.length];
+    
+    // Deterministic random description
+    const desc = descriptions[index % descriptions.length];
 
     items.push({
-      id: `col-${i}`,
-      title: `Identity Series ${i}`,
-      type: 'collection',
-      thumbnail: mainImg,
-      items: [
-        { type: 'image', url: subImg1, caption: 'Primary Variant' },
-        { type: 'image', url: subImg2, caption: 'Secondary Variant' },
-        { type: 'image', url: subImg3, caption: 'Wireframe View' },
-      ],
-      tags: [cat, 'Collection'],
-      category: cat,
-      description: descriptions[i % descriptions.length]
-    });
-  }
-
-  // 40 Single Items
-  for (let i = 1; i <= 40; i++) {
-    const cat = categories[i % categories.length];
-    const img = allImages[(i * 3) % allImages.length]; // Different stride to vary order
-
-    items.push({
-      id: `single-${i}`,
-      title: `Digital Persona ${i}`,
-      type: 'single',
+      id: `archive-${index + 1}`,
+      title: `Identity Series ${index + 1}`,
+      type: 'single', // Simplified to singles for the archive
       thumbnail: img,
       items: [
-        { type: 'image', url: img, caption: 'Final Render' },
+        { type: 'image', url: img, caption: `Display ${index + 1}` },
       ],
-      tags: [cat],
+      tags: [cat, 'Digital Archive', 'Aura'],
       category: cat,
-      description: descriptions[i % descriptions.length]
+      description: desc
     });
-  }
-
-  // 10 Video Items
-  for (let i = 1; i <= 10; i++) {
-     const cat = 'Motion';
-    items.push({
-      id: `vid-${i}`,
-      title: `Motion Identity ${i}`,
-      type: 'single',
-      thumbnail: `https://picsum.photos/seed/vid${i}/400/600`, // Using image as placeholder for video thumb
-      items: [
-        { type: 'video', url: `https://www.w3schools.com/html/mov_bbb.mp4`, caption: 'Motion Capture Preview' },
-      ],
-      tags: [cat, 'Animation'],
-      category: cat,
-      description: "عرض متحرك للهوية البصرية يظهر تفاعل العناصر مع البيئة المحيطة."
-    });
-  }
+  });
 
   return items;
 };
 
 export const portfolioItems = generateMockData();
-
-

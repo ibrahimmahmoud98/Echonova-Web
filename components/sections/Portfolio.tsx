@@ -63,6 +63,13 @@ export function Portfolio() {
                     {/* Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-60 group-hover:opacity-80 transition-opacity" />
                     
+                    {/* Coming Soon Blur Layer */}
+                    <div className="absolute inset-0 backdrop-blur-[8px] bg-black/40 flex items-center justify-center z-10 transition-all duration-500">
+                        <span className="text-[var(--nova-gold)] text-4xl md:text-5xl font-bold tracking-widest opacity-100 border-4 border-[var(--nova-gold)] px-8 py-2 rotate-[-15deg] shadow-[0_0_30px_rgba(217,112,64,0.5)]">
+                            قريباً
+                        </span>
+                    </div>
+                    
                     {/* Content */}
                     <div className="absolute bottom-0 left-0 right-0 p-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
                         <span className="text-[var(--color-copper)] text-xs font-bold tracking-widest mb-2 block">
