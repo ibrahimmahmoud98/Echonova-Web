@@ -26,7 +26,7 @@ export function Footer() {
             <ul className="space-y-4 text-[var(--color-ivory)]/60 text-sm">
               <li><Link href="/about" className="hover:text-[var(--color-copper)] transition-colors">من نحن</Link></li>
               <li><Link href="/services" className="hover:text-[var(--color-copper)] transition-colors">خدماتنا</Link></li>
-              <li><Link href="/#methodology" className="hover:text-[var(--color-copper)] transition-colors">منهجية العمل</Link></li>
+              <li><Link href="/contact" className="hover:text-[var(--color-copper)] transition-colors">تواصل معنا</Link></li>
             </ul>
           </div>
 
