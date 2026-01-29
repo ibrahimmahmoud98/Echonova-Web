@@ -9,6 +9,10 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { HeroCinematic } from "./HeroCinematic";
 // ... imports
 
+import { HERO_VIDEO_URL } from "@/lib/constants";
+
+// ...
+
 export function Hero() {
   const { playHover, playClick } = useAudio();
   const [showContent, setShowContent] = React.useState(false);
@@ -24,7 +28,7 @@ export function Hero() {
     <section id="hero" className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-black">
       {/* Cinematic Intro Background */}
       <HeroCinematic 
-        videoSrc="https://res.cloudinary.com/da1dtiu2x/video/upload/v1769000737/hero_BG_eiwfnb.mp4"
+        videoSrc={HERO_VIDEO_URL}
         onAnimationComplete={() => setShowContent(true)} 
       />
 

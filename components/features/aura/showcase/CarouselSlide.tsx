@@ -97,9 +97,7 @@ export const CarouselSlide: React.FC<CarouselSlideProps> = ({
       {/* Content */}
       <div className="absolute bottom-0 left-0 right-0 p-6 z-20 pointer-events-none">
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-mono text-[#D97040] tracking-wider uppercase bg-[#D97040]/10 px-2 py-1 rounded">
-            {item.category}
-          </span>
+
           {isCollection && (
             <div className="flex items-center gap-1.5 text-[#FFD6A5] bg-black/40 px-2 py-1 rounded-full backdrop-blur-sm border border-[#FFD6A5]/20">
               <Layers size={14} />

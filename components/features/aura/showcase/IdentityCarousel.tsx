@@ -137,6 +137,26 @@ export const IdentityCarousel: React.FC<IdentityCarouselProps> = ({ items, onSel
       <div className="relative w-[340px] md:w-[400px] h-[520px] md:h-[580px] flex items-center justify-center preserve-3d">
         <AnimatePresence mode="popLayout">
           {items.map((item, index) => {
+            // Virtualization Logic:
+            // Calculate distance in a circular manner
+            // We only render items if they are within VISIBLE_RANGE (e.g., -2 to +2 from center)
+            // But we must preserve the 'index' passed to getCarouselItemStyle so the style calculation works correctly relative to currentIndex.
+            
+            const total = items.length;
+            const dist = (index - currentIndex + total) % total;
+            
+            // Normalize distance to be shortest path (e.g. if total is 10, dist 9 becomes -1)
+            let checkDist = dist;
+            if (checkDist > total / 2) checkDist -= total;
+            
+            // We show 2 neighbors on each side (total 5 visible)
+            // If optimization is key, strict window of +/- 2 is good.
+            const VISIBLE_WINDOW = 3; 
+            
+            if (Math.abs(checkDist) > VISIBLE_WINDOW) {
+                return null; // Do not render distant items in DOM at all
+            }
+
             const isCenter = index === currentIndex;
             const style = getCarouselItemStyle(index, currentIndex, items.length);
 

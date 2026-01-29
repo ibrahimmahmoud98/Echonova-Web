@@ -35,15 +35,6 @@ export const CarouselControls: React.FC<CarouselControlsProps> = ({
 }) => {
   return (
     <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex items-center gap-8 z-50" dir="ltr">
-      {/* Previous Button */}
-      <button 
-        onClick={onPrevious}
-        className="w-12 h-12 rounded-full border border-[#D97040]/30 flex items-center justify-center text-[#D97040] hover:bg-[#D97040] hover:text-[#020B16] transition-all bg-[#020B16]/50 backdrop-blur-sm"
-        aria-label="Previous slide"
-      >
-        <ChevronLeft size={24} />
-      </button>
-      
       {/* Pagination Dots */}
       <div className="flex gap-2 max-w-[200px] overflow-x-auto no-scrollbar px-2 py-2 mask-linear">
         {Array.from({ length: totalItems }).map((_, idx) => (
@@ -59,15 +50,6 @@ export const CarouselControls: React.FC<CarouselControlsProps> = ({
           />
         ))}
       </div>
-
-      {/* Next Button */}
-      <button 
-        onClick={onNext}
-        className="w-12 h-12 rounded-full border border-[#D97040]/30 flex items-center justify-center text-[#D97040] hover:bg-[#D97040] hover:text-[#020B16] transition-all bg-[#020B16]/50 backdrop-blur-sm"
-        aria-label="Next slide"
-      >
-        <ChevronRight size={24} />
-      </button>
     </div>
   );
 };

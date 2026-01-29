@@ -13,27 +13,8 @@ if (typeof window !== "undefined") {
     gsap.registerPlugin(useGSAP, MotionPathPlugin);
 }
 
-// --- Assets for Slider ---
-const SLIDER_IMAGES = [
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568500/ECHONOVA_STUDIO_AURA_173_yynti3.png",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568497/ECHONOVA_STUDIO_AURA_8_fmv2aw.png",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568496/ECHONOVA_STUDIO_AURA_21_sginxv.png",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568492/ECHONOVA_STUDIO_AURA_184_aca3zi.png",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568491/ECHONOVA_STUDIO_AURA_169_sqb0a5.png",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568488/ECHONOVA_STUDIO_AURA_10_hlrdx2.png",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568486/ECHONOVA_STUDIO_AURA_58_meq9l1.jpg",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568483/ECHONOVA_STUDIO_AURA_138_gvaldc.png",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568480/ECHONOVA_STUDIO_AURA_145_v5wj3b.png",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568480/ECHONOVA_STUDIO_AURA_103_op9odi.jpg",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568478/ECHONOVA_STUDIO_AURA_154_cu3ilq.png",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568477/ECHONOVA_STUDIO_AURA_5_gepryv.jpg",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568477/ECHONOVA_STUDIO_AURA_3_xjw4m4.jpg",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568476/ECHONOVA_STUDIO_AURA_53_hqtdyi.jpg",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568476/ECHONOVA_STUDIO_AURA_69_sfhpus.jpg",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568476/ECHONOVA_STUDIO_AURA_31_alr3ke.jpg",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568476/ECHONOVA_STUDIO_AURA_199_lqnxzz.jpg",
-  "https://res.cloudinary.com/da1dtiu2x/image/upload/v1769568476/ECHONOVA_STUDIO_AURA_73_avfbfi.jpg"
-];
+import { HERO_VIDEO_URL } from "@/lib/constants";
+// --- Form Logic & Types ---
 
 // --- Form Logic & Types ---
 type FormData = {
@@ -180,15 +161,7 @@ export const ContactPageReveal = () => {
   const [isSending, setIsSending] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 
-  // Slider State
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-        setCurrentImageIndex(prev => (prev + 1) % SLIDER_IMAGES.length);
-    }, 4000); 
-    return () => clearInterval(interval);
-  }, []);
+  // Video Background is now static, no slider state needed
 
   useEffect(() => {
      const isNameValid = formData.name.trim().length > 2;
@@ -258,25 +231,21 @@ export const ContactPageReveal = () => {
   return (
     <section className="relative min-h-screen w-full bg-[#020B16] flex flex-col lg:grid lg:grid-cols-2">
        
-       {/* RIGHT COLUMN: MORPHING IMAGES (Mobile: Top / Desktop: Right) */}
+       {/* RIGHT COLUMN: VIDEO BACKGROUND (Mobile: Top / Desktop: Right) */}
        <div className="relative w-full h-[40vh] lg:h-screen lg:sticky lg:top-0 order-1 lg:order-2 overflow-hidden z-0">
-           <AnimatePresence mode="popLayout">
-               <motion.div
-                   key={currentImageIndex}
-                   initial={{ opacity: 0, scale: 1.1 }}
-                   animate={{ opacity: 1, scale: 1 }}
-                   exit={{ opacity: 0 }}
-                   transition={{ duration: 1.5, ease: "easeInOut" }}
-                   className="absolute inset-0"
-               >
-                   <div 
-                       className="absolute inset-0 bg-cover bg-[center_25%]"
-                       style={{ backgroundImage: `url(${SLIDER_IMAGES[currentImageIndex]})` }}
-                   />
-                   {/* Overlay Gradient */}
-                   <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#020B16]/20 to-[#020B16] lg:bg-gradient-to-r lg:from-[#020B16] lg:via-transparent lg:to-transparent lg:opacity-80" />
-               </motion.div>
-           </AnimatePresence>
+            <div className="absolute inset-0">
+                <video
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    className="w-full h-full object-cover"
+                >
+                    <source src={HERO_VIDEO_URL} type="video/mp4" />
+                </video>
+                {/* Overlay Gradient */}
+                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#020B16]/20 to-[#020B16] lg:bg-gradient-to-r lg:from-[#020B16] lg:via-transparent lg:to-transparent lg:opacity-80" />
+            </div>
        </div>
 
        {/* LEFT COLUMN: FORM (Mobile: Bottom / Desktop: Left) */}

@@ -14,14 +14,18 @@ export const HeroCinematic = ({
     const [videoLoaded, setVideoLoaded] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
 
+    // Safety fallback: If video fails to load or takes too long, force start animation
     useEffect(() => {
+        if (videoLoaded) return;
+        const timer = setTimeout(() => setVideoLoaded(true), 4000);
+        return () => clearTimeout(timer);
+    }, [videoLoaded]);
+
+    useEffect(() => {
+        if (!videoLoaded) return;
+
         const revealDuration = 2500;
         const zoomDuration = 1500;
-
-        // Fallback to ensure video is treated as loaded
-        const loadTimer = setTimeout(() => {
-            setVideoLoaded(true);
-        }, 500);
 
         const timer1 = setTimeout(() => {
             setStage('zoom');
@@ -33,11 +37,10 @@ export const HeroCinematic = ({
         }, revealDuration + zoomDuration);
 
         return () => {
-            clearTimeout(loadTimer);
             clearTimeout(timer1);
             clearTimeout(timer2);
         };
-    }, []); // Empty dependency array to ensure this only runs ONCE on mount
+    }, [videoLoaded, onAnimationComplete]);
 
 
     return (
