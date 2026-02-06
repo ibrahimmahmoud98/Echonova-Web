@@ -1,7 +1,82 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
+// ============================================
+// RATE LIMITING (In-Memory Store)
+// ============================================
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_MAX = 5; // Max 5 requests
+const RATE_LIMIT_WINDOW_MS = 60 * 60 * 1000; // 1 hour window
+
+function getClientIP(request: Request): string {
+  const forwarded = request.headers.get('x-forwarded-for');
+  const realIP = request.headers.get('x-real-ip');
+  return forwarded?.split(',')[0]?.trim() || realIP || 'unknown';
+}
+
+function isRateLimited(ip: string): { limited: boolean; remaining: number } {
+  const now = Date.now();
+  const record = rateLimitStore.get(ip);
+  
+  if (!record || now > record.resetTime) {
+    rateLimitStore.set(ip, { count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS });
+    return { limited: false, remaining: RATE_LIMIT_MAX - 1 };
+  }
+  
+  if (record.count >= RATE_LIMIT_MAX) {
+    return { limited: true, remaining: 0 };
+  }
+  
+  record.count++;
+  return { limited: false, remaining: RATE_LIMIT_MAX - record.count };
+}
+
+// ============================================
+// CSRF VALIDATION
+// ============================================
+function validateCSRFToken(request: Request): boolean {
+  const origin = request.headers.get('origin');
+  const referer = request.headers.get('referer');
+  
+  // Allow requests from our own domain
+  const allowedOrigins = [
+    'https://echonovastudio.com',
+    'https://www.echonovastudio.com',
+    'http://localhost:3000'
+  ];
+  
+  if (origin && allowedOrigins.some(o => origin.startsWith(o))) return true;
+  if (referer && allowedOrigins.some(o => referer.startsWith(o))) return true;
+  
+  return false;
+}
+
 export async function POST(request: Request) {
+  // 0. CSRF Check
+  if (!validateCSRFToken(request)) {
+    return NextResponse.json(
+      { error: 'Forbidden', message: 'Invalid request origin' },
+      { status: 403 }
+    );
+  }
+
+  // 1. Rate Limiting Check
+  const clientIP = getClientIP(request);
+  const { limited, remaining } = isRateLimited(clientIP);
+  
+  if (limited) {
+    return NextResponse.json(
+      { error: 'Too Many Requests', message: 'Please try again later.' },
+      { 
+        status: 429,
+        headers: {
+          'Retry-After': '3600',
+          'X-RateLimit-Remaining': '0'
+        }
+      }
+    );
+  }
+
   try {
     const apiKey = process.env.RESEND_API_KEY;
 

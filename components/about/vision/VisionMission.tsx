@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { VISION_MISSION } from '@/lib/data/about-content';
 import { cn } from '@/lib/utils';
@@ -17,13 +17,50 @@ const FlipCard = ({
     delay?: number;
 }) => {
     const [isFlipped, setIsFlipped] = useState(false);
+    const [isTouchDevice, setIsTouchDevice] = useState(false);
+
+    // Detect touch device on mount
+    useEffect(() => {
+        const checkTouch = () => {
+            setIsTouchDevice(
+                'ontouchstart' in window || 
+                navigator.maxTouchPoints > 0
+            );
+        };
+        checkTouch();
+        
+        // Also check on resize (for responsive testing)
+        window.addEventListener('resize', checkTouch);
+        return () => window.removeEventListener('resize', checkTouch);
+    }, []);
+
+    // Handle touch/click - only toggle on touch devices
+    const handleClick = () => {
+        if (isTouchDevice) {
+            setIsFlipped(prev => !prev);
+        }
+    };
+
+    // Handle mouse enter - only on non-touch devices
+    const handleMouseEnter = () => {
+        if (!isTouchDevice) {
+            setIsFlipped(true);
+        }
+    };
+
+    // Handle mouse leave - only on non-touch devices
+    const handleMouseLeave = () => {
+        if (!isTouchDevice) {
+            setIsFlipped(false);
+        }
+    };
 
     return (
         <div 
-            className="relative h-[250px] md:h-[350px] w-full [perspective:1000px] group"
-            onMouseEnter={() => setIsFlipped(true)}
-            onMouseLeave={() => setIsFlipped(false)}
-            onClick={() => setIsFlipped(!isFlipped)}
+            className="relative h-[250px] md:h-[350px] w-full [perspective:1000px] group cursor-pointer"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            onClick={handleClick}
         >
             <motion.div
                 className={cn(
@@ -43,6 +80,14 @@ const FlipCard = ({
                     <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-8 text-center">
                         {frontContent}
                     </div>
+                    
+                    {/* Touch hint for mobile */}
+                    {isTouchDevice && !isFlipped && (
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/40 text-xs flex items-center gap-2">
+                            <span className="animate-bounce">👆</span>
+                            <span>اضغط للقراءة</span>
+                        </div>
+                    )}
                 </div>
 
                 {/* Back Face */}
@@ -55,6 +100,14 @@ const FlipCard = ({
                     <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-8 text-center bg-black/80 backdrop-blur-sm">
                         {backContent}
                     </div>
+                    
+                    {/* Touch hint for mobile - back side */}
+                    {isTouchDevice && isFlipped && (
+                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/40 text-xs flex items-center gap-2 [transform:rotateX(180deg)]">
+                            <span className="animate-bounce">👆</span>
+                            <span>اضغط للعودة</span>
+                        </div>
+                    )}
                 </div>
             </motion.div>
         </div>
