@@ -61,26 +61,36 @@ const FlipCard = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             onClick={handleClick}
+            style={{ WebkitTapHighlightColor: 'transparent' }}
         >
             <motion.div
                 className={cn(
-                    "relative w-full h-full [transform-style:preserve-3d]",
+                    "relative w-full h-full",
                     className
                 )}
                 initial={{ rotateX: 0 }}
                 animate={{ rotateX: isFlipped ? 180 : 0 }}
                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
+                style={{ transformStyle: 'preserve-3d' }}
             >
                 {/* Front Face */}
                 <div 
                     className="absolute inset-0 h-full w-full rounded-3xl overflow-hidden border border-white/10 bg-black"
-                    style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+                    style={{ 
+                        backfaceVisibility: 'hidden', 
+                        WebkitBackfaceVisibility: 'hidden',
+                        transform: 'rotateX(0deg) translateZ(1px)', // Force Z separation
+                        zIndex: isFlipped ? 0 : 1 // Explicit Z-indexing
+                    }}
                 >
-                    {/* Gradient Overlay for Front */}
+                    {/* Explicit opaque background to prevent bleed-through */}
+                    <div className="absolute inset-0 bg-[#000000]" />
+                    
+                    {/* Gradient Overlay */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent z-0" />
                     
-                    {/* Front Content Container */}
-                    <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-8 text-center">
+                    {/* Front Content */}
+                    <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-8 text-center bg-black">
                         {frontContent}
                     </div>
                 </div>
@@ -91,12 +101,15 @@ const FlipCard = ({
                     style={{ 
                         backfaceVisibility: 'hidden', 
                         WebkitBackfaceVisibility: 'hidden',
-                        transform: 'rotateX(180deg)'
+                        transform: 'rotateX(180deg) translateZ(1px)', // Force Z separation
+                        zIndex: isFlipped ? 1 : 0 // Explicit Z-indexing
                     }}
                 >
-                    {/* Darker styling for readability on back */}
+                    {/* Explicit opaque background */}
+                    <div className="absolute inset-0 bg-[#000000]" />
+                    
                     <div className="absolute inset-0 bg-white/5 z-0" />
-                     {/* Back Content Container */}
+                     {/* Back Content */}
                     <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-8 text-center bg-black/80 backdrop-blur-sm">
                         {backContent}
                     </div>
