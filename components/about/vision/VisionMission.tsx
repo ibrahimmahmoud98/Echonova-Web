@@ -72,7 +72,10 @@ const FlipCard = ({
                 transition={{ type: "spring", stiffness: 260, damping: 20 }}
             >
                 {/* Front Face */}
-                <div className="absolute inset-0 h-full w-full [backface-visibility:hidden] rounded-3xl overflow-hidden border border-white/10 bg-black">
+                <div 
+                    className="absolute inset-0 h-full w-full rounded-3xl overflow-hidden border border-white/10 bg-black"
+                    style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden' }}
+                >
                     {/* Gradient Overlay for Front */}
                     <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent z-0" />
                     
@@ -80,19 +83,16 @@ const FlipCard = ({
                     <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-8 text-center">
                         {frontContent}
                     </div>
-                    
-                    {/* Touch hint for mobile */}
-                    {isTouchDevice && !isFlipped && (
-                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/40 text-xs flex items-center gap-2">
-                            <span className="animate-bounce">👆</span>
-                            <span>اضغط للقراءة</span>
-                        </div>
-                    )}
                 </div>
 
                 {/* Back Face */}
                 <div 
-                    className="absolute inset-0 h-full w-full [backface-visibility:hidden] [transform:rotateX(180deg)] rounded-3xl overflow-hidden border border-white/10 bg-black"
+                    className="absolute inset-0 h-full w-full rounded-3xl overflow-hidden border border-white/10 bg-black"
+                    style={{ 
+                        backfaceVisibility: 'hidden', 
+                        WebkitBackfaceVisibility: 'hidden',
+                        transform: 'rotateX(180deg)'
+                    }}
                 >
                     {/* Darker styling for readability on back */}
                     <div className="absolute inset-0 bg-white/5 z-0" />
@@ -100,14 +100,6 @@ const FlipCard = ({
                     <div className="relative z-10 w-full h-full flex flex-col items-center justify-center p-8 text-center bg-black/80 backdrop-blur-sm">
                         {backContent}
                     </div>
-                    
-                    {/* Touch hint for mobile - back side */}
-                    {isTouchDevice && isFlipped && (
-                        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 text-white/40 text-xs flex items-center gap-2 [transform:rotateX(180deg)]">
-                            <span className="animate-bounce">👆</span>
-                            <span>اضغط للعودة</span>
-                        </div>
-                    )}
                 </div>
             </motion.div>
         </div>
