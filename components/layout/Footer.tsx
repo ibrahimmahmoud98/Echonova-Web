@@ -42,17 +42,17 @@ export function Footer() {
             
             {/* Social Icons */}
             <div className="flex items-center gap-4 mt-8">
-                <a href="https://x.com/echonovastudio?s=21" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full border border-white/10 hover:border-[var(--color-copper)] hover:bg-[var(--color-copper)]/10 hover:text-[var(--color-copper)] transition-all duration-300 group" aria-label="X (Twitter)">
-                    <Twitter className="w-5 h-5" />
+                <a href="https://x.com/echonovastudio?s=21" target="_blank" rel="noopener noreferrer" className="relative p-2 rounded-full border border-white/10 text-white hover:border-[var(--color-copper)] hover:text-[var(--color-copper)] hover:shadow-[0_0_15px_var(--color-copper)] transition-all duration-300 group" aria-label="X (Twitter)">
+                    <Twitter className="w-5 h-5 relative z-10" />
                 </a>
-                <a href="https://www.tiktok.com/@echonovastudio?_r=1&_t=ZS-93w0dbFWjDN" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full border border-white/10 hover:border-[var(--color-copper)] hover:bg-[var(--color-copper)]/10 hover:text-[var(--color-copper)] transition-all duration-300 group" aria-label="TikTok">
-                    <TikTok className="w-5 h-5" />
+                <a href="https://www.tiktok.com/@echonovastudio?_r=1&_t=ZS-93w0dbFWjDN" target="_blank" rel="noopener noreferrer" className="relative p-2 rounded-full border border-white/10 text-white hover:border-[var(--color-copper)] hover:text-[var(--color-copper)] hover:shadow-[0_0_15px_var(--color-copper)] transition-all duration-300 group" aria-label="TikTok">
+                    <TikTok className="w-5 h-5 relative z-10" />
                 </a>
-                <a href="https://www.instagram.com/echonova_studio?igsh=MXgzbDEyMXV5N282dw%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full border border-white/10 hover:border-[var(--color-copper)] hover:bg-[var(--color-copper)]/10 hover:text-[var(--color-copper)] transition-all duration-300 group" aria-label="Instagram">
-                    <Instagram className="w-5 h-5" />
+                <a href="https://www.instagram.com/echonova_studio?igsh=MXgzbDEyMXV5N282dw%3D%3D&utm_source=qr" target="_blank" rel="noopener noreferrer" className="relative p-2 rounded-full border border-white/10 text-white hover:border-[var(--color-copper)] hover:text-[var(--color-copper)] hover:shadow-[0_0_15px_var(--color-copper)] transition-all duration-300 group" aria-label="Instagram">
+                    <Instagram className="w-5 h-5 relative z-10" />
                 </a>
-                <a href="https://youtube.com/@echonova_studio?si=p_E0sOxiUh_CqDU8" target="_blank" rel="noopener noreferrer" className="p-2 rounded-full border border-white/10 hover:border-[var(--color-copper)] hover:bg-[var(--color-copper)]/10 hover:text-[var(--color-copper)] transition-all duration-300 group" aria-label="YouTube">
-                    <Youtube className="w-5 h-5" />
+                <a href="https://youtube.com/@echonova_studio?si=p_E0sOxiUh_CqDU8" target="_blank" rel="noopener noreferrer" className="relative p-2 rounded-full border border-white/10 text-white hover:border-[var(--color-copper)] hover:text-[var(--color-copper)] hover:shadow-[0_0_15px_var(--color-copper)] transition-all duration-300 group" aria-label="YouTube">
+                    <Youtube className="w-5 h-5 relative z-10" />
                 </a>
             </div>
           </div>
@@ -63,6 +63,7 @@ export function Footer() {
               <li><Link href="/about" className="hover:text-[var(--color-copper)] transition-colors">من نحن</Link></li>
               <li><Link href="/services" className="hover:text-[var(--color-copper)] transition-colors">خدماتنا</Link></li>
               <li><Link href="/articles" className="hover:text-[var(--color-copper)] transition-colors">المقالات المتخصصة</Link></li>
+              <li><Link href="/faq" className="hover:text-[var(--color-copper)] transition-colors">الأسئلة الشائعة</Link></li>
               <li><Link href="/contact" className="hover:text-[var(--color-copper)] transition-colors">تواصل معنا</Link></li>
             </ul>
           </div>
