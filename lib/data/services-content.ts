@@ -12,6 +12,7 @@ export const SERVICES_DATA = {
     arTitle: "الإعلانات التجارية",
     description: "إعلانات سينمائية تتجاوز المألوف، مصممة لتترك انطباعاً يدوم.",
     image: "/images/service_action.png",
+    altText: "مشهد إعلان سينمائي مليء بالحركة والإثارة من إنتاج إيكونوڤا ستديو",
     link: "/services/reels",
   },
   identity: {
@@ -19,6 +20,7 @@ export const SERVICES_DATA = {
     arTitle: "الهوية الافتراضية",
     description: "شخصيات رقمية تمثل روح علامتك التجارية بدقة متناهية.",
     image: "/images/nova_aura_face.png",
+    altText: "تصميم شخصية افتراضية واقعية (Virtual Influencer) تمثل الهوية البصرية للعلامة التجارية",
     link: "/services/aura",
   },
   entertainment: {
@@ -26,6 +28,7 @@ export const SERVICES_DATA = {
     arTitle: "الترفيه الموجه",
     description: "نقل علامتك من إعلان يتم تخطيه إلى محتوى يتم البحث عنه.",
     image: "/images/nova_cinema_set.png",
+    altText: "موقع تصوير سينمائي افتراضي لإنتاج محتوى ترفيهي موجه للعلامات التجارية",
     link: "/services/cinema",
   },
 };
@@ -47,6 +50,7 @@ export const COMMERCIAL_LEVELS = [
     idealFor: "الإعلانات الدرامية، المشاهد التمثيلية، المحتوى الاجتماعي",
     valueProp: "واقعية مطلقة بدون تعقيدات الإنتاج التقليدي.",
     posterImage: "/images/service_life_v2.png",
+    altText: "مشهد واقعي للغاية تم إنتاجه بواسطة الذكاء الاصطناعي يظهر مشاعر إنسانية دقيقة (NOVA LIFE)",
     videoPreview: "/videos/spark_preview.mp4",
     gallery: [
       "/images/service_life_v2.png",
@@ -61,7 +65,7 @@ export const COMMERCIAL_LEVELS = [
     brandName: "NOVA ACTION",
     title: "Cinematic Action",
     arTitle: "نبض الأكشن",
-    description: "عندما يتجاوز السيناريو حدود الواقع؛ ننتج مشاهد الأكشن المستحيلة بكثافة بصرية فائقة. نمنح علامتك إيقاعاً مشوقاً ومغامرة آمنة، محولين الإثارة السينمائية إلى أداة تسويقية جبارة بأعلى جودة وأقل تكاليف لوجستية.",
+    description: "عندما يتجاوز السيناريو حدود الواقع؛ ننتج مشاهد الأكشن المستحيلة بكثافة بصرية فائقة. نمنح علامتك إيقاعاً ومغامرة آمنة، محولين الإثارة السينمائية إلى أداة تسويقية جبارة بأعلى جودة وأقل تكاليف لوجستية.",
     features: [
       "فيزياء وتدمير واقعي",
       "مؤثرات بصرية (VFX) كثيفة",
@@ -72,6 +76,7 @@ export const COMMERCIAL_LEVELS = [
     idealFor: "إعلانات السيارات، المشروبات الرياضية، الألعاب",
     valueProp: "إثارة بصرية تحبس الأنفاس.",
     posterImage: "/images/service_action_v2.png",
+    altText: "مشهد أكشن سينمائي عالي الجودة مع مؤثرات بصرية متقدمة (NOVA ACTION)",
     videoPreview: "/videos/pulse_preview.mp4",
     gallery: [
       "/images/service_action_v2.png",
@@ -97,6 +102,7 @@ export const COMMERCIAL_LEVELS = [
     idealFor: "العلامات التجارية الجريئة، العطور، التكنولوجيا المستقبلية",
     valueProp: "تحويل المستحيل إلى مشهد مرئي.",
     posterImage: "/images/service_magic_v2.png",
+    altText: "مشهد خيالي سريالي يكسر قوانين الفيزياء ويعبر عن الإبداع اللامحدود (NOVA MAGIC)",
     videoPreview: "/videos/epic_preview.mp4",
     gallery: [
       "/images/service_magic_v2.png",
@@ -282,6 +288,13 @@ export const CINEMATIC_SHOWCASE_DATA = {
       "/images/story_concept.png",
       "/images/nova_cinema_scene.png",
       "/images/service_magic.png"
+    ],
+    imageAlts: [
+      "بوستر مسلسل درامي قصير (Nova Saga) يظهر شخصيات واقعية",
+      "لوحة قصة (Storyboard) لمسلسل درامي من إنتاج إيكونوڤا",
+      "مفهوم فني (Concept Art) لمشهد روائي طويل",
+      "مشهد سينمائي ليلي لناطحة سحاب",
+      "مشهد خيالي سريالي يعبر عن الإبداع اللامحدود"
     ]
   },
   cinema: {
@@ -303,6 +316,13 @@ export const CINEMATIC_SHOWCASE_DATA = {
       "/images/nova_cinema_clapperboard_action_1766262414432.png",
       "/images/nova_cinema_color_grading_suite_1766262427888.png",
       "/images/nova_cinema_anamorphic_lens_flare_1766262442202.png"
+    ],
+    imageAlts: [
+      "معدات تصوير سينمائي متطورة في بيئة مظلمة (AI Generated)",
+      "إعدادات إضاءة في موقع تصوير سينمائي افتراضي",
+      "كلاكيت تصوير لمشهد أكشن سينمائي",
+      "جناح تلوين سينمائي (Color Grading Suite) لإنتاج الفيديو",
+      "تأثير عدسة أنامورفيك (Lens Flare) لإضفاء طابع سينمائي"
     ]
   }
 };

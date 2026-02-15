@@ -33,6 +33,7 @@ const levels = COMMERCIAL_LEVELS.map(level => ({
   subtitle: level.arTitle,
   desc: level.description,
   image: level.posterImage,
+  altText: level.altText,
   
 }));
 
@@ -108,7 +109,7 @@ export function HomeServicesSection() {
                         <Tilt className="w-full h-full" perspective={1000} tiltMaxAngleX={10} tiltMaxAngleY={10}>
                          <Image 
                             src={activeLevel.image} 
-                            alt={activeLevel.title} 
+                            alt={activeLevel.altText || activeLevel.title} 
                             fill
                             className="object-cover transform transition-transform duration-700 hover:scale-110"
                             sizes="(max-width: 768px) 100vw, 50vw"
@@ -131,7 +132,10 @@ export function HomeServicesSection() {
                         
                         {/* Visual Core: Interactive 3D Carousel */}
                         <div className="w-full xl:w-1/2 min-h-[600px] flex items-center justify-center relative order-2 xl:order-1">
-                             <InteractiveCarousel images={AURA_IMAGES} />
+                             <InteractiveCarousel 
+                                images={AURA_IMAGES} 
+                                baseAltText="نموذج شخصية افتراضية (Virtual Influencer) من إنتاج إيكونوڤا ستديو - Nova Aura"
+                             />
                         </div>
 
                         {/* Text Core - More Compact & Balanced */}

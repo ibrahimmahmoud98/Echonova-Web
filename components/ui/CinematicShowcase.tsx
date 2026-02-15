@@ -51,6 +51,8 @@ export const CinematicShowcase = () => {
   // Get data from centralized source (SSOT)
   const currentData = CINEMATIC_SHOWCASE_DATA[activeMode];
   const currentImages = currentData.images;
+  // @ts-ignore
+  const currentAlts = currentData.imageAlts || [];
 
   // Auto-cycle features
   React.useEffect(() => {
@@ -201,7 +203,7 @@ export const CinematicShowcase = () => {
                     >
                         <Image 
                             src={currentImages[selectedImageIndex]} 
-                            alt="Main Showcase" 
+                            alt={currentAlts[selectedImageIndex] || `Cinematic Showcase ${selectedImageIndex + 1}`} 
                             fill 
                             className={cn(
                                 "object-cover",
@@ -253,7 +255,7 @@ export const CinematicShowcase = () => {
                                 : "border-white/10 hover:border-white/30 opacity-60 hover:opacity-100"
                         )}
                      >
-                         <Image src={img} alt={`Thumbnail ${idx}`} fill className="object-cover" />
+                         <Image src={img} alt={currentAlts[idx] || `Thumbnail ${idx + 1}`} fill className="object-cover" />
                          {selectedImageIndex === idx && (
                              <div className={cn(
                                  "absolute inset-0 opacity-20",

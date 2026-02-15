@@ -7,9 +7,10 @@ import Image from "next/image";
 interface ImageCarouselProps {
   images: string[];
   autoPlayInterval?: number;
+  baseAltText?: string;
 }
 
-export const InteractiveCarousel: React.FC<ImageCarouselProps> = ({ images, autoPlayInterval = 3000 }) => {
+export const InteractiveCarousel: React.FC<ImageCarouselProps> = ({ images, autoPlayInterval = 3000, baseAltText = "Interactive Carousel Image" }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
@@ -167,7 +168,7 @@ export const InteractiveCarousel: React.FC<ImageCarouselProps> = ({ images, auto
               >
                   <Image 
                     src={src} 
-                    alt="Carousel Image" 
+                    alt={`${baseAltText} ${index + 1}`} 
                     fill
                     className="object-cover select-none pointer-events-none"
                     draggable={false}
