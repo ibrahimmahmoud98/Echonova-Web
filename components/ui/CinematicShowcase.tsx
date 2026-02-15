@@ -232,11 +232,7 @@ export const CinematicShowcase = () => {
                          {activeMode === 'saga' && (
                              <>
                                 <div className="absolute inset-0 bg-[#3a2e26]/10 mix-blend-sepia pointer-events-none"/> {/* Warm sepia tint */}
-                                <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent">
-                                     <p className="font-handwriting text-white/80 text-2xl transform -rotate-1 origin-bottom-left">
-                                        تصور مبدئي &mdash; المشهد {selectedImageIndex + 1}
-                                     </p>
-                                </div>
+                                {/* Text overlay removed */}
                             </>
                          )}
 
