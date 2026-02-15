@@ -138,12 +138,8 @@ export default function ArticlesPage() {
                                         alt={section.imageAlt || section.heading}
                                         fill
                                         className="object-cover transition-transform duration-700 hover:scale-105"
+                                        title={section.heading} 
                                     />
-                                    <div className="absolute inset-0 bg-gradient-to-t from-[#020B16]/80 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-500 flex items-end justify-center pb-6">
-                                        <span className="text-sm font-mono text-white/80 bg-black/50 px-3 py-1 rounded-full backdrop-blur-md">
-                                            Figure {idx + 1}: {section.heading}
-                                        </span>
-                                    </div>
                                 </div>
                             )}
                         </div>
@@ -154,7 +150,7 @@ export default function ArticlesPage() {
             {/* Bottom CTA */}
             <div className="mt-24 pt-12 border-t border-white/10 flex flex-col items-center justify-center text-center">
                 <h3 className="text-2xl font-bold mb-6">هل تبحث عن تطبيق هذه التقنيات في مشروعك القادم؟</h3>
-                <Link href="/#contact">
+                <Link href="/contact">
                     <button className="group relative px-8 py-4 bg-[var(--color-copper)] text-white font-bold rounded-full overflow-hidden transition-all hover:bg-[#A05D3D] shadow-lg hover:shadow-[var(--color-copper)]/30">
                         <span className="relative z-10 flex items-center gap-2">
                             ابدأ رحلتك مع إيكونوڤا
