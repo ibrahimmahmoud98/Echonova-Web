@@ -33,7 +33,7 @@ export function MagneticCursor() {
     <>
       {/* Dot */}
       <motion.div
-        className="fixed top-0 left-0 w-3 h-3 bg-[var(--color-copper)] rounded-full pointer-events-none z-[100] mix-blend-difference"
+        className="fixed top-0 left-0 w-3 h-3 bg-[var(--color-copper)] rounded-full pointer-events-none z-[100] mix-blend-difference [@media(pointer:coarse)]:hidden [@media(hover:none)]:hidden"
         animate={{
           x: mousePosition.x - 6,
           y: mousePosition.y - 6,
@@ -44,7 +44,7 @@ export function MagneticCursor() {
       
       {/* Ring */}
       <motion.div
-        className="fixed top-0 left-0 w-8 h-8 border border-[var(--color-copper)] rounded-full pointer-events-none z-[100]"
+        className="fixed top-0 left-0 w-8 h-8 border border-[var(--color-copper)] rounded-full pointer-events-none z-[100] [@media(pointer:coarse)]:hidden [@media(hover:none)]:hidden"
         animate={{
           x: mousePosition.x - 16,
           y: mousePosition.y - 16,
