@@ -12,7 +12,8 @@ import { Clock, Calendar, User, ArrowLeft } from 'lucide-react';
 
 export const metadata: Metadata = {
   title: `${MAIN_ARTICLE.arTitle} | Echonova Knowledge Hub`,
-  description: MAIN_ARTICLE.excerpt,
+  description: "اكتشف كيف يقود إيكونوڤا ستوديو ثورة الإنتاج السينمائي باستخدام الذكاء الاصطناعي. Explore how Echonova Studio is revolutionizing cinema with Generative AI.",
+  keywords: ["إيكونوڤا ستوديو", "Echonova Studio", "إنتاج فيديو بالذكاء الاصطناعي", "AI Cinema", "Nova Saga", "مستقبل الإنتاج السينمائي"],
 };
 
 export default function ArticlesPage() {
