@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: '/api/',
     },
-    sitemap: 'https://echonova.studio/sitemap.xml',
+    sitemap: 'https://www.echonovastudio.com/sitemap.xml',
   }
 }

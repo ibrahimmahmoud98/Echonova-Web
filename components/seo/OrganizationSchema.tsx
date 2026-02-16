@@ -30,8 +30,8 @@ export const OrganizationSchema = () => {
             "إيكونفا استديو", "إيكنوفا استوديو", "ايكنوفا استديو", "إستوديو إيكو نوفا",
             "إستديو إيكو نوفا"
         ],
-        "url": "https://echonova.studio",
-        "logo": "https://echonova.studio/logo.png",
+        "url": "https://www.echonovastudio.com",
+        "logo": "https://www.echonovastudio.com/logo.png",
         "sameAs": [
             "https://x.com/echonovastudio?s=21",
             "https://www.tiktok.com/@echonovastudio?_r=1&_t=ZS-93w0dbFWjDN",
@@ -40,11 +40,11 @@ export const OrganizationSchema = () => {
         ],
         "description": {
              "@language": "en",
-             "@value": "Saudi AI-driven creative studio redefining visual content. From cinema to virtual identity."
+             "@value": "Global AI-driven creative studio redefining visual content. From cinema to virtual identity."
         },
         "description_ar": {
              "@language": "ar",
-             "@value": "استوديو إيكونوڤا: استوديو إبداعي سعودي يعيد تعريف المحتوى البصري باستخدام الذكاء الاصطناعي. من الإنتاج السينمائي إلى الهوية الافتراضية."
+             "@value": "استوديو إيكونوڤا: استوديو إبداعي عالمي يعيد تعريف المحتوى البصري باستخدام الذكاء الاصطناعي. من الإنتاج السينمائي إلى الهوية الافتراضية."
         },
         "address": {
             "@type": "PostalAddress",

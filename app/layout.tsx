@@ -22,16 +22,20 @@ const outfit = Outfit({
 import { OrganizationSchema } from "@/components/seo/OrganizationSchema";
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://www.echonovastudio.com'),
+  alternates: {
+    canonical: '/',
+  },
   title: {
     template: '%s | ECHONOVA STUDIO',
     default: 'ECHONOVA STUDIO | The Future of Visuals',
   },
-  description: "Saudi AI-driven creative studio redefining visual content. From cinema to virtual identity.",
-  keywords: ["Creative Studio", "Riyadh", "AI Video", "Virtual Production", "Saudi Vision 2030", "Branding"],
+  description: "Global AI-driven creative studio redefining visual content. From cinema to virtual identity.",
+  keywords: ["Creative Studio", "Global Studio", "AI Video", "Virtual Production", "Middle East", "Branding"],
   openGraph: {
     title: 'ECHONOVA STUDIO',
-    description: 'Where AI meets Cinema. The new era of creative production in Saudi Arabia.',
-    url: 'https://echonova.studio',
+    description: 'Where AI meets Cinema. The new era of creative production in the Middle East.',
+    url: 'https://www.echonovastudio.com',
     siteName: 'ECHONOVA STUDIO',
     locale: 'ar_SA',
     type: 'website',
