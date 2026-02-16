@@ -23,6 +23,9 @@ import { OrganizationSchema } from "@/components/seo/OrganizationSchema";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.echonovastudio.com'),
+  verification: {
+    google: 'fi_ZmOWLZAyFUJTr50RZz8W6hiIncFZ4oI6GOOHj9BI',
+  },
   alternates: {
     canonical: '/',
   },
