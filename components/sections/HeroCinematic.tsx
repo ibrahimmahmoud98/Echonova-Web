@@ -56,6 +56,7 @@ export const HeroCinematic = ({
                     muted
                     loop
                     playsInline
+                    preload="auto"
                     onLoadedData={() => setVideoLoaded(true)}
                     className="w-full h-full object-cover"
                 >

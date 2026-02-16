@@ -1,7 +1,16 @@
 import { MetadataRoute } from 'next'
+import { getAllArticles } from '@/lib/data/knowledge-content'
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.echonovastudio.com'
+  const articles = getAllArticles()
+
+  const articleUrls = articles.map((article) => ({
+    url: `${baseUrl}/articles/${article.slug}`,
+    lastModified: new Date(),
+    changeFrequency: 'weekly' as const,
+    priority: 0.7,
+  }))
 
   return [
     {
@@ -35,6 +44,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.9,
     },
     {
+      url: `${baseUrl}/articles`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    },
+    {
       url: `${baseUrl}/about`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
@@ -46,5 +61,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       changeFrequency: 'monthly',
       priority: 0.6,
     },
+    ...articleUrls,
   ]
 }
