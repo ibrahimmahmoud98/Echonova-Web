@@ -9,7 +9,7 @@ import { ScrollReveal } from "@/components/ui/ScrollReveal";
 import { HeroCinematic } from "./HeroCinematic";
 // ... imports
 
-import { HERO_VIDEO_URL } from "@/lib/constants";
+import { HERO_VIDEO_URL, HERO_VIDEO_HLS_URL, HERO_VIDEO_POSTER_URL } from "@/lib/constants";
 
 // ...
 
@@ -28,7 +28,9 @@ export function Hero() {
     <section id="hero" className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-black">
       {/* Cinematic Intro Background */}
       <HeroCinematic 
-        videoSrc={HERO_VIDEO_URL}
+        hlsSrc={HERO_VIDEO_HLS_URL}
+        fallbackSrc={HERO_VIDEO_URL}
+        posterSrc={HERO_VIDEO_POSTER_URL}
         onAnimationComplete={() => setShowContent(true)} 
       />
 

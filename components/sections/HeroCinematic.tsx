@@ -3,26 +3,121 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 
-export const HeroCinematic = ({ 
-    videoSrc = "/videos/hero-background.mp4", 
-    onAnimationComplete 
-}: {  
-    videoSrc?: string; 
+interface HeroCinematicProps {
+    hlsSrc?: string;
+    fallbackSrc?: string;
+    posterSrc?: string;
     onAnimationComplete?: () => void;
-}) => {
+}
+
+export const HeroCinematic = ({
+    hlsSrc,
+    fallbackSrc,
+    posterSrc,
+    onAnimationComplete,
+}: HeroCinematicProps) => {
     const [stage, setStage] = useState<'reveal' | 'zoom' | 'full'>('reveal');
-    const [videoLoaded, setVideoLoaded] = useState(false);
+    const [videoReady, setVideoReady] = useState(false);
     const videoRef = useRef<HTMLVideoElement>(null);
+    const hlsRef = useRef<any>(null);
 
-    // Safety fallback: If video fails to load or takes too long, force start animation
+    // ──────────────────────────────────────────────
+    // 1. تشغيل الستريمينج فوراً عند تحميل المكون
+    // ──────────────────────────────────────────────
     useEffect(() => {
-        if (videoLoaded) return;
-        const timer = setTimeout(() => setVideoLoaded(true), 4000);
+        const video = videoRef.current;
+        if (!video) return;
+
+        const startStreaming = async () => {
+            // محاولة HLS أولاً
+            if (hlsSrc) {
+                try {
+                    const HlsModule = await import('hls.js');
+                    const Hls = HlsModule.default;
+
+                    if (Hls.isSupported()) {
+                        const hls = new Hls({
+                            enableWorker: true,
+                            lowLatencyMode: false,
+                            maxBufferLength: 30,
+                            maxMaxBufferLength: 60,
+                        });
+                        hlsRef.current = hls;
+                        hls.loadSource(hlsSrc);
+                        hls.attachMedia(video);
+                        hls.on(Hls.Events.MANIFEST_PARSED, () => {
+                            video.play().catch(() => {});
+                        });
+                        hls.on(Hls.Events.ERROR, (_: any, data: any) => {
+                            if (data.fatal) {
+                                hls.destroy();
+                                hlsRef.current = null;
+                                if (fallbackSrc) {
+                                    video.src = fallbackSrc;
+                                    video.play().catch(() => {});
+                                }
+                            }
+                        });
+                        return;
+                    }
+
+                    // Safari: دعم HLS الأصلي
+                    if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                        video.src = hlsSrc;
+                        video.addEventListener('loadedmetadata', () => {
+                            video.play().catch(() => {});
+                        }, { once: true });
+                        return;
+                    }
+                } catch {
+                    // فشل التحميل الديناميكي → MP4
+                }
+            }
+
+            // Fallback: MP4 تقليدي
+            if (fallbackSrc) {
+                video.src = fallbackSrc;
+                video.play().catch(() => {});
+            }
+        };
+
+        startStreaming();
+
+        return () => {
+            if (hlsRef.current) {
+                hlsRef.current.destroy();
+                hlsRef.current = null;
+            }
+        };
+    }, [hlsSrc, fallbackSrc]);
+
+    // ──────────────────────────────────────────────
+    // 2. بدء الأنيميشن فوراً (poster أو video — أيهما يجهز أولاً)
+    // ──────────────────────────────────────────────
+    useEffect(() => {
+        // Safety fallback: لو الفيديو تأخر، ابدأ الأنيميشن بعد ثانيتين
+        if (videoReady) return;
+        const timer = setTimeout(() => setVideoReady(true), 2000);
         return () => clearTimeout(timer);
-    }, [videoLoaded]);
+    }, [videoReady]);
 
+    // تحميل الـ poster بالتوازي كـ LCP سريع
     useEffect(() => {
-        if (!videoLoaded) return;
+        if (!posterSrc) {
+            setVideoReady(true);
+            return;
+        }
+        const img = new Image();
+        img.onload = () => setVideoReady(true);
+        img.onerror = () => setVideoReady(true);
+        img.src = posterSrc;
+    }, [posterSrc]);
+
+    // ──────────────────────────────────────────────
+    // 3. مراحل الأنيميشن: reveal → zoom → full
+    // ──────────────────────────────────────────────
+    useEffect(() => {
+        if (!videoReady) return;
 
         const revealDuration = 2500;
         const zoomDuration = 1500;
@@ -33,23 +128,23 @@ export const HeroCinematic = ({
 
         const timer2 = setTimeout(() => {
             setStage('full');
-            if (onAnimationComplete) onAnimationComplete(); 
+            if (onAnimationComplete) onAnimationComplete();
         }, revealDuration + zoomDuration);
 
         return () => {
             clearTimeout(timer1);
             clearTimeout(timer2);
         };
-    }, [videoLoaded, onAnimationComplete]);
-
+    }, [videoReady, onAnimationComplete]);
 
     return (
         <div className="absolute inset-0 z-0 overflow-hidden bg-black">
-            {/* 
-                Layer 1: The Video
-                Always visible at the bottom.
+            {/*
+                الطبقة ١: الفيديو + البوستر
+                البوستر يظهر فوراً للـ LCP، والفيديو يشتغل فوراً في الخلفية
+                عشان الزائر يشوف الحركة جوا الحروف من أول لحظة
             */}
-            <div className={`absolute inset-0 transition-opacity duration-1000 ${videoLoaded ? 'opacity-100' : 'opacity-0'}`}>
+            <div className={`absolute inset-0 transition-opacity duration-1000 ${videoReady ? 'opacity-100' : 'opacity-0'}`}>
                 <video
                     ref={videoRef}
                     autoPlay
@@ -57,41 +152,36 @@ export const HeroCinematic = ({
                     loop
                     playsInline
                     preload="auto"
-                    onLoadedData={() => setVideoLoaded(true)}
+                    poster={posterSrc}
+                    onCanPlay={() => setVideoReady(true)}
                     className="w-full h-full object-cover"
-                >
-                    <source src={videoSrc} type="video/mp4" />
-                </video>
-                {/* Overlay for dimming (30%) */}
+                />
+                {/* تعتيم ٣٠٪ */}
                 <div className="absolute inset-0 bg-black/30 pointer-events-none" />
             </div>
 
-            {/* 
-                Layer 2: The Mask Overlay using mix-blend-mode: multiply.
-                - Background: BLACK (0,0,0) -> Multiplies to Black (Hides Video).
-                - Text: WHITE (1,1,1) -> Multiplies to Original (Shows Video).
-                
-                This layer sits ON TOP of the video.
+            {/*
+                الطبقة ٢: القناع (Mask) باستخدام mix-blend-mode: multiply
+                - الأسود → يخفي الفيديو
+                - الأبيض (نص ECHONOVA) → يكشف الفيديو المتحرك
+                الفيديو شغال تحت القناع = الزائر يشوف الحركة جوا الحروف
             */}
             {stage !== 'full' && (
-                <motion.div 
+                <motion.div
                     className="absolute inset-0 z-10 flex items-center justify-center bg-black mix-blend-multiply"
                     initial={{ opacity: 1 }}
-                    animate={{ 
-                        opacity: 1, // Stay opaque until removed
-                        scale: stage === 'zoom' ? 50 : 1 // Zoom the whole overlay? No, just the text.
-                        // Wait. If we zoom the Overlay Div, the "Black" parts zoom out? No.
-                        // We need to zoom the TEXT inside the black background.
+                    animate={{
+                        opacity: 1,
+                        scale: stage === 'zoom' ? 50 : 1
                     }}
                     transition={{ duration: 1.5, ease: [0.6, 0.05, 0.05, 0.9] }}
                 >
                     <motion.h1
                         className="font-black text-white text-[13vw] md:text-9xl tracking-tighter select-none whitespace-nowrap"
                         initial={{ scale: 1 }}
-                        animate={{ scale: stage === 'zoom' ? 150 : 1 }} // Massively increased scale to ensure solid part covers screen
+                        animate={{ scale: stage === 'zoom' ? 150 : 1 }}
                         transition={{ duration: 1.5, ease: [0.6, 0.05, 0.05, 0.9] }}
-                        style={{ lineHeight: 0.8, transformOrigin: "43% 85%" }} // 43% X (Center of O), 85% Y (Solid BOTTOM rim of O)
-                        // This ensures we zoom into the white TEXT (which reveals video), not the black void.
+                        style={{ lineHeight: 0.8, transformOrigin: "43% 85%" }}
                     >
                         ECHONOVA
                     </motion.h1>
