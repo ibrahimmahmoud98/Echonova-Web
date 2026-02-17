@@ -7,13 +7,28 @@ import Image from "next/image";
 import { Maximize2, X, ChevronRight, Check } from "lucide-react";
 import { cn } from "@/lib/utils";
 
-import { useSearchParams } from 'next/navigation';
+import { useSearchParams, useParams } from 'next/navigation';
 
 export const ReelsImmersive = () => {
   const searchParams = useSearchParams();
+  const params = useParams(); // Get dynamic slug
   const initialLevelId = searchParams.get('level');
   
   const [activeIndex, setActiveIndex] = useState(() => {
+    // 1. Check for dynamic slug
+    const slug = params?.slug;
+    if (slug === 'nova-life') return 0; // id: life
+    if (slug === 'nova-action') {
+         // id: action
+         const idx = COMMERCIAL_LEVELS.findIndex(l => l.id === 'action');
+         return idx !== -1 ? idx : 1;
+    }
+    if (slug === 'nova-magic') {
+        const idx = COMMERCIAL_LEVELS.findIndex(l => l.id === 'magic');
+        return idx !== -1 ? idx : 2;
+    }
+
+    // 2. Check for legacy query param
     if (!initialLevelId) return 0;
     const index = COMMERCIAL_LEVELS.findIndex(l => l.id === initialLevelId);
     return index !== -1 ? index : 0;

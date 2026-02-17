@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { useParams } from "next/navigation";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { ENTERTAINMENT_PAGE_CONTENT } from "@/lib/data/services-content";
@@ -30,7 +31,12 @@ const staggerItem = {
 };
 
 export default function EntertainmentPage() {
-  const [activeTab, setActiveTab] = useState<'nova-cinema' | 'nova-saga'>('nova-cinema');
+  const params = useParams();
+  const [activeTab, setActiveTab] = useState<'nova-cinema' | 'nova-saga'>(() => {
+    if (params?.slug === 'nova-saga') return 'nova-saga';
+    if (params?.slug === 'nova-cinema') return 'nova-cinema';
+    return 'nova-cinema';
+  });
 
   const activeContent = ENTERTAINMENT_PAGE_CONTENT.services.find(s => s.id === activeTab);
 
