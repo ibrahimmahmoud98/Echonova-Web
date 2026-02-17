@@ -24,6 +24,10 @@ export function Hero() {
     if (el) el.scrollIntoView({ behavior: "smooth" });
   };
 
+  const handleAnimationComplete = React.useCallback(() => {
+    setShowContent(true);
+  }, []);
+
   return (
     <section id="hero" className="relative h-screen w-full overflow-hidden flex items-center justify-center bg-black">
       {/* Cinematic Intro Background */}
@@ -31,7 +35,7 @@ export function Hero() {
         hlsSrc={HERO_VIDEO_HLS_URL}
         fallbackSrc={HERO_VIDEO_URL}
         posterSrc={HERO_VIDEO_POSTER_URL}
-        onAnimationComplete={() => setShowContent(true)} 
+        onAnimationComplete={handleAnimationComplete} 
       />
 
       {/* Content Fade-In */}

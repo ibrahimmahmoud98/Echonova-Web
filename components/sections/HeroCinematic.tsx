@@ -116,8 +116,18 @@ export const HeroCinematic = ({
     // ──────────────────────────────────────────────
     // 3. مراحل الأنيميشن: reveal → zoom → full
     // ──────────────────────────────────────────────
+    const hasTriggeredRef = useRef(false);
+    const onCompleteRef = useRef(onAnimationComplete);
+
+    // Keep ref updated with latest callback
     useEffect(() => {
-        if (!videoReady) return;
+        onCompleteRef.current = onAnimationComplete;
+    }, [onAnimationComplete]);
+
+    useEffect(() => {
+        if (!videoReady || hasTriggeredRef.current) return;
+        
+        hasTriggeredRef.current = true;
 
         const revealDuration = 2500;
         const zoomDuration = 1500;
@@ -128,14 +138,14 @@ export const HeroCinematic = ({
 
         const timer2 = setTimeout(() => {
             setStage('full');
-            if (onAnimationComplete) onAnimationComplete();
+            if (onCompleteRef.current) onCompleteRef.current();
         }, revealDuration + zoomDuration);
 
         return () => {
             clearTimeout(timer1);
             clearTimeout(timer2);
         };
-    }, [videoReady, onAnimationComplete]);
+    }, [videoReady]);
 
     return (
         <div className="absolute inset-0 z-0 overflow-hidden bg-black">
