@@ -2,6 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import NextImage from 'next/image';
+import cloudinaryLoader from '@/lib/cloudinary-loader';
 
 interface HeroCinematicProps {
     hlsSrc?: string;
@@ -155,6 +157,19 @@ export const HeroCinematic = ({
                 عشان الزائر يشوف الحركة جوا الحروف من أول لحظة
             */}
             <div className={`absolute inset-0 transition-opacity duration-1000 ${videoReady ? 'opacity-100' : 'opacity-0'}`}>
+                {posterSrc && (
+                    <div className={`absolute inset-0 z-0 transition-opacity duration-700 ${videoReady ? 'opacity-0 delay-500' : 'opacity-100'}`}>
+                         <NextImage
+                            loader={posterSrc.includes('res.cloudinary.com') ? cloudinaryLoader : undefined}
+                            src={posterSrc}
+                            alt="Hero Background"
+                            fill
+                            priority
+                            sizes="100vw"
+                            className="object-cover"
+                        />
+                    </div>
+                )}
                 <video
                     ref={videoRef}
                     autoPlay

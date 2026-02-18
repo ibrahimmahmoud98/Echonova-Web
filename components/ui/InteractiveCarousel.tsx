@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, PanInfo } from "framer-motion";
 import Image from "next/image";
+import cloudinaryLoader from "@/lib/cloudinary-loader";
 
 interface ImageCarouselProps {
   images: string[];
@@ -167,9 +168,11 @@ export const InteractiveCarousel: React.FC<ImageCarouselProps> = ({ images, auto
                 }}
               >
                   <Image 
+                    loader={cloudinaryLoader}
                     src={src} 
                     alt={`${baseAltText} ${index + 1}`} 
                     fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover select-none pointer-events-none"
                     draggable={false}
                   />

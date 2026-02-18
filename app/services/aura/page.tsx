@@ -8,6 +8,7 @@ import { ArrowRight, Fingerprint, Dna, ScanFace, Sparkles, Activity } from "luci
 import Link from "next/link";
 import { TextDecode } from "@/components/ui/TextDecode";
 import IdentityShowcase from "@/components/features/aura/showcase/IdentityShowcase";
+import cloudinaryLoader from "@/lib/cloudinary-loader";
 
 export default function IdentityPage() {
   const { scrollY } = useScroll();
@@ -20,11 +21,15 @@ export default function IdentityPage() {
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
+             loader={(
+               (typeof IDENTITY_PAGE_CONTENT.header === 'object' && 'image' in IDENTITY_PAGE_CONTENT.header && (IDENTITY_PAGE_CONTENT.header as { image: string }).image.includes('res.cloudinary.com'))
+             ) ? cloudinaryLoader : undefined}
              src={(typeof IDENTITY_PAGE_CONTENT.header === 'object' && 'image' in IDENTITY_PAGE_CONTENT.header) 
               ? (IDENTITY_PAGE_CONTENT.header as { image: string }).image 
               : "/images/nova_aura_face.png"} 
             alt="NOVA AURA"
             fill
+            sizes="100vw"
             className="object-cover opacity-50"
             priority
           />
@@ -113,6 +118,7 @@ export default function IdentityPage() {
               src="/images/nova_aura_dna.png"
               alt="Digital Human"
               fill
+              sizes="(max-width: 768px) 100vw, 50vw"
               className="object-cover transition-transform duration-700 group-hover:scale-105"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-[#020B16] via-transparent to-transparent opacity-80" />
