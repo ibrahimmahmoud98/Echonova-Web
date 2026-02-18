@@ -8,7 +8,7 @@ import { ArticleCard } from '@/components/articles/ArticleCard';
 import { ScrollReveal } from '@/components/ui/ScrollReveal';
 
 export const metadata: Metadata = {
-  title: 'المكتبة المعرفية | Echonova Studio',
+  title: 'المكتبة المعرفية | إيكونوڤا',
   description: 'اكتشف أحدث المقالات والتحليلات حول الذكاء الاصطناعي السينمائي ومستقبل الإنتاج المرئي.',
   keywords: ["مقالات ذكاء اصطناعي", "Cinema AI", "Echonova Blog", "Tech Insights"],
 };

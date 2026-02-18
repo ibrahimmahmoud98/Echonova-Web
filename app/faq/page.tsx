@@ -8,7 +8,7 @@ import { Footer } from '@/components/layout/Footer';
 import { MagneticCursor } from '@/components/ui/MagneticCursor';
 
 export const metadata: Metadata = {
-  title: 'الأسئلة الشائعة | Echonova Studio',
+  title: 'الأسئلة الشائعة | إيكونوڤا',
   description: 'إجابات على كل ما يخص خدمات إيكونوڤا، من الإنتاج السينمائي إلى الهوية الرقمية والذكاء الاصطناعي.',
 };
 

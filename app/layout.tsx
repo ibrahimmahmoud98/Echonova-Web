@@ -31,13 +31,13 @@ export const metadata: Metadata = {
   },
   title: {
     template: '%s | ECHONOVA STUDIO',
-    default: 'ECHONOVA STUDIO | The Future of Visuals',
+    default: 'ECHONOVA | ECHONOVA STUDIO - AI Creative Studio',
   },
-  description: "Global AI-driven creative studio redefining visual content. From cinema to virtual identity.",
-  keywords: ["Creative Studio", "Global Studio", "AI Video", "Virtual Production", "Middle East", "Branding"],
+  description: "إيكونوڤا (ECHONOVA): Global AI-driven creative studio redefining visual content. From cinema to virtual identity.",
+  keywords: ["Creative Studio", "Global Studio", "AI Video", "Virtual Production", "Middle East", "Branding", "ECHONOVA", "إيكونوڤا"],
   openGraph: {
-    title: 'ECHONOVA STUDIO',
-    description: 'Where AI meets Cinema. The new era of creative production in the Middle East.',
+    title: 'ECHONOVA | ECHONOVA STUDIO',
+    description: 'إيكونوڤا (ECHONOVA) - Where AI meets Cinema. The new era of creative production in the Middle East.',
     url: 'https://www.echonovastudio.com',
     siteName: 'ECHONOVA STUDIO',
     locale: 'ar_SA',
@@ -45,8 +45,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ECHONOVA STUDIO',
-    description: 'Redefining visual storytelling with AI & Cinema.',
+    title: 'ECHONOVA | ECHONOVA STUDIO',
+    description: 'إيكونوڤا (ECHONOVA): Redefining visual storytelling with AI & Cinema.',
   },
 };
 

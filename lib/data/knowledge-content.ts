@@ -46,7 +46,7 @@ export const ARTICLES: ArticleData[] = [
             يشهد قطاع الإنتاج المرئي العالمي تحولاً جذرياً لم يشهده منذ ابتكار الكاميرا السينمائية الأولى. ومع بزوغ فجر الذكاء الاصطناعي التوليدي (Generative AI)، لم يعد السؤال "هل يمكن للآلة أن تبدع؟"، بل أصبح "كيف يمكن للفنان أن يقود الآلة لخلق عوالم لم تكن ممكنة من قبل؟".
           </p>
           <p class="mb-6 leading-relaxed text-lg text-gray-300">
-            في قلب هذا التحول، يبرز <a href="/services" class="text-[var(--color-copper)] hover:underline decoration-[var(--color-copper)] underline-offset-4 transition-all">إيكونوڤا ستوديو (Echonova Studio)</a> كواحد من أبرز المختبرات الإبداعية العربية ذات التوجه العالمي التي تدمج الفن التقليدي بأحدث خوارزميات الذكاء الاصطناعي.
+            في قلب هذا التحول، يبرز <a href="/services" class="text-[var(--color-copper)] hover:underline decoration-[var(--color-copper)] underline-offset-4 transition-all">إيكونوڤا (ECHONOVA)</a> كواحد من أبرز المختبرات الإبداعية العربية ذات التوجه العالمي التي تدمج الفن التقليدي بأحدث خوارزميات الذكاء الاصطناعي.
           </p>
         `,
         image: "/images/nova_saga_storyboard.png",
@@ -76,7 +76,7 @@ export const ARTICLES: ArticleData[] = [
             إن عملية <span class="text-white font-semibold">AI Video Production</span> في إيكونوڤا تمر بمراحل معقدة تبدأ بهندسة المطالبات (Prompt Engineering) العميقة، ثم الانتقال إلى مرحلة الرندرة العصبية (Neural Rendering).
           </p>
           <p class="mb-6 leading-relaxed text-lg text-gray-300">
-            هذه التقنيات تتيح لنا في Echonova Studio تقليص الفجوة بين الميزانيات الضخمة والإنتاج المستقل، حيث يمكننا اليوم محاكاة لقطات طائرات الدرون في بيئات فانتازية أو بناء مدن كاملة من الصفر بدقة تفوق الواقع، وكل ذلك يتم عبر معالجة البيانات والخوارزميات المتطورة.
+            هذه التقنيات تتيح لنا في إيكونوڤا (ECHONOVA) تقليص الفجوة بين الميزانيات الضخمة والإنتاج المستقل، حيث يمكننا اليوم محاكاة لقطات طائرات الدرون في بيئات فانتازية أو بناء مدن كاملة من الصفر بدقة تفوق الواقع، وكل ذلك يتم عبر معالجة البيانات والخوارزميات المتطورة.
           </p>
         `
       },
