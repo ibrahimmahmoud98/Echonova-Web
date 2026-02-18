@@ -171,6 +171,7 @@ export const InteractiveCarousel: React.FC<ImageCarouselProps> = ({ images, auto
                     src={src} 
                     alt={`${baseAltText} ${index + 1}`} 
                     fill
+                    unoptimized
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover select-none pointer-events-none"
                     draggable={false}
