@@ -3,6 +3,7 @@
 import React from "react";
 import { motion, PanInfo } from "framer-motion";
 import Image from "next/image";
+import cloudinaryLoader from "@/lib/cloudinary-loader";
 import { PortfolioItem } from "@/lib/data/identity-portfolio";
 import { Layers, Maximize2 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -88,8 +89,15 @@ export const CarouselSlide: React.FC<CarouselSlideProps> = ({
           src={item.thumbnail} 
           alt={item.title} 
           fill
+          loader={item.thumbnail.includes('cloudinary.com') ? cloudinaryLoader : undefined}
+          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, 400px"
           className="object-cover pointer-events-none"
           draggable={false}
+          onError={(e) => {
+            const target = e.currentTarget;
+            target.style.opacity = '0';
+            target.parentElement?.classList.add('bg-[#0A1625]');
+          }}
         />
         <div className="absolute inset-0 bg-gradient-to-t from-[#020B16] via-transparent to-transparent opacity-90" />
       </div>

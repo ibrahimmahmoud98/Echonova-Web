@@ -171,10 +171,15 @@ export const InteractiveCarousel: React.FC<ImageCarouselProps> = ({ images, auto
                     src={src} 
                     alt={`${baseAltText} ${index + 1}`} 
                     fill
-                    unoptimized
+                    loader={cloudinaryLoader}
                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                     className="object-cover select-none pointer-events-none"
                     draggable={false}
+                    onError={(e) => {
+                      const target = e.currentTarget;
+                      target.style.opacity = '0';
+                      target.parentElement?.classList.add('bg-[#0A1625]');
+                    }}
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
               </motion.div>

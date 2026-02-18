@@ -7,7 +7,7 @@ export default function cloudinaryLoader({
   width: number;
   quality?: number;
 }) {
-  const params = ['f_auto', 'c_limit', `w_${width}`, `q_${quality || 'auto:best'}`];
+  const params = ['f_auto', 'c_limit', `w_${width}`, `q_${quality || 'auto'}`];
   
   // If it's already a Cloudinary URL, inject params properly
   if (src.includes('res.cloudinary.com')) {

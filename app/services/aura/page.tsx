@@ -26,9 +26,18 @@ export default function IdentityPage() {
               : "/images/nova_aura_face.png"} 
             alt="NOVA AURA"
             fill
+            loader={
+              (typeof IDENTITY_PAGE_CONTENT.header === 'object' && 'image' in IDENTITY_PAGE_CONTENT.header && 
+               (IDENTITY_PAGE_CONTENT.header as { image: string }).image.includes('cloudinary.com'))
+                ? cloudinaryLoader : undefined
+            }
             sizes="100vw"
             className="object-cover opacity-50"
             priority
+            onError={(e) => {
+              const target = e.currentTarget;
+              target.style.opacity = '0';
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-[#020B16] via-[#020B16]/50 to-transparent" />
           {/* Digital Grid Overlay */}

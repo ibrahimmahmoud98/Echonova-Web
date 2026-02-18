@@ -164,6 +164,7 @@ export const HeroCinematic = ({
                             alt="Hero Background"
                             fill
                             priority
+                            loader={posterSrc.includes('cloudinary.com') ? cloudinaryLoader : undefined}
                             sizes="100vw"
                             className="object-cover"
                         />
