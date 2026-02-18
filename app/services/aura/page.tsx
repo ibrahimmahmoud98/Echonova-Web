@@ -21,9 +21,6 @@ export default function IdentityPage() {
       <section className="relative h-screen w-full flex items-center justify-center overflow-hidden">
         <div className="absolute inset-0 z-0">
           <Image
-             loader={(
-               (typeof IDENTITY_PAGE_CONTENT.header === 'object' && 'image' in IDENTITY_PAGE_CONTENT.header && (IDENTITY_PAGE_CONTENT.header as { image: string }).image.includes('res.cloudinary.com'))
-             ) ? cloudinaryLoader : undefined}
              src={(typeof IDENTITY_PAGE_CONTENT.header === 'object' && 'image' in IDENTITY_PAGE_CONTENT.header) 
               ? (IDENTITY_PAGE_CONTENT.header as { image: string }).image 
               : "/images/nova_aura_face.png"} 

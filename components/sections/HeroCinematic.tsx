@@ -160,7 +160,6 @@ export const HeroCinematic = ({
                 {posterSrc && (
                     <div className={`absolute inset-0 z-0 transition-opacity duration-700 ${videoReady ? 'opacity-0 delay-500' : 'opacity-100'}`}>
                          <NextImage
-                            loader={posterSrc.includes('res.cloudinary.com') ? cloudinaryLoader : undefined}
                             src={posterSrc}
                             alt="Hero Background"
                             fill

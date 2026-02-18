@@ -168,7 +168,6 @@ export const InteractiveCarousel: React.FC<ImageCarouselProps> = ({ images, auto
                 }}
               >
                   <Image 
-                    loader={cloudinaryLoader}
                     src={src} 
                     alt={`${baseAltText} ${index + 1}`} 
                     fill
