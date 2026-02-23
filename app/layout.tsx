@@ -5,6 +5,7 @@ import { MagneticCursor } from "@/components/ui/MagneticCursor";
 import "./globals.css";
 import { AudioProvider } from "@/components/audio/AudioEngine";
 import { ScrollToTop } from "@/components/utils/ScrollToTop";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const cairo = Cairo({
   subsets: ["arabic"],
@@ -86,6 +87,7 @@ export default function RootLayout({
               <Footer />
           </AudioProvider>
         </ReactLenis>
+        <SpeedInsights />
       </body>
     </html>
   );
