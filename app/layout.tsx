@@ -6,6 +6,7 @@ import "./globals.css";
 import { AudioProvider } from "@/components/audio/AudioEngine";
 import { ScrollToTop } from "@/components/utils/ScrollToTop";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 
 const cairo = Cairo({
   subsets: ["arabic"],
@@ -88,6 +89,7 @@ export default function RootLayout({
           </AudioProvider>
         </ReactLenis>
         <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );
