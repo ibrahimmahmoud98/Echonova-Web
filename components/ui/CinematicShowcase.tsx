@@ -74,8 +74,6 @@ export const CinematicShowcase = () => {
         )}
       </div>
 
-      <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.03] mix-blend-overlay pointer-events-none" />
-
       {/* --- Main Section Header --- */}
       <div className="relative z-20 mb-12 text-center">
           <h1 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 drop-shadow-2xl font-arabic px-4 leading-normal pb-2">

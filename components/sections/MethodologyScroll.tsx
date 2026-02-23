@@ -26,7 +26,6 @@ const steps = [
     desc: "كتابة السيناريو والمشاعر بواسطة محترفين.",
     color: "#140a05", // Deep Dark Copper (Warmth for Story)
     image: "/images/nova_saga_storyboard.png",
-    video: "/placeholders/action-loop.mp4"
   },
   {
     num: "03",
@@ -34,7 +33,6 @@ const steps = [
     desc: "تحويل خيال و رؤية العميل الى اصول بصرية جذابة",
     color: "#0a0b1e", // Deep Dark Indigo (Tech/Magic)
     image: "/images/nova_cinema_anamorphic_lens_flare_1766262442202.png",
-    video: "/placeholders/magic-loop.mp4"
   },
   {
     num: "04",
@@ -50,7 +48,6 @@ const steps = [
     desc: "تجميع المشاهد وإضافة المؤثرات الصوتية.",
     color: "#030303", // Cinematic Charcoal (Refinement)
     image: "/images/nova_cinema_color_grading_suite_1766262427888.png",
-    video: "/placeholders/action-loop.mp4"
   },
   {
     num: "06",
@@ -58,7 +55,6 @@ const steps = [
     desc: "تسليم العمل ليصنع الصدى المتوقع.",
     color: "#000000", // Pure Black (Final Impact)
     image: "/images/nova_saga_poster.png",
-    video: "/placeholders/magic-loop.mp4"
   },
 ];
 
@@ -154,22 +150,23 @@ export function MethodologyScroll() {
             </div>
 
             {/* Background Video (Secondary/Optional) */}
-            {/* Background Video (Secondary/Optional) */}
-            <div className="absolute inset-0 z-0 opacity-0 pointer-events-none">
-               <video 
-                  src={step.video}
-                  className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-700"
-                  loop
-                  muted
-                  playsInline
-                  ref={(el: HTMLVideoElement | null) => {
-                      if (el) {
-                          if (activeStep === index) el.play().catch(() => {});
-                          else el.pause();
-                      }
-                  }}
-               />
-            </div>
+            {step.video && (
+              <div className="absolute inset-0 z-0 opacity-0 pointer-events-none">
+                 <video 
+                    src={step.video}
+                    className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-700"
+                    loop
+                    muted
+                    playsInline
+                    ref={(el: HTMLVideoElement | null) => {
+                        if (el) {
+                            if (activeStep === index) el.play().catch(() => {});
+                            else el.pause();
+                        }
+                    }}
+                 />
+              </div>
+            )}
 
             {/* Content Overlay */}
             <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 md:p-12 text-right">

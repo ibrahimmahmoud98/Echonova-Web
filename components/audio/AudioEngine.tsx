@@ -22,12 +22,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Initialize audio objects
     if (typeof window !== "undefined") {
-      hoverSound.current = new Audio("/sounds/hover.mp3");
-      clickSound.current = new Audio("/sounds/click.mp3");
-      
-      // Preload
-      hoverSound.current.load();
-      clickSound.current.load();
+      // Audio files removed to fix 404, fallback tone will be used instead
     }
   }, []);
 

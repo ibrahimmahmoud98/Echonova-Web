@@ -75,7 +75,7 @@ export function LiquidButton({ children, className, variant = "primary", ...prop
        <div 
         className="absolute inset-0 opacity-20 mix-blend-soft-light w-[200%] h-full animate-[flow_8s_linear_infinite] pointer-events-none"
         style={{
-            backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')",
+            backgroundImage: "url('/noise.svg')",
             backgroundSize: "30%"
         }}
       />
