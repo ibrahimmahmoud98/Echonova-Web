@@ -3,7 +3,7 @@ import { Story } from "@/components/sections/Story";
 import { HomeServicesSection } from "@/components/sections/HomeServicesSection";
 import { Portfolio } from "@/components/sections/Portfolio";
 import { MethodologyScroll } from "@/components/sections/MethodologyScroll";
-import { ContactReveal } from "@/components/sections/ContactReveal";
+import { ContactPageReveal } from "@/components/sections/ContactPageReveal";
 
 export default function Home() {
   return (
@@ -14,7 +14,7 @@ export default function Home() {
       <HomeServicesSection />
       <Portfolio />
       <MethodologyScroll />
-      <ContactReveal />
+      <ContactPageReveal />
       {/* Footer global in layout */}
     </main>
   );

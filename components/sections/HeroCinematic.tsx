@@ -177,6 +177,7 @@ export const HeroCinematic = ({
                     loop
                     playsInline
                     preload="auto"
+                    {...{ fetchPriority: 'high' }}
                     poster={posterSrc}
                     onCanPlay={() => setVideoReady(true)}
                     className="w-full h-full object-cover"

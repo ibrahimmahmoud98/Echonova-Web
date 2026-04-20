@@ -7,7 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
 import { Play } from "lucide-react";
 import Image from "next/image";
-
+import { SmartVideo } from "@/components/ui/SmartVideo";
 // Register Plugin
 gsap.registerPlugin(ScrollTrigger);
 
@@ -152,7 +152,7 @@ export function MethodologyScroll() {
             {/* Background Video (Secondary/Optional) */}
             {step.video && (
               <div className="absolute inset-0 z-0 opacity-0 pointer-events-none">
-                 <video 
+                 <SmartVideo 
                     src={step.video}
                     className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-700"
                     loop

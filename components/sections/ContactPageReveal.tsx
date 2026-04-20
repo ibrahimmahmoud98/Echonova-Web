@@ -8,6 +8,7 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import { LiquidButton } from "@/components/ui/LiquidButton"; // Import LiquidButton
+import { SmartVideo } from "@/components/ui/SmartVideo";
 
 if (typeof window !== "undefined") {
     gsap.registerPlugin(useGSAP, MotionPathPlugin);
@@ -234,15 +235,14 @@ export const ContactPageReveal = () => {
        {/* RIGHT COLUMN: VIDEO BACKGROUND (Mobile: Top / Desktop: Right) */}
        <div className="relative w-full h-[40vh] lg:h-screen lg:sticky lg:top-0 order-1 lg:order-2 overflow-hidden z-0">
             <div className="absolute inset-0">
-                <video
-                    autoPlay
-                    muted
-                    loop
-                    playsInline
-                    className="w-full h-full object-cover"
-                >
-                    <source src={HERO_VIDEO_URL} type="video/mp4" />
-                </video>
+                 <SmartVideo
+                     src={HERO_VIDEO_URL}
+                     autoPlay
+                     muted
+                     loop
+                     playsInline
+                     className="w-full h-full object-cover"
+                 />
                 {/* Overlay Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#020B16]/20 to-[#020B16] lg:bg-gradient-to-r lg:from-[#020B16] lg:via-transparent lg:to-transparent lg:opacity-80" />
             </div>
