@@ -140,7 +140,7 @@ export function HomeServicesSection() {
 
                         {/* Text Core - More Compact & Balanced */}
                         <div className="w-full xl:w-1/2 relative bg-[#0A1A2E]/60 backdrop-blur-xl border border-white/5 rounded-[3rem] p-6 lg:p-10 flex flex-col justify-center shadow-2xl order-1 xl:order-2">
-                             <div className="absolute inset-0 bg-[url('/noise.png')] opacity-5 mix-blend-overlay pointer-events-none" />
+                             <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-5 mix-blend-overlay pointer-events-none" />
                              
                              <div className="relative z-10 flex flex-col items-center xl:items-end text-center xl:text-right h-full justify-between">
                                 <div>

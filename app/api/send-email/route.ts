@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
+import { escapeHtml } from '@/lib/sanitize-html';
+
 // ============================================
 // RATE LIMITING (In-Memory Store)
 // ============================================
@@ -41,9 +43,12 @@ function validateCSRFToken(request: Request): boolean {
   // Allow requests from our own domain
   const allowedOrigins = [
     'https://echonovastudio.com',
-    'https://www.echonovastudio.com',
-    'http://localhost:3000'
+    'https://www.echonovastudio.com'
   ];
+  
+  if (process.env.NODE_ENV !== 'production') {
+    allowedOrigins.push('http://localhost:3000');
+  }
   
   if (origin && allowedOrigins.some(o => origin.startsWith(o))) return true;
   if (referer && allowedOrigins.some(o => referer.startsWith(o))) return true;
@@ -84,7 +89,7 @@ export async function POST(request: Request) {
     if (!apiKey) {
       console.error('CRITICAL: RESEND_API_KEY is missing in environment variables.');
       return NextResponse.json(
-        { error: 'Configuration Error', message: 'Server configuration incomplete. Please contact support.' },
+        { error: 'Service Unavailable', message: 'Service temporarily unavailable. Please try again later.' },
         { status: 500 }
       );
     }
@@ -113,26 +118,46 @@ export async function POST(request: Request) {
       );
     }
 
-    console.log(`Attempting to send email from: website@echonovastudio.com to: contact@echonovastudio.com for ${name}`);
+    // 3.1 Email format validation (also prevents header injection via replyTo)
+    const emailRegex = /^[^\s@<>"]+@[^\s@<>"]+\.[^\s@<>"]+$/;
+    if (typeof email !== 'string' || !emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: 'Validation Error', message: 'Invalid email format' },
+        { status: 400 }
+      );
+    }
 
-    // 4. Send Email
+    // 3.2 Escape ALL user-controlled values to raw text to prevent any HTML injection
+    // Using escapeHtml prevents tracking pixels (<img>) or phishing links (<a>)
+    const safeName = escapeHtml(name);
+    const safeEmail = escapeHtml(email);
+    const safePhone = escapeHtml(phone || 'N/A');
+    const safeCountryKey = escapeHtml(countryKey || '');
+    const safeServices = escapeHtml(
+      Array.isArray(services) ? services.join(', ') : (services || 'None')
+    );
+    const safeMessage = escapeHtml(message || 'No additional message.');
+
+    console.log(`Attempting to send email from: website@echonovastudio.com to: contact@echonovastudio.com for ${safeName}`);
+
+    // 4. Send Email — all interpolations are pre-escaped above.
     const data = await resend.emails.send({
       from: 'Echonova Website <website@echonovastudio.com>',
       to: ['contact@echonovastudio.com'],
-      subject: `New Project Inquiry: ${name}`,
+      subject: `New Project Inquiry: ${safeName}`,
       replyTo: email,
       html: `
         <div style="font-family: sans-serif; padding: 20px;">
           <h1 style="color: #333;">New Project Inquiry</h1>
           <hr style="border: 1px solid #eee; margin: 20px 0;" />
-          <p><strong>Name:</strong> ${name}</p>
-          <p><strong>Email:</strong> ${email}</p>
-          <p><strong>Phone:</strong> ${countryKey || ''} ${phone || 'N/A'}</p>
-          <p><strong>Services:</strong> ${Array.isArray(services) ? services.join(', ') : services || 'None'}</p>
-          
+          <p><strong>Name:</strong> ${safeName}</p>
+          <p><strong>Email:</strong> ${safeEmail}</p>
+          <p><strong>Phone:</strong> ${safeCountryKey} ${safePhone}</p>
+          <p><strong>Services:</strong> ${safeServices}</p>
+
           <div style="margin-top: 20px; background-color: #f9f9f9; padding: 15px; border-radius: 5px;">
             <p style="margin-top: 0; font-weight: bold;">Message:</p>
-            <p style="white-space: pre-wrap;">${message || 'No additional message.'}</p>
+            <p style="white-space: pre-wrap;">${safeMessage}</p>
           </div>
         </div>
       `,

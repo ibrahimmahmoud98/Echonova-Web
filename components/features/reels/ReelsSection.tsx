@@ -19,7 +19,7 @@ export const ReelsSection = () => {
             <div className="absolute inset-0 z-0">
                 <div className={`absolute inset-0 bg-gradient-to-br ${activeLevel.colorTheme} opacity-10 transition-colors duration-1000`} />
                 <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent" />
-                <div className="absolute inset-0 bg-[url('/images/noise.png')] opacity-20 mix-blend-overlay" />
+                <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-20 mix-blend-overlay" />
             </div>
 
             {/* Main Content */}

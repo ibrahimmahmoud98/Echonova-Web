@@ -67,7 +67,7 @@ export const ReelsImmersive = () => {
             )}
             
             {/* Cinematic Noise & Vignette */}
-            <div className="absolute inset-0 bg-[url('/noise.png')] opacity-[0.04] mix-blend-overlay" />
+            <div className="absolute inset-0 bg-[url('/noise.svg')] opacity-[0.04] mix-blend-overlay" />
             <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-transparent to-black/80" />
           </motion.div>
         </AnimatePresence>

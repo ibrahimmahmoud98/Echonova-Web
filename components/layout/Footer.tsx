@@ -74,8 +74,8 @@ export function Footer() {
         <div className="border-t border-white/5 pt-8 text-center text-[var(--color-ivory)]/40 text-sm flex flex-col md:flex-row justify-between items-center">
             <p>&copy; {new Date().getFullYear()} Echonova Studio. All rights reserved.</p>
             <div className="flex gap-4 mt-4 md:mt-0">
-                <Link href="#" className="hover:text-[var(--color-copper)]">Privacy Policy</Link>
-                <Link href="#" className="hover:text-[var(--color-copper)]">Terms of Service</Link>
+                <Link href="/privacy" className="hover:text-[var(--color-copper)]">Privacy Policy</Link>
+                <Link href="/terms" className="hover:text-[var(--color-copper)]">Terms of Service</Link>
             </div>
         </div>
       </div>

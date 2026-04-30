@@ -23,7 +23,7 @@ const works = [
   {
     id: 3,
     title: "NEO TOKYO",
-    category: "NOVA MAGCIC",
+    category: "NOVA MAGIC",
     image: "/images/portfolio_3.png",
     desc: "تجربة بصرية تفاعلية للمدن الذكية",
   },
