@@ -45,6 +45,12 @@ const navItems: NavItem[] = [
             { name: "NOVA CINEMA", href: "/services/nova-cinema" },
             { name: "NOVA SAGA", href: "/services/nova-saga" },
         ]
+      },
+      {
+        title: "الإنتاج الصوتي",
+        items: [
+            { name: "NOVA WHISPER", href: "/services/nova-whisper" },
+        ]
       }
     ]
   },

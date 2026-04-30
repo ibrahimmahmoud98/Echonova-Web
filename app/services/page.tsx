@@ -3,6 +3,7 @@ import { ServicesHero } from '@/components/features/hero/ServicesHero';
 import { ReelsSection } from '@/components/features/reels/ReelsSection';
 import { IdentitySection } from '@/components/features/aura/IdentitySection';
 import { EntertainmentSection } from '@/components/features/cinema/EntertainmentSection';
+import { AudioProductionSection } from '@/components/features/audio/AudioProductionSection';
 import { WhyUsSection } from '@/components/features/why-us/WhyUsSection';
 
 export default function ServicesPage() {
@@ -19,6 +20,9 @@ export default function ServicesPage() {
 
             {/* Branded Entertainment Section (Cinema Mode) */}
             <EntertainmentSection />
+
+            {/* Audio Production Section (Whisper Mode) */}
+            <AudioProductionSection />
 
             {/* Why Us Section (Masonry Grid) */}
             <WhyUsSection />

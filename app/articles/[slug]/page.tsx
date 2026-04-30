@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { getAllArticles, getArticleBySlug, getRelatedArticles } from '@/lib/data/knowledge-content';
+import { sanitizeHtml } from '@/lib/sanitize-html';
 import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 import { MagneticCursor } from '@/components/ui/MagneticCursor';
@@ -159,9 +160,9 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
                                         )}
                                     </div>
 
-                                    <div 
+                                    <div
                                         className="prose prose-invert prose-lg max-w-none prose-p:leading-relaxed prose-a:text-[var(--color-copper)] prose-a:no-underline hover:prose-a:underline"
-                                        dangerouslySetInnerHTML={{ __html: section.content }} 
+                                        dangerouslySetInnerHTML={{ __html: sanitizeHtml(section.content) }}
                                     />
 
                                     {section.image && (

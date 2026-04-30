@@ -39,7 +39,7 @@ export interface IdentityData {
 }
 
 export interface EntertainmentType {
-    id: 'cinema' | 'saga';
+    id: 'cinema' | 'saga' | 'whisper';
     brandName: string;
     title: string;
     posterImage: string; // Path to image
@@ -60,7 +60,7 @@ export interface CinematicFeature {
 
 // Showcase images for saga/cinema modes
 export interface CinematicShowcaseData {
-    mode: 'saga' | 'cinema';
+    mode: 'saga' | 'cinema' | 'whisper';
     title: string;
     description: string;
     features: CinematicFeature[];
