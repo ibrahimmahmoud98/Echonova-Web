@@ -171,7 +171,7 @@ export function Navbar() {
                                 {item.categories ? (
                                     item.categories.map((category, idx) => (
                                         <div key={idx} className="flex-1 flex flex-col gap-4 text-right">
-                                            <h4 className="text-[var(--color-copper)] text-sm font-bold border-b border-[var(--color-copper)]/20 pb-2 mb-1 cursor-default select-none">
+                                            <h4 className="text-[var(--color-copper)] text-sm font-bold border-b border-[var(--color-copper)]/20 pb-2 mb-1 cursor-default select-none whitespace-nowrap">
                                                 {category.title}
                                             </h4>
                                             <div className="flex flex-col gap-2">

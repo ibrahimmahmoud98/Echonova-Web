@@ -37,16 +37,11 @@ const ICON_MAP: Record<string, LucideIcon> = {
 // Helper to get icon component from string name
 const getIcon = (iconName: string): LucideIcon => ICON_MAP[iconName] || Film;
 
-export const CinematicShowcase = () => {
-  const [activeMode, setActiveMode] = useState<'saga' | 'cinema'>('saga');
+export const AudioShowcase = () => {
   const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [featureIndex, setFeatureIndex] = useState(0);
 
-  const toggleMode = (mode: 'saga' | 'cinema') => {
-      setActiveMode(mode);
-      setSelectedImageIndex(0); // Reset selection on mode switch
-      setFeatureIndex(0);
-  };
+  const activeMode = 'whisper';
 
   // Get data from centralized source (SSOT)
   const currentData = CINEMATIC_SHOWCASE_DATA[activeMode];
@@ -67,7 +62,9 @@ export const CinematicShowcase = () => {
       
       {/* --- Background Ambience --- */}
       <div className="absolute inset-0 transition-opacity duration-1000">
-        {activeMode === 'saga' ? (
+        {activeMode === 'whisper' ? (
+          <div className="absolute inset-0 bg-[repeating-radial-gradient(circle_at_center,_rgba(217,112,64,0.03)_0,_rgba(217,112,64,0.03)_1px,_transparent_1px,_transparent_20px),_radial-gradient(circle_at_center,_#051020_0%,_#000000_100%)] opacity-90" />
+        ) : false ? (
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#1a1a2e_0%,_#000000_100%)] opacity-80" />
         ) : (
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,_#0f172a_0%,_#000000_100%)] opacity-80" />
@@ -77,7 +74,7 @@ export const CinematicShowcase = () => {
       {/* --- Main Section Header --- */}
       <div className="relative z-20 mb-12 text-center">
           <h2 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 drop-shadow-2xl font-arabic px-4 leading-normal pb-2 transition-all duration-500">
-              الانتاج السينمائي الترويجي
+              الإنتاج الصوتي
           </h2>
       </div>
 
@@ -87,32 +84,12 @@ export const CinematicShowcase = () => {
         {/* --- LEFT: The Narrative (Text & Controls) --- */}
         <div className="w-full lg:w-[45%] flex flex-col items-end text-right pt-0">
             
-            {/* Mode Switcher (Large) */}
-            <div className="flex bg-white/5 border border-white/10 rounded-2xl p-2 mb-8 backdrop-blur-md w-full justify-between gap-2">
-                <button
-                    onClick={() => toggleMode('saga')}
-                    className={cn(
-                        "flex-1 py-2 md:py-3 rounded-xl text-xs md:text-sm lg:text-base font-bold transition-all duration-500 flex items-center justify-center gap-1 md:gap-2",
-                        activeMode === 'saga' 
-                            ? "bg-[var(--color-copper)] text-white shadow-lg shadow-orange-900/40" 
-                            : "text-white/50 hover:bg-white/5 hover:text-white"
-                    )}
-                >
-                    <BookOpen className="w-4 h-4 md:w-5 md:h-5" />
-                    NOVA SAGA
-                </button>
-                <button
-                    onClick={() => toggleMode('cinema')}
-                    className={cn(
-                        "flex-1 py-2 md:py-3 rounded-xl text-xs md:text-sm lg:text-base font-bold transition-all duration-500 flex items-center justify-center gap-1 md:gap-2",
-                        activeMode === 'cinema' 
-                            ? "bg-[var(--color-copper)] text-white shadow-lg shadow-orange-900/40" 
-                            : "text-white/50 hover:bg-white/5 hover:text-white"
-                    )}
-                >
-                    <Film className="w-4 h-4 md:w-5 md:h-5" />
-                    NOVA CINEMA
-                </button>
+            {/* Single Title Label */}
+            <div className="flex bg-white/5 border border-white/10 rounded-2xl p-2 mb-8 backdrop-blur-md w-full justify-center gap-2">
+                <div className="flex-1 py-2 md:py-3 rounded-xl text-xs md:text-sm lg:text-base font-bold flex items-center justify-center gap-1 md:gap-2 bg-[var(--color-copper)] text-white shadow-lg shadow-orange-900/40">
+                    <Mic2 className="w-4 h-4 md:w-5 md:h-5" />
+                    NOVA WHISPER
+                </div>
             </div>
 
             {/* Dynamic Title */}
@@ -125,7 +102,7 @@ export const CinematicShowcase = () => {
                         exit={{ opacity: 0, x: 20 }}
                         className="absolute right-0"
                     >
-                         <h2 className={`text-3xl md:text-4xl font-bold ${activeMode === 'saga' ? 'text-[var(--color-copper)]' : 'text-[var(--color-copper)]'}`}>
+                         <h2 className={`text-3xl md:text-4xl font-bold ${false ? 'text-[var(--color-copper)]' : 'text-[var(--color-copper)]'}`}>
                             {currentData.title}
                         </h2>
                     </motion.div>
@@ -163,7 +140,7 @@ export const CinematicShowcase = () => {
                                 {currentData.features[featureIndex]?.title}
                             </h4>
                         </div>
-                        <div className={`p-1.5 rounded-lg ${activeMode === 'saga' ? 'text-orange-400' : 'text-orange-400'}`}>
+                        <div className={`p-1.5 rounded-lg ${false ? 'text-orange-400' : 'text-orange-400'}`}>
                             {React.createElement(getIcon(currentData.features[featureIndex]?.icon_name || 'Film'), { className: "w-4 h-4" })}
                         </div>
                     </motion.div>
@@ -171,13 +148,13 @@ export const CinematicShowcase = () => {
             </div>
             
              <div className="flex gap-4 justify-center w-full">
-                  <Link href={`/services/cinema`}>
+                  <Link href={`/services/${activeMode === 'whisper' ? 'nova-whisper' : 'cinema'}`}>
                     <LiquidButton variant="secondary" className="px-5 py-2 text-sm md:px-8 md:py-3.5 md:text-base">
                         اعرف أكثر
                     </LiquidButton>
                  </Link>
-                 <Link href={`/services/cinema`}>
-                    <LiquidButton variant={activeMode === 'saga' ? 'primary' : 'primary'} className="px-5 py-2 text-sm md:px-8 md:py-3.5 md:text-base">
+                 <Link href={`/services/${activeMode === 'whisper' ? 'nova-whisper' : 'cinema'}`}>
+                    <LiquidButton variant={false ? 'primary' : 'primary'} className="px-5 py-2 text-sm md:px-8 md:py-3.5 md:text-base">
                         {currentData.ctaText}
                     </LiquidButton>
                 </Link>
@@ -205,12 +182,12 @@ export const CinematicShowcase = () => {
                             fill 
                             className={cn(
                                 "object-cover",
-                                activeMode === 'cinema' ? "opacity-90" : "opacity-100" // Cinema darker mood
+                                false ? "opacity-90" : "opacity-100" // Cinema darker mood
                             )}
                         />
                          
                          {/* Overlays based on Mode */}
-                         {activeMode === 'cinema' && (
+                         {false && (
                             <>
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent pointer-events-none"/>
                                 <div className="absolute top-6 right-6 flex items-center gap-2">
@@ -229,9 +206,26 @@ export const CinematicShowcase = () => {
                             </>
                          )}
 
-                         {activeMode === 'saga' && (
+                         {false && (
                              <>
                                 <div className="absolute inset-0 bg-[#3a2e26]/10 mix-blend-sepia pointer-events-none"/>
+                            </>
+                         )}
+
+                         {activeMode === 'whisper' && (
+                             <>
+                                <div className="absolute inset-0 bg-gradient-to-t from-[var(--color-copper)]/20 to-transparent mix-blend-overlay pointer-events-none"/>
+                                {/* Audio Level visualizer simple simulation */}
+                                <div className="absolute bottom-6 left-6 flex items-end gap-1 h-6 opacity-60">
+                                    <div className="w-1.5 h-3 bg-[var(--color-copper)] animate-pulse rounded-full"/>
+                                    <div className="w-1.5 h-5 bg-[var(--color-copper)] animate-pulse delay-75 rounded-full"/>
+                                    <div className="w-1.5 h-2 bg-[var(--color-copper)] animate-pulse delay-150 rounded-full"/>
+                                    <div className="w-1.5 h-6 bg-[var(--color-copper)] animate-pulse delay-200 rounded-full"/>
+                                </div>
+                                <div className="absolute top-6 right-6 font-mono text-xs text-white/50 space-x-4">
+                                    <span>24-bit/96kHz</span>
+                                    <span>RAW WAV</span>
+                                </div>
                             </>
                          )}
 
@@ -248,7 +242,7 @@ export const CinematicShowcase = () => {
                         className={cn(
                             "relative aspect-square rounded-lg overflow-hidden border transition-all duration-300 group",
                             selectedImageIndex === idx 
-                                ? (activeMode === 'saga' ? "border-[var(--color-copper)] ring-2 ring-[var(--color-copper)]/30 scale-105 z-10" : "border-[var(--color-copper)] ring-2 ring-[var(--color-copper)]/30 scale-105 z-10") 
+                                ? (false ? "border-[var(--color-copper)] ring-2 ring-[var(--color-copper)]/30 scale-105 z-10" : "border-[var(--color-copper)] ring-2 ring-[var(--color-copper)]/30 scale-105 z-10") 
                                 : "border-white/10 hover:border-white/30 opacity-60 hover:opacity-100"
                         )}
                      >
@@ -256,7 +250,7 @@ export const CinematicShowcase = () => {
                          {selectedImageIndex === idx && (
                              <div className={cn(
                                  "absolute inset-0 opacity-20",
-                                 activeMode === 'saga' ? "bg-[var(--color-copper)]" : "bg-[var(--color-copper)]"
+                                 false ? "bg-[var(--color-copper)]" : "bg-[var(--color-copper)]"
                              )} />
                          )}
                      </button>

@@ -382,10 +382,10 @@ export const CINEMATIC_SHOWCASE_DATA = {
     ],
     images: [
       "/images/nova_whisper_sound_1_new.png",
-      "/images/nova_whisper_sound_2.png",
-      "/images/nova_whisper_sound_3.png",
-      "/images/nova_whisper_sound_4.png",
-      "/images/nova_whisper_sound_5.png"
+      "/images/nova_whisper_gear.png",
+      "/images/nova_whisper_void.png",
+      "/images/nova_whisper_sound_1_new.png",
+      "/images/nova_whisper_gear.png"
     ],
     imageAlts: [
       "هندسة صوتية صارمة",

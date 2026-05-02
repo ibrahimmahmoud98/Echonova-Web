@@ -23,6 +23,7 @@ import {
 import { InteractiveCarousel } from "@/components/ui/InteractiveCarousel";
 import { AutoFeatureCard } from "@/components/ui/AutoFeatureCard";
 import { CinematicShowcase } from "@/components/ui/CinematicShowcase";
+import { AudioShowcase } from "@/components/ui/AudioShowcase";
 import { COMMERCIAL_LEVELS } from "@/lib/data/services-content";
 import { AURA_IMAGES } from "@/lib/data/identity-portfolio";
 
@@ -209,6 +210,11 @@ export function HomeServicesSection() {
             {/* Cinematic Universe: Saga & Cinema Unified */}
             <ScrollReveal variant="fade-up">
                  <CinematicShowcase />
+            </ScrollReveal>
+
+            {/* Audio Universe: Whisper */}
+            <ScrollReveal variant="fade-up">
+                 <AudioShowcase />
             </ScrollReveal>
 
         </div>
