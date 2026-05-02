@@ -12,7 +12,7 @@ export default function TermsContent() {
   return (
     <div className="container mx-auto px-4 py-32 max-w-4xl relative">
       {/* Language Toggle Button */}
-      <div className="absolute top-8 right-4 md:right-8 z-10">
+      <div className="flex justify-center md:justify-end mb-12">
         <button
           onClick={toggleLang}
           className="flex items-center gap-2 px-4 py-2 rounded-full border border-[var(--color-gold)]/20 bg-black/40 hover:bg-[var(--color-charcoal)] transition-colors text-[var(--color-ivory)] font-medium text-sm backdrop-blur-sm"
