@@ -171,16 +171,8 @@ type FormData = {
 
 const SERVICE_CATEGORIES = [
   {
-    title: "فيديو اعلاني",
-    items: ["NOVA LIFE", "NOVA ACTION", "NOVA MAGIC", "تعاون مختلف (فيديو)"]
-  },
-  {
-    title: "الموديلينج والصور",
-    items: ["NOVA AURA", "تعاون مختلف (صور)"]
-  },
-  {
-    title: "الإنتاج السينمائي",
-    items: ["NOVA SAGA", "NOVA CINEMA", "تعاون مختلف (سينما)"]
+    title: "الخدمات",
+    items: ["الإعلانات السينمائية", "موديلينج", "الإنتاج السينمائي", "الإنتاج الصوتي"]
   }
 ];
 
@@ -1010,7 +1002,7 @@ export const ContactReveal = () => {
                             {/* Row 4: Services (Multi Select) */}
                             <div>
                                 <label className="block text-white/60 text-xs mb-2">الخدمات المهتم بها (اختر واحدة على الأقل)</label>
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                                    <div className="w-full">
                                         {SERVICE_CATEGORIES.map((category, idx) => (
                                             <ServiceDropdown 
                                                 key={idx}

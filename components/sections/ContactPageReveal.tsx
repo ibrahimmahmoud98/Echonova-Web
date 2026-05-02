@@ -30,16 +30,8 @@ type FormData = {
 
 const SERVICE_CATEGORIES = [
   {
-    title: "فيديو اعلاني",
-    items: ["NOVA LIFE", "NOVA ACTION", "NOVA MAGIC", "تعاون مختلف (فيديو)"]
-  },
-  {
-    title: "الموديلينج والصور",
-    items: ["NOVA AURA", "تعاون مختلف (صور)"]
-  },
-  {
-    title: "الإنتاج السينمائي",
-    items: ["NOVA SAGA", "NOVA CINEMA", "تعاون مختلف (سينما)"]
+    title: "الخدمات",
+    items: ["الإعلانات السينمائية", "موديلينج", "الإنتاج السينمائي", "الإنتاج الصوتي"]
   }
 ];
 
@@ -342,8 +334,7 @@ export const ContactPageReveal = () => {
 
                     <div className="text-right">
                         <label className="block text-white/60 text-xs mb-2 pr-1">الخدمات المهتم بها</label>
-                        {/* 3 Columns on ALL screens (grid-cols-3 instead of md:grid-cols-3) */}
-                        <div className="grid grid-cols-3 gap-2 md:gap-3">
+                        <div className="w-full">
                             {SERVICE_CATEGORIES.map((category, idx) => (
                                 <ServiceDropdown 
                                     key={idx}
