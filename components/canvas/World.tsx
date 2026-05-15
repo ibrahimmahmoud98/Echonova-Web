@@ -1,88 +1,84 @@
 "use client";
 
 import { Canvas } from "@react-three/fiber";
-import { Preload, Stats } from "@react-three/drei";
-// import { Perf } from "r3f-perf"; // Disabled due to Turbopack font error
-import { EffectComposer, Noise, Vignette, ChromaticAberration, SMAA } from "@react-three/postprocessing";
-// import { AnimatedZoomBlur } from "./effects/AnimatedZoomBlur";
-// import { ZoomBlurEffect } from "./effects/ZoomBlurEffect";
+import { Preload } from "@react-three/drei";
+import { EffectComposer, Vignette } from "@react-three/postprocessing";
+import { Suspense, useEffect, useState } from "react";
+import { AuroraField } from "./AuroraField";
 
-import { BlendFunction } from 'postprocessing';
-import { Suspense, useMemo } from "react";
-
-// --- Custom Shaders & Materials ---
-// Placeholder for future advanced shaders (Phase 2 & 3)
-
-import { CameraRig } from "./CameraRig";
-
-// --- Scene Components ---
-
-import { useScrollSync } from "@/hooks/useScrollSync";
-
-import { useFrame } from "@react-three/fiber";
-import * as THREE from "three";
+/**
+ * World — fullscreen WebGL atmosphere layer.
+ * Replaced previous empty Sentinel/Atmosphere/Particles with the
+ * lightweight AuroraField shader (see AuroraField.tsx).
+ *
+ * Performance & accessibility:
+ * - Disabled when prefers-reduced-motion is set (CSS gradient fallback).
+ * - Disabled when navigator.connection.saveData is true.
+ * - dpr capped at 1 for shader work; antialiasing off (cheap).
+ */
 
 function GlobalEffects() {
-  // const scroll = useScrollSync();
-  // // Bypass Ref serialization crash by using useMemo and direct object manipulation
-  // // const zoomBlurEffect = useMemo(() => new ZoomBlurEffect({ strength: 0, center: [0.5, 0.5] }), []);
-  
-  // // useFrame((state, delta) => {
-  // //   const scrollSpeed = Math.abs(scroll.delta);
-  // //   const targetBlur = scrollSpeed > 0.001 ? Math.min(scrollSpeed * 5, 0.5) : 0;
-    
-  // //   // Direct update without React Ref
-  // //   zoomBlurEffect.strength = THREE.MathUtils.lerp(zoomBlurEffect.strength, targetBlur, delta * 10);
-  // // });
-  
   return (
     <EffectComposer enableNormalPass={false} multisampling={0}>
-      <Vignette eskil={false} offset={0.1} darkness={1.1} />
+      <Vignette eskil={false} offset={0.15} darkness={0.85} />
     </EffectComposer>
   );
 }
 
-
-import { Atmosphere } from "./Atmosphere";
-import { Sentinel } from "../3d/Sentinel";
-
-import { GhostParticles } from "./GhostParticles";
-import { usePathname } from "next/navigation";
-
-
-
 function SceneContent() {
-    return (
-        <>
-            <CameraRig />
-            
-            <ambientLight intensity={0.5} />
-            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={2} color="#D97040" />
-            <pointLight position={[-10, -10, -10]} intensity={1} color="#FFD6A5" />
-
-            {/* The World Content */}
-            {/* Atmosphere removed per user request */}
-            {/* <Sentinel /> Removed per user request */}
-
-            {/* <GhostParticles /> Removed per user request (Cyan Blob) */}
-
-            
-            {/* Post Processing */}
-            <GlobalEffects />
-        </>
-    )
+  return (
+    <>
+      <AuroraField />
+      <GlobalEffects />
+    </>
+  );
 }
 
-// --- Main World Component ---
-
 export default function World() {
+  const [shouldRender, setShouldRender] = useState(true);
+
+  // Respect reduced-motion + data-saver preferences
+  // Also disable WebGL canvas on small/mobile viewports to prevent
+  // overflow + performance issues. Mobile gets the static gradient fallback.
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const conn = (navigator as unknown as { connection?: { saveData?: boolean } }).connection;
+    const saveData = conn?.saveData === true;
+    const isMobile = window.matchMedia("(max-width: 767px)").matches;
+
+    if (reducedMotion || saveData || isMobile) {
+      setShouldRender(false);
+    }
+  }, []);
+
+  // Static gradient fallback for users with reduced-motion
+  if (!shouldRender) {
+    return (
+      <div
+        className="fixed inset-0 z-0 pointer-events-none"
+        style={{
+          background:
+            "radial-gradient(ellipse at 50% 30%, rgba(217,112,64,0.18) 0%, transparent 50%), radial-gradient(ellipse at 70% 80%, rgba(255,214,165,0.08) 0%, transparent 50%), #020B16",
+        }}
+      />
+    );
+  }
+
   return (
     <div className="fixed inset-0 z-0 pointer-events-none">
-        <Canvas gl={{ antialias: false, stencil: false, alpha: true }} dpr={[1, 1]} camera={{ position: [0, 0, 10], fov: 45 }}>
-             <SceneContent />
-            
-            <Preload all />
-        </Canvas>
+      <Canvas
+        gl={{ antialias: false, stencil: false, alpha: false, powerPreference: "high-performance" }}
+        dpr={[1, 1.25]}
+        camera={{ position: [0, 0, 5], fov: 50 }}
+        flat
+      >
+        <Suspense fallback={null}>
+          <SceneContent />
+        </Suspense>
+        <Preload all />
+      </Canvas>
     </div>
   );
 }

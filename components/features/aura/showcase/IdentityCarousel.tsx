@@ -134,7 +134,7 @@ export const IdentityCarousel: React.FC<IdentityCarouselProps> = ({ items, onSel
       onWheel={handleWheel}
     >
       {/* Carousel Items Container */}
-      <div className="relative w-[340px] md:w-[400px] h-[520px] md:h-[580px] flex items-center justify-center preserve-3d">
+      <div className="relative w-[280px] sm:w-[340px] md:w-[400px] h-[440px] sm:h-[520px] md:h-[580px] flex items-center justify-center preserve-3d">
         <AnimatePresence mode="popLayout">
           {items.map((item, index) => {
             // Virtualization Logic:

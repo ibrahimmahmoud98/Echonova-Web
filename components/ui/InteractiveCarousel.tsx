@@ -144,7 +144,7 @@ export const InteractiveCarousel: React.FC<ImageCarouselProps> = ({ images, auto
       onWheel={handleWheel}
     >
       {/* 3D Scene Container */}
-      <div className="relative w-[320px] h-[500px] flex items-center justify-center preserve-3d">
+      <div className="relative w-[260px] sm:w-[320px] h-[420px] sm:h-[500px] flex items-center justify-center preserve-3d">
          {images.map((src, index) => {
             const style = getStyle(index);
 

@@ -222,10 +222,21 @@ export const ContactPageReveal = () => {
   };
 
   return (
-    <section className="relative min-h-screen w-full bg-[#020B16] flex flex-col lg:grid lg:grid-cols-2">
-       
+    /* MOBILE FIX (2026-05-12):
+       ContactPageReveal is rendered as the endPanel inside MethodologyScroll's
+       horizontally-scrolling track. That parent is `w-screen h-screen` with
+       `overflow-hidden`, so the form bottom (phone, dropdown, message,
+       submit button) was being clipped on mobile with no way to scroll.
+       Fixes:
+        1. Lock height to h-screen on mobile + add `overflow-y-auto` so the
+           user can swipe inside the pane to reveal the full form.
+        2. `overscroll-contain` prevents rubber-band leaking to parent scroll.
+        3. Video strip shrunk from 40vh → 28vh on mobile to free up form space.
+        4. Form padding tightened on mobile. */
+    <section className="relative h-screen lg:h-auto lg:min-h-screen w-full bg-[#020B16] flex flex-col lg:grid lg:grid-cols-2 overflow-y-auto lg:overflow-visible overscroll-contain">
+
        {/* RIGHT COLUMN: VIDEO BACKGROUND (Mobile: Top / Desktop: Right) */}
-       <div className="relative w-full h-[40vh] lg:h-screen lg:sticky lg:top-0 order-1 lg:order-2 overflow-hidden z-0">
+       <div className="relative w-full h-[18vh] lg:h-screen lg:sticky lg:top-0 order-1 lg:order-2 overflow-hidden z-0 flex-shrink-0">
             <div className="absolute inset-0">
                  <SmartVideo
                      src={HERO_VIDEO_URL}
@@ -241,7 +252,7 @@ export const ContactPageReveal = () => {
        </div>
 
        {/* LEFT COLUMN: FORM (Mobile: Bottom / Desktop: Left) */}
-       <div className="relative flex flex-col justify-start items-center p-4 lg:p-12 order-2 lg:order-1 lg:pt-20 bg-[#020B16] lg:bg-transparent -mt-10 lg:mt-0 z-10">
+       <div className="relative flex flex-col justify-start items-center px-4 pt-4 pb-8 lg:p-12 order-2 lg:order-1 lg:pt-20 bg-[#020B16] lg:bg-transparent -mt-6 lg:mt-0 z-10">
            
             {/* Background Gradient for Form Side */}
             <div className="absolute inset-0 bg-gradient-to-b from-[#020B16] via-[#050A14] to-[#01060C] -z-10 lg:hidden" />
@@ -251,14 +262,14 @@ export const ContactPageReveal = () => {
                 initial={{ y: 20, opacity: 0 }} 
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
-                className="w-full max-w-lg z-10 bg-[#020B16]/80 lg:bg-transparent backdrop-blur-xl lg:backdrop-blur-none border-t border-white/10 lg:border-none rounded-t-3xl lg:rounded-none p-6 lg:p-0"
+                className="w-full max-w-lg z-10 bg-[#020B16]/80 lg:bg-transparent backdrop-blur-xl lg:backdrop-blur-none border-t border-white/10 lg:border-none rounded-t-3xl lg:rounded-none p-4 lg:p-0"
             >
                 {/* Header */}
-                <div className="mb-6 lg:mb-8 border-b border-white/5 pb-6">
-                    <h2 className="text-3xl md:text-5xl font-bold text-white mb-2 text-right">
+                <div className="mb-2 lg:mb-8 border-b border-white/5 pb-2 lg:pb-6">
+                    <h2 className="text-2xl md:text-5xl font-bold text-white mb-1 lg:mb-2 text-right">
                         ابدأ مشروعك
                     </h2>
-                    <p className="text-white/60 text-right text-lg">
+                    <p className="text-white/60 text-right text-sm lg:text-lg">
                         املأ النموذج وسنتواصل معك قريباً.
                     </p>
                 </div>
@@ -277,8 +288,8 @@ export const ContactPageReveal = () => {
                        <p className="text-white/60">شكراً لتواصلك معنا.</p>
                    </motion.div>
                ) : (
-                <form onSubmit={handleSubmit} className="space-y-6 dir-rtl">
-                    <div className="grid md:grid-cols-2 gap-5">
+                <form onSubmit={handleSubmit} className="space-y-3 lg:space-y-6 dir-rtl">
+                    <div className="grid grid-cols-2 gap-3 lg:gap-5">
                             <div className="relative group text-right">
                                 <label className="block text-white/60 text-xs mb-2 pr-1">الاسم الكامل</label>
                                 <input 
@@ -352,8 +363,8 @@ export const ContactPageReveal = () => {
                             name="message"
                             value={formData.message}
                             onChange={handleInputChange}
-                            rows={4}
-                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[var(--color-copper)] outline-none transition-all resize-none text-sm text-right"
+                            rows={3}
+                            className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-white focus:border-[var(--color-copper)] outline-none transition-all resize-none text-base text-right"
                             placeholder="حدثنا عن مشروعك..."
                         />
                     </div>
@@ -380,7 +391,7 @@ export const ContactPageReveal = () => {
                )}
 
                 {/* Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-8 pt-8 border-t border-white/5">
+                <div className="hidden lg:grid lg:grid-cols-2 gap-4 mt-8 pt-8 border-t border-white/5">
                     <ContactCard 
                         icon={<Mail className="w-5 h-5" />}
                         title="البريد الإلكتروني"

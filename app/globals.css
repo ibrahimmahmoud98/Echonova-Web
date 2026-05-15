@@ -142,6 +142,17 @@ body {
   direction: rtl; /* Enforce RTL globally */
 }
 
+/* ── iOS Auto-Zoom Prevention ──────────────────────────────────────────
+   iOS Safari zooms into any input/textarea/select with font-size < 16px.
+   This one rule prevents that layout-breaking behaviour globally.
+   font-size: max(16px, 1em) keeps the visual size unchanged on desktop
+   (where 1em >= 16px) while forcing a 16px floor on mobile.          */
+input,
+textarea,
+select {
+  font-size: max(16px, 1em);
+}
+
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;

@@ -133,9 +133,18 @@ export function Navbar() {
           </nav>
 
           {/* Logo - Centered in Flow */}
-          <Link href="/" className="text-3xl font-bold flex flex-col items-center leading-tight z-50 group shrink-0">
+          <Link href="/" className="text-3xl font-bold flex flex-col items-center leading-tight z-50 group shrink-0 relative">
             <span className="text-[var(--color-ivory)] tracking-widest group-hover:text-[var(--color-copper)] transition-colors">ECHONOVA</span>
             <span className="text-[var(--color-copper)] text-[0.6rem] tracking-[0.4em] font-light uppercase group-hover:text-white transition-colors">STUDIO</span>
+            {/* LAB badge — only renders in the lab environment.
+                Production (Vercel) does NOT set NEXT_PUBLIC_IS_LAB, so the
+                badge is automatically hidden there. To show it locally,
+                add NEXT_PUBLIC_IS_LAB=true to .env.local */}
+            {process.env.NEXT_PUBLIC_IS_LAB === "true" && (
+              <span className="absolute -top-2 -right-8 px-1.5 py-0.5 text-[0.55rem] font-bold tracking-wider rounded-sm bg-gradient-to-r from-[var(--color-copper)] to-orange-500 text-white shadow-[0_0_10px_rgba(217,112,64,0.5)] animate-pulse">
+                LAB
+              </span>
+            )}
           </Link>
 
           {/* Desktop Nav - Right Side */}

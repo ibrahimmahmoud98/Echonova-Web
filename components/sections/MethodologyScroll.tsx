@@ -1,14 +1,12 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { cn } from "@/lib/utils";
-import { Play } from "lucide-react";
 import Image from "next/image";
 import { SmartVideo } from "@/components/ui/SmartVideo";
-// Register Plugin
 gsap.registerPlugin(ScrollTrigger);
 
 const steps = [
@@ -16,178 +14,340 @@ const steps = [
     num: "01",
     title: "الاستكشاف والتحليل",
     desc: "فهم عميق لأهداف العميل والجمهور المستهدف.",
-    color: "#020B16", // Brand Navy
+    color: "#020B16",
     image: "/images/nova_aura_dna.png",
-    video: "/placeholders/life-loop.mp4" 
+    video: "/placeholders/life-loop.mp4",
   },
   {
     num: "02",
     title: "السرد القصصي البشري",
     desc: "كتابة السيناريو والمشاعر بواسطة محترفين.",
-    color: "#140a05", // Deep Dark Copper (Warmth for Story)
+    color: "#140a05",
     image: "/images/nova_saga_storyboard.png",
   },
   {
     num: "03",
     title: "هندسة الخيال",
     desc: "تحويل خيال و رؤية العميل الى اصول بصرية جذابة",
-    color: "#0a0b1e", // Deep Dark Indigo (Tech/Magic)
+    color: "#0a0b1e",
     image: "/images/nova_cinema_anamorphic_lens_flare_1766262442202.png",
   },
   {
     num: "04",
     title: "التوليد والإخراج",
     desc: "توليد المشاهد تحت إشراف مخرج فني.",
-    color: "#160404", // Deep Dark Red (Action/Creation)
+    color: "#160404",
     image: "/images/nova_cinema_camera_rig_dark_1766262384875.png",
-    video: "/placeholders/life-loop.mp4"
+    video: "/placeholders/life-loop.mp4",
   },
   {
     num: "05",
     title: "المونتاج واللمسة النهائية",
     desc: "تجميع المشاهد وإضافة المؤثرات الصوتية.",
-    color: "#030303", // Cinematic Charcoal (Refinement)
+    color: "#030303",
     image: "/images/nova_cinema_color_grading_suite_1766262427888.png",
   },
   {
     num: "06",
     title: "التسليم والأثر",
     desc: "تسليم العمل ليصنع الصدى المتوقع.",
-    color: "#000000", // Pure Black (Final Impact)
+    color: "#000000",
     image: "/images/nova_saga_poster.png",
   },
 ];
 
-export function MethodologyScroll() {
+// Contact section background color (must match ContactPageReveal)
+const CONTACT_BG = "#020B16";
+
+interface MethodologyScrollProps {
+  endPanel?: React.ReactNode;
+}
+
+export function MethodologyScroll({ endPanel }: MethodologyScrollProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const trackRef = useRef<HTMLDivElement>(null);
+  const stRef = useRef<ScrollTrigger | null>(null);
   const [activeStep, setActiveStep] = useState(0);
+  // 0 = fully showing methodology UI, 1 = fully in endPanel
+  const [endPanelFade, setEndPanelFade] = useState(0);
 
-  useGSAP(() => {
-    const container = containerRef.current;
-    const track = trackRef.current;
-    if (!container || !track) return;
+  const totalSnapPoints = steps.length + (endPanel ? 1 : 0); // 7
 
-    // Calculate total width with a buffer to ensure logical completion
-    // Adding extra width ensures the last item comes fully into view before unpinning
-    const totalWidth = (track.scrollWidth - window.innerWidth) + 500;
+  useGSAP(
+    () => {
+      const container = containerRef.current;
+      const track = trackRef.current;
+      if (!container || !track) return;
 
-    // Horizontal Scroll Logic
-    // For RTL (Right to Left): Content flows to the left.
-    // To see content on the left, we must move the track to the RIGHT (Positive X).
-    const scrollTween = gsap.to(track, {
-      x: totalWidth, // Positive for RTL
-      ease: "none",
-      scrollTrigger: {
+      const totalWidth = track.scrollWidth - window.innerWidth;
+
+      // Extra dwell scroll — section stays pinned but track stops moving
+      const dwellDistance = endPanel ? window.innerHeight * 0.8 : 0;
+      const totalScrollDistance = totalWidth + dwellDistance;
+
+      // trackFraction: 0→trackFraction of progress = horizontal movement
+      //                trackFraction→1 = dwell zone (pinned, no movement)
+      const trackFraction = totalWidth / totalScrollDistance;
+
+      // Last methodology card snap position within the track phase
+      const lastCardInTrack = (steps.length - 1) / (totalSnapPoints - 1); // ~0.833
+      // Its overall progress position
+      const lastCardProgress = lastCardInTrack * trackFraction;
+
+      // We DON'T use gsap.to for x — we manually set it in onUpdate.
+      // This gives us full control to create the dwell plateau.
+      ScrollTrigger.create({
         trigger: container,
         start: "top top",
-        end: `+=${totalWidth}`,
+        end: `+=${totalScrollDistance}`,
         pin: true,
-        scrub: 1,
-        // snap: 1 / (steps.length - 1), // Optional: snap to cards
+        scrub: 0,
+        snap: {
+          snapTo: (value: number) => {
+            // In the dwell zone → snap to the endPanel position (track fully scrolled)
+            if (value >= trackFraction * 0.93) {
+              return trackFraction;
+            }
+            // Snap to card boundaries within the track range
+            const cardSnap = trackFraction / (totalSnapPoints - 1);
+            const snapped = Math.round(value / cardSnap) * cardSnap;
+            return Math.min(snapped, trackFraction);
+          },
+          duration: { min: 0.2, max: 0.6 },
+          delay: 0.05,
+          ease: "power2.inOut",
+        },
         onUpdate: (self) => {
-             // Calculate active step based on progress
-             const progress = self.progress;
-             const stepIndex = Math.round(progress * (steps.length - 1));
-             setActiveStep(stepIndex);
-        }
-      },
-    });
+          const progress = self.progress;
 
-    // Background Color Changer (Linked to same scroll)
-    steps.forEach((step, index) => {
-        if (index === 0) return; // Skip first, handled by initial state
-        const progressStart = (index - 1) / (steps.length - 1);
-        const progressEnd = index / (steps.length - 1);
-        
-        // This is a simplified approach; usually we lerp between colors manually or use a timeline.
-        // For smooth transitions, we'll animate the container background based on progress breakpoints
-    });
-    
-  }, { scope: containerRef });
+          // --- Manual track position with dwell clamping ---
+          // Map progress to x: clamp at totalWidth when progress >= trackFraction
+          const xProgress = Math.min(progress / trackFraction, 1);
+          gsap.set(track, { x: xProgress * totalWidth });
+
+          // --- Active step ---
+          const lastCardTrackPos = (steps.length - 1) / (totalSnapPoints - 1);
+          const cardTrackProgress = Math.min(xProgress / lastCardTrackPos, 1);
+          const stepIndex = Math.round(cardTrackProgress * (steps.length - 1));
+          setActiveStep(Math.min(stepIndex, steps.length - 1));
+
+          // --- Fade calculation ---
+          // Fade starts after last card, fully faded when contact fills screen
+          const fade = Math.max(
+            0,
+            Math.min(1, (progress - lastCardProgress) / (trackFraction - lastCardProgress))
+          );
+          setEndPanelFade(fade);
+        },
+      });
+
+      stRef.current = ScrollTrigger.getAll().find(
+        (st) => st.trigger === container
+      ) ?? null;
+    },
+    { scope: containerRef }
+  );
+
+  const goToStep = useCallback((idx: number) => {
+    const st = stRef.current;
+    if (!st) return;
+    const totalWidth = trackRef.current
+      ? trackRef.current.scrollWidth - window.innerWidth
+      : 0;
+    const dwellDistance = endPanel ? window.innerHeight * 0.8 : 0;
+    const totalScrollDistance = totalWidth + dwellDistance;
+    const trackFraction = totalWidth / totalScrollDistance;
+    const cardSnap = trackFraction / (totalSnapPoints - 1);
+    const targetProgress = idx * cardSnap;
+    const target = st.start + (st.end - st.start) * targetProgress;
+    window.scrollTo({ top: target, behavior: "smooth" });
+  }, [totalSnapPoints, endPanel]);
+
+  // UI opacity = inverse of fade
+  const uiOpacity = 1 - endPanelFade;
+
+  // Dynamic background: blend from active step's color to contact BG
+  const sectionBg = endPanelFade > 0 && endPanel
+    ? lerpColor(steps[activeStep]?.color || steps[steps.length - 1].color, CONTACT_BG, endPanelFade)
+    : steps[activeStep]?.color || steps[0].color;
 
   return (
-    <section 
-        ref={containerRef} 
-        className="relative h-screen w-full overflow-hidden text-white transition-colors duration-700 ease-linear"
-        style={{ backgroundColor: steps[activeStep]?.color || steps[0].color }}
+    <section
+      ref={containerRef}
+      className="relative h-screen w-full overflow-hidden text-white"
+      style={{ backgroundColor: sectionBg, transition: "background-color 0.3s" }}
     >
-      {/* Header (Optional, stays fixed or moves) */}
-      <div className="absolute top-10 left-0 right-0 z-20 text-center pointer-events-none">
+      {/* Header — fades out near endPanel */}
+      <div
+        className="absolute top-10 left-0 right-0 z-20 text-center pointer-events-none"
+        style={{ opacity: uiOpacity, transition: "opacity 0.15s" }}
+      >
         <h2 className="text-3xl md:text-4xl font-bold text-white/90 drop-shadow-md">منهجية العمل</h2>
-
       </div>
 
-      {/* Progress Bar */}
-      <div className="absolute bottom-10 left-10 right-10 h-1 bg-white/10 rounded-full z-20 overflow-hidden">
-        <div 
-            className="h-full bg-[var(--color-copper)] transition-all duration-300 ease-out"
+      {/* Progress Bar + Dots — fades out near endPanel */}
+      <div
+        className="absolute bottom-10 left-10 right-10 z-20"
+        style={{
+          opacity: uiOpacity,
+          transition: "opacity 0.15s",
+          pointerEvents: uiOpacity < 0.1 ? "none" : "auto",
+        }}
+      >
+        <div className="relative h-1 bg-white/10 rounded-full overflow-hidden mb-3">
+          <div
+            className="h-full bg-[var(--color-copper)] transition-all duration-300 ease-out ml-auto"
             style={{ width: `${(activeStep / (steps.length - 1)) * 100}%` }}
-        />
+          />
+        </div>
+
+        <div className="flex items-center justify-between">
+          {steps.map((step, idx) => {
+            const isActive = activeStep === idx;
+            const isPast = idx < activeStep;
+            return (
+              <button
+                key={step.num}
+                onClick={() => goToStep(idx)}
+                aria-label={`الانتقال إلى الخطوة ${step.num}`}
+                className="group flex flex-col items-center gap-2 transition-transform duration-300 hover:scale-110"
+              >
+                <span
+                  className={cn(
+                    "block rounded-full transition-all duration-500",
+                    isActive
+                      ? "w-4 h-4 bg-[var(--color-copper)] shadow-[0_0_18px_rgba(217,112,64,0.8)]"
+                      : isPast
+                      ? "w-3 h-3 bg-[var(--color-copper)]/60"
+                      : "w-2.5 h-2.5 bg-white/30 group-hover:bg-white/60"
+                  )}
+                />
+                <span
+                  className={cn(
+                    "font-mono text-[10px] tracking-wider transition-all duration-300",
+                    isActive
+                      ? "text-[var(--color-copper)] opacity-100"
+                      : "text-white/40 opacity-60 group-hover:opacity-90"
+                  )}
+                >
+                  {step.num}
+                </span>
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Horizontal Track */}
-      <div ref={trackRef} className="flex h-full items-center pl-[10vw]"> {/* pl-[10vw] allows first card to be centered or offset */}
-        {steps.map((step, index) => (
-          <div 
-            key={step.num} 
-            className="relative flex-shrink-0 w-[80vw] md:w-[60vw] lg:w-[40vw] h-[70vh] md:h-[60vh] mx-4 md:mx-8 rounded-3xl overflow-hidden border border-white/10 group transition-transform duration-500 ease-out hover:scale-105"
-            // Use subtle parallax or scale effect based on active state if desired
-            style={{
-                transform: activeStep === index ? 'scale(1.05)' : 'scale(1)',
-                opacity: activeStep === index ? 1 : 0.5
-            }}
-          >
-            {/* Background Image (Primary) */}
-            <div className="absolute inset-0 z-0">
-               <Image 
-                 src={step.image} 
-                 alt={step.title}
-                 fill
-                 className="object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700"
-               />
-               <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
-            </div>
+      <div ref={trackRef} className="flex h-full items-center pl-[10vw]">
+        {steps.map((step, index) => {
+          const isActive = activeStep === index;
+          return (
+            <div
+              key={step.num}
+              className={cn(
+                "relative flex-shrink-0 w-[80vw] md:w-[60vw] lg:w-[40vw] h-[70vh] md:h-[60vh] mx-4 md:mx-8 rounded-3xl overflow-hidden border group transition-all duration-700 ease-out",
+                isActive
+                  ? "border-[var(--color-copper)]/60"
+                  : "border-white/10"
+              )}
+              style={{
+                transform: isActive ? "scale(1.05)" : "scale(1)",
+                opacity: isActive ? 1 : 0.45,
+                boxShadow: isActive
+                  ? "0 0 60px rgba(217, 112, 64, 0.35), 0 0 140px rgba(217, 112, 64, 0.15)"
+                  : "none",
+              }}
+            >
+              <div className="absolute inset-0 z-0">
+                <Image
+                  src={step.image}
+                  alt={step.title}
+                  fill
+                  className="object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-700"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-black/10" />
+              </div>
 
-            {/* Background Video (Secondary/Optional) */}
-            {step.video && (
-              <div className="absolute inset-0 z-0 opacity-0 pointer-events-none">
-                 <SmartVideo 
+              {step.video && (
+                <div className="absolute inset-0 z-0 opacity-0 pointer-events-none">
+                  <SmartVideo
                     src={step.video}
                     className="w-full h-full object-cover opacity-60 group-hover:opacity-80 transition-opacity duration-700"
                     loop
                     muted
                     playsInline
                     ref={(el: HTMLVideoElement | null) => {
-                        if (el) {
-                            if (activeStep === index) el.play().catch(() => {});
-                            else el.pause();
-                        }
+                      if (el) {
+                        if (isActive) el.play().catch(() => {});
+                        else el.pause();
+                      }
                     }}
-                 />
-              </div>
-            )}
+                  />
+                </div>
+              )}
 
-            {/* Content Overlay */}
-            <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 md:p-12 text-right">
-              <div className="text-8xl font-bold text-white/10 absolute top-6 left-6 font-mono select-none">
-                {step.num}
+              <div className="absolute inset-0 z-10 flex flex-col justify-end p-8 md:p-12 text-right">
+                <div
+                  className={cn(
+                    "text-8xl font-bold absolute top-6 left-6 font-mono select-none transition-colors duration-500",
+                    isActive ? "text-[var(--color-copper)]/40" : "text-white/10"
+                  )}
+                >
+                  {step.num}
+                </div>
+
+                <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 drop-shadow-lg">{step.title}</h3>
+                <p className="text-lg text-white/80 leading-relaxed max-w-md ml-auto">{step.desc}</p>
               </div>
-              
-              <h3 className="text-2xl md:text-3xl font-bold text-white mb-4 drop-shadow-lg">
-                {step.title}
-              </h3>
-              <p className="text-lg text-white/80 leading-relaxed max-w-md ml-auto">
-                {step.desc}
-              </p>
+
+              {isActive && (
+                <div className="absolute inset-0 rounded-3xl ring-1 ring-[var(--color-copper)]/30 pointer-events-none" />
+              )}
             </div>
+          );
+        })}
 
+        {/* Gradient spacer — blends last card's dark into contact section's navy.
+            Wide enough (50vw) so the last card fully exits the viewport before
+            the contact section enters, preventing visual overlap.
+            In RTL visual layout: left edge = contact (navy), right edge = card (black). */}
+        {endPanel && (
+          <div
+            className="flex-shrink-0 w-[50vw] h-full"
+            style={{
+              background: `linear-gradient(to left, ${steps[steps.length - 1].color}, ${CONTACT_BG})`,
+            }}
+          />
+        )}
+
+        {/* End Panel — fills viewport on the same horizontal track */}
+        {endPanel && (
+          <div className="flex-shrink-0 w-screen h-screen relative">
+            {endPanel}
           </div>
-        ))}
-        
-        {/* Spacer at the end to allow full scroll of last item */}
-        <div className="w-[10vw] flex-shrink-0" />
+        )}
       </div>
     </section>
   );
+}
+
+/**
+ * Linearly interpolate between two hex colors.
+ */
+function lerpColor(a: string, b: string, t: number): string {
+  const parse = (hex: string) => {
+    const h = hex.replace("#", "");
+    return [
+      parseInt(h.substring(0, 2), 16),
+      parseInt(h.substring(2, 4), 16),
+      parseInt(h.substring(4, 6), 16),
+    ];
+  };
+  const [r1, g1, b1] = parse(a);
+  const [r2, g2, b2] = parse(b);
+  const r = Math.round(r1 + (r2 - r1) * t);
+  const g = Math.round(g1 + (g2 - g1) * t);
+  const bl = Math.round(b1 + (b2 - b1) * t);
+  return `#${r.toString(16).padStart(2, "0")}${g.toString(16).padStart(2, "0")}${bl.toString(16).padStart(2, "0")}`;
 }

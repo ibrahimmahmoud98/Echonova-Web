@@ -1,9 +1,11 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Cairo, Outfit } from "next/font/google";
 import { WorldWrapper } from "@/components/canvas/WorldWrapper";
-import { MagneticCursor } from "@/components/ui/MagneticCursor";
+// MagneticCursor removed per user request — using browser default cursor.
+// Kept the component file for potential reuse in a future cursor-states feature.
 import "./globals.css";
 import { AudioProvider } from "@/components/audio/AudioEngine";
+import { MuteToggle } from "@/components/audio/MuteToggle";
 import { ScrollToTop } from "@/components/utils/ScrollToTop";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
@@ -22,6 +24,15 @@ const outfit = Outfit({
 
 
 import { OrganizationSchema } from "@/components/seo/OrganizationSchema";
+
+// Explicit viewport export — ensures correct meta tag on all devices.
+// interactiveWidget: 'resizes-content' prevents the iOS keyboard from
+// collapsing the viewport and misaligning fixed/sticky elements.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  interactiveWidget: "resizes-content",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.echonovastudio.com'),
@@ -72,18 +83,19 @@ export default function RootLayout({
         <ReactLenis root>
           <AudioProvider>
               <ScrollToTop />
-              <MagneticCursor />
+              <MuteToggle />
 
-              
+
               <Navbar />
 
               {/* Unified 3D World Background (Fixed Z-0) */}
               <WorldWrapper />
-              
+
               {/* Main Content (Scrollable Z-10) */}
-              <div className="relative z-10">
+              <div className="relative z-10 overflow-x-hidden">
                   {children}
               </div>
+
 
               <Footer />
           </AudioProvider>

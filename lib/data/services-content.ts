@@ -339,6 +339,15 @@ export const CINEMATIC_SHOWCASE_DATA = {
       "مفهوم فني (Concept Art) لمشهد روائي طويل",
       "مشهد سينمائي ليلي لناطحة سحاب",
       "مشهد خيالي سريالي يعبر عن الإبداع اللامحدود"
+    ],
+    // Short captions shown as overlay on thumbnail hover/active.
+    // Kept punchy and Arabic-first to match brand language.
+    captions: [
+      "بوستر المسلسل",
+      "لوحة القصة",
+      "مفهوم فني",
+      "مشهد ليلي",
+      "حلم سريالي"
     ]
   },
   cinema: {
@@ -367,6 +376,13 @@ export const CINEMATIC_SHOWCASE_DATA = {
       "كلاكيت تصوير لمشهد أكشن سينمائي",
       "جناح تلوين سينمائي (Color Grading Suite) لإنتاج الفيديو",
       "تأثير عدسة أنامورفيك (Lens Flare) لإضفاء طابع سينمائي"
+    ],
+    captions: [
+      "الكاميرا",
+      "الإضاءة",
+      "أكشن!",
+      "التلوين",
+      "أنامورفيك"
     ]
   },
   whisper: {
@@ -393,6 +409,13 @@ export const CINEMATIC_SHOWCASE_DATA = {
       "إستوديو رقمي للتوزيع الموسيقي",
       "نقاء هندسي بدون تشوهات آلية",
       "تثبيت البصمة الصوتية للهوية"
+    ],
+    captions: [
+      "هندسة الصوت",
+      "نشيد البراند",
+      "استوديو رقمي",
+      "نقاء مطلق",
+      "بصمة صوتية"
     ]
   }
 };

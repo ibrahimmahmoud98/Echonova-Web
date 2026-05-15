@@ -53,6 +53,8 @@ export const CinematicShowcase = () => {
   const currentImages = currentData.images;
   // @ts-ignore
   const currentAlts = currentData.imageAlts || [];
+  // @ts-ignore — captions are an optional NEW field on each mode
+  const currentCaptions: string[] = currentData.captions || [];
 
   // Auto-cycle features
   React.useEffect(() => {
@@ -74,11 +76,33 @@ export const CinematicShowcase = () => {
         )}
       </div>
 
-      {/* --- Main Section Header --- */}
-      <div className="relative z-20 mb-12 text-center">
-          <h2 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 drop-shadow-2xl font-arabic px-4 leading-normal pb-2 transition-all duration-500">
+      {/* --- Main Section Header (Cinematic) --- */}
+      <div className="relative z-20 mb-12 text-center px-4 max-w-4xl mx-auto">
+          {/* Eyebrow — chapter marker */}
+          <div className="flex items-center justify-center gap-3 mb-4 opacity-80">
+              <span className="block w-8 h-px bg-[var(--color-copper)]/60" />
+              <span className="text-[var(--color-copper)] text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase">
+                  Chapter 02 · Cinema
+              </span>
+              <span className="block w-8 h-px bg-[var(--color-copper)]/60" />
+          </div>
+
+          {/* Main title (unchanged) */}
+          <h2 className="text-4xl md:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-b from-white to-white/60 drop-shadow-2xl font-arabic leading-normal pb-2 transition-all duration-500">
               الانتاج السينمائي الترويجي
           </h2>
+
+          {/* Cinematic divider with star at center */}
+          <div className="flex items-center justify-center gap-4 my-6">
+              <span className="block w-16 md:w-24 h-px bg-gradient-to-r from-transparent to-[var(--color-copper)]/50" />
+              <span className="text-[var(--color-copper)] text-base opacity-70 select-none" aria-hidden="true">✦</span>
+              <span className="block w-16 md:w-24 h-px bg-gradient-to-l from-transparent to-[var(--color-copper)]/50" />
+          </div>
+
+          {/* Tagline — italic, restrained */}
+          <p className="text-[var(--color-ivory)]/70 text-sm md:text-base font-light italic max-w-md mx-auto leading-relaxed">
+              نروي قصة لا تُنسى — لا نسوّق منتجاً
+          </p>
       </div>
 
       {/* --- Main Container --- */}
@@ -147,27 +171,44 @@ export const CinematicShowcase = () => {
                 </AnimatePresence>
             </div>
 
-            {/* Feature List - Auto Cycling Text */}
-            <div className="w-full mb-6 h-12 flex items-center justify-center">
-                 <AnimatePresence mode="wait">
-                    <motion.div
-                        key={featureIndex}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.2 }}
-                        className="flex items-center justify-center gap-3"
-                    >
-                         <div className="text-right">
-                            <h4 className="text-white font-bold text-sm tracking-wide">
-                                {currentData.features[featureIndex]?.title}
+            {/* Features — vertical stack with rotating active highlight.
+                All features stay visible; the highlight cycles via featureIndex.
+                This replaces the previous single-feature auto-cycle that hid
+                4/5 of the value props at any moment. */}
+            <div className="w-full mb-6 space-y-1.5">
+                {currentData.features.map((feature, idx) => {
+                    const isActive = idx === featureIndex;
+                    const Icon = getIcon(feature.icon_name || "Film");
+                    return (
+                        <div
+                            key={idx}
+                            className={cn(
+                                "flex items-center gap-3 px-3 py-2 rounded-lg border transition-all duration-500",
+                                isActive
+                                    ? "bg-[var(--color-copper)]/15 border-[var(--color-copper)]/40"
+                                    : "bg-white/[0.02] border-white/5 opacity-55 hover:opacity-90"
+                            )}
+                        >
+                            <Icon
+                                className={cn(
+                                    "w-4 h-4 flex-shrink-0 transition-colors",
+                                    isActive ? "text-[var(--color-copper)]" : "text-white/35"
+                                )}
+                            />
+                            <h4
+                                className={cn(
+                                    "text-sm transition-all flex-1 text-right",
+                                    isActive ? "text-white font-bold" : "text-white/55 font-light"
+                                )}
+                            >
+                                {feature.title}
                             </h4>
+                            {isActive && (
+                                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-copper)] flex-shrink-0 animate-pulse" />
+                            )}
                         </div>
-                        <div className={`p-1.5 rounded-lg ${activeMode === 'saga' ? 'text-orange-400' : 'text-orange-400'}`}>
-                            {React.createElement(getIcon(currentData.features[featureIndex]?.icon_name || 'Film'), { className: "w-4 h-4" })}
-                        </div>
-                    </motion.div>
-                </AnimatePresence>
+                    );
+                })}
             </div>
             
              <div className="flex gap-4 justify-center w-full">
@@ -239,28 +280,62 @@ export const CinematicShowcase = () => {
                 </AnimatePresence>
             </div>
 
-            {/* Thumbnails Strip (5 Items) */}
+            {/* Thumbnails — story cards with hover caption overlay + active LIVE pip */}
             <div className="grid grid-cols-5 gap-1.5 md:gap-3">
-                 {currentImages.map((img, idx) => (
-                     <button
-                        key={idx}
-                        onClick={() => setSelectedImageIndex(idx)}
-                        className={cn(
-                            "relative aspect-square rounded-lg overflow-hidden border transition-all duration-300 group",
-                            selectedImageIndex === idx 
-                                ? (activeMode === 'saga' ? "border-[var(--color-copper)] ring-2 ring-[var(--color-copper)]/30 scale-105 z-10" : "border-[var(--color-copper)] ring-2 ring-[var(--color-copper)]/30 scale-105 z-10") 
-                                : "border-white/10 hover:border-white/30 opacity-60 hover:opacity-100"
-                        )}
-                     >
-                         <Image src={img} alt={currentAlts[idx] || `Thumbnail ${idx + 1}`} fill className="object-cover" />
-                         {selectedImageIndex === idx && (
-                             <div className={cn(
-                                 "absolute inset-0 opacity-20",
-                                 activeMode === 'saga' ? "bg-[var(--color-copper)]" : "bg-[var(--color-copper)]"
-                             )} />
-                         )}
-                     </button>
-                 ))}
+                 {currentImages.map((img, idx) => {
+                    const isActive = selectedImageIndex === idx;
+                    const caption = currentCaptions[idx];
+                    return (
+                        <button
+                            key={idx}
+                            onClick={() => setSelectedImageIndex(idx)}
+                            aria-label={caption ? `عرض: ${caption}` : `Thumbnail ${idx + 1}`}
+                            className={cn(
+                                "relative aspect-square rounded-lg overflow-hidden border transition-all duration-300 group",
+                                isActive
+                                    ? "border-[var(--color-copper)] ring-2 ring-[var(--color-copper)]/30 scale-105 z-10"
+                                    : "border-white/10 hover:border-white/30 opacity-60 hover:opacity-100"
+                            )}
+                        >
+                            <Image
+                                src={img}
+                                alt={currentAlts[idx] || `Thumbnail ${idx + 1}`}
+                                fill
+                                className="object-cover transition-transform duration-500 group-hover:scale-110"
+                            />
+
+                            {/* Active tint (very subtle copper wash) */}
+                            {isActive && (
+                                <div className="absolute inset-0 bg-[var(--color-copper)] opacity-15 pointer-events-none" />
+                            )}
+
+                            {/* Caption overlay — visible on active or hover */}
+                            {caption && (
+                                <div
+                                    className={cn(
+                                        "absolute inset-x-0 bottom-0 px-2 py-1.5 text-[10px] md:text-xs font-medium text-white text-right truncate",
+                                        "bg-gradient-to-t from-black/95 via-black/70 to-transparent transition-all duration-300",
+                                        isActive
+                                            ? "opacity-100 translate-y-0"
+                                            : "opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0"
+                                    )}
+                                >
+                                    {caption}
+                                </div>
+                            )}
+
+                            {/* LIVE indicator — only on active card */}
+                            {isActive && (
+                                <div className="absolute top-1.5 right-1.5 flex items-center gap-1 px-1.5 py-0.5 rounded bg-black/60 backdrop-blur-sm border border-[var(--color-copper)]/40">
+                                    <span className="w-1 h-1 rounded-full bg-[var(--color-copper)] animate-pulse" />
+                                    <span className="text-[8px] font-mono tracking-wider text-[var(--color-copper)] uppercase">
+                                        Live
+                                    </span>
+                                </div>
+                            )}
+                        </button>
+                    );
+                 })}
             </div>
 
         </div>
