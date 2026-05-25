@@ -194,8 +194,15 @@ export function TheatreStage() {
           style={{ backgroundColor: `${theme.accent}66` }}
         />
 
-        {/* PORTAL FRAME — frameless edge with chromatic rim */}
-        <div className="relative aspect-[16/9] md:aspect-[21/9] overflow-hidden">
+        {/* PORTAL FRAME — frameless edge with chromatic rim
+            RESPONSIVE FIX (2026-05-25): the mobile aspect-[16/9] was removed.
+            A fixed wide ratio forced a short box on phones while the overlaid
+            text/CTAs were taller — so they overflowed and got clipped by
+            `overflow-hidden`. On phones the frame now has NO fixed ratio: its
+            height is driven by the scene content (see SCENE CONTENT below), so
+            it always fits the text and the poster image fills a portrait-
+            friendly area via object-cover. Desktop keeps aspect-[21/9]. */}
+        <div className="relative md:aspect-[21/9] overflow-hidden">
           {/* Edge chromatic rim — three colored 1px strokes offset slightly,
               gives a faint RGB glow at the boundary like a CRT/anaglyph edge */}
           <div
@@ -256,70 +263,84 @@ export function TheatreStage() {
             )}
           </AnimatePresence>
 
-          {/* SCENE CONTENT (text + CTAs) — fades in after burst settles */}
+          {/* SCENE CONTENT (text + CTAs)
+              RESPONSIVE FIX (2026-05-25): on phones this block sits in normal
+              flow (`relative`) so it DRIVES the portal's height — the frame
+              grows to fit the text instead of clipping it inside a fixed box.
+              On md+ it overlays the image (`md:absolute md:inset-0`) exactly
+              as before. It now stays mounted through the burst phase (hidden
+              via the `burst` variant) so the portal height never collapses
+              mid-transition. */}
           <AnimatePresence mode="wait">
-            {phase !== "burst" && (
-              <motion.div
-                key={`content-${activeId}`}
-                initial={{ opacity: 0, y: 24 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
-                className="absolute inset-0 flex flex-col justify-end p-6 md:p-12 lg:p-16 pointer-events-none z-10"
-                dir="rtl"
-              >
-                <div className="max-w-2xl pointer-events-auto">
-                  {/* Service brand wordmark */}
-                  <KineticBrand
-                    text={active.brandName}
-                    accentColor={theme.primary}
-                    sceneKey={activeId}
-                  />
+            <motion.div
+              key={`content-${activeId}`}
+              variants={{
+                hidden: { opacity: 0, y: 24 },
+                visible: { opacity: 1, y: 0 },
+                burst: {
+                  opacity: 0,
+                  y: 12,
+                  transition: { duration: 0.18, ease: "easeOut" },
+                },
+              }}
+              initial="hidden"
+              animate={phase === "burst" ? "burst" : "visible"}
+              exit={{ opacity: 0, transition: { duration: 0.2, ease: "easeOut" } }}
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+              className="relative md:absolute md:inset-0 flex flex-col justify-end p-6 md:p-12 lg:p-16 pointer-events-none z-10"
+              dir="rtl"
+            >
+              <div className="max-w-2xl pointer-events-auto">
+                {/* Service brand wordmark */}
+                <KineticBrand
+                  text={active.brandName}
+                  accentColor={theme.primary}
+                  sceneKey={activeId}
+                />
 
-                  {/* Arabic title */}
-                  <h3
-                    className="text-2xl md:text-4xl font-bold text-white mt-3 mb-4 drop-shadow-2xl"
-                    style={{ textShadow: `0 0 30px ${theme.accent}55` }}
-                  >
-                    {active.arTitle}
-                  </h3>
+                {/* Arabic title */}
+                <h3
+                  className="text-2xl md:text-4xl font-bold text-white mt-3 mb-4 drop-shadow-2xl"
+                  style={{ textShadow: `0 0 30px ${theme.accent}55` }}
+                >
+                  {active.arTitle}
+                </h3>
 
-                  {/* Description */}
-                  <p className="text-sm md:text-base text-white/85 leading-relaxed font-semibold max-w-xl drop-shadow-lg mb-6">
-                    {active.description}
-                  </p>
+                {/* Description */}
+                <p className="text-sm md:text-base text-white/85 leading-relaxed font-semibold max-w-xl drop-shadow-lg mb-6">
+                  {active.description}
+                </p>
 
-                  {/* CTAs */}
-                  <div className="flex flex-wrap gap-3">
-                    <Link href="/services/reels">
-                      <LiquidButton
-                        variant="secondary"
-                        className="px-5 py-2.5 text-sm"
-                      >
-                        تفاصيل أكثر
-                      </LiquidButton>
-                    </Link>
-                    <button
-                      onClick={() => {
-                        playClick();
-                        document
-                          .getElementById("contact")
-                          ?.scrollIntoView({ behavior: "smooth" });
-                      }}
-                      onMouseEnter={playHover}
-                      className="px-6 py-2.5 text-sm font-bold rounded-full border-2 transition-all hover:scale-105"
-                      style={{
-                        borderColor: theme.primary,
-                        color: theme.primary,
-                        boxShadow: `0 0 20px ${theme.accent}40`,
-                      }}
+                {/* CTAs */}
+                <div className="flex flex-wrap gap-3">
+                  <Link href="/services/reels">
+                    <LiquidButton
+                      variant="secondary"
+                      className="px-5 py-2.5 text-sm"
                     >
-                      ابدأ رحلتك.. وارسم بصمتك
-                    </button>
-                  </div>
+                      تفاصيل أكثر
+                    </LiquidButton>
+                  </Link>
+                  <button
+                    onClick={() => {
+                      playClick();
+                      document
+                        .getElementById("contact")
+                        ?.scrollIntoView({ behavior: "smooth" });
+                    }}
+                    onMouseEnter={playHover}
+                    className="px-6 py-2.5 text-sm font-bold rounded-full border-2 transition-all hover:scale-105"
+                    style={{
+                      borderColor: theme.primary,
+                      color: theme.primary,
+                      boxShadow: `0 0 20px ${theme.accent}40`,
+                    }}
+                  >
+                    ابدأ رحلتك.. وارسم بصمتك
+                  </button>
                 </div>
-              </motion.div>
-            )}
+              </div>
+            </motion.div>
           </AnimatePresence>
         </div>
 

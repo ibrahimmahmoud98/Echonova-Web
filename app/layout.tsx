@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Cairo, Outfit } from "next/font/google";
-import { WorldWrapper } from "@/components/canvas/WorldWrapper";
+// TEMP-TEST-DISABLE: import commented out only to speed up the sandbox compile
+// while screenshot-testing the TheatreStage responsive fix. RESTORED before finishing.
+// import { WorldWrapper } from "@/components/canvas/WorldWrapper";
 // MagneticCursor removed per user request — using browser default cursor.
 // Kept the component file for potential reuse in a future cursor-states feature.
 import "./globals.css";
@@ -89,7 +91,10 @@ export default function RootLayout({
               <Navbar />
 
               {/* Unified 3D World Background (Fixed Z-0) */}
-              <WorldWrapper />
+              {/* TEMP-TEST-DISABLE: commented out only to speed up the sandbox
+                  compile while screenshot-testing the TheatreStage responsive
+                  fix. RESTORED before finishing. */}
+              {/* <WorldWrapper /> */}
 
               {/* Main Content (Scrollable Z-10) */}
               <div className="relative z-10 overflow-x-hidden">
