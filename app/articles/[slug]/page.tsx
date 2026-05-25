@@ -211,7 +211,7 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
             <Link href="/contact">
                 <button className="group relative px-10 py-5 bg-[var(--color-copper)] text-white font-bold rounded-full overflow-hidden transition-all hover:bg-[#A05D3D] shadow-2xl hover:shadow-[var(--color-copper)]/30">
                     <span className="relative z-10 flex items-center gap-3 text-lg">
-                        ابدأ مشروعك الآن
+                        ابدأ رحلتك.. وارسم بصمتك
                         <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
                     </span>
                 </button>

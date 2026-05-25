@@ -94,7 +94,6 @@ export function CinemaTheatre() {
         <div className="flex items-center justify-center gap-3 mb-4 opacity-80">
           <span className="block w-8 h-px bg-[var(--color-copper)]/60" />
           <span className="text-[var(--color-copper)] text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase">
-            Chapter 02 · Cinema
           </span>
           <span className="block w-8 h-px bg-[var(--color-copper)]/60" />
         </div>
@@ -107,7 +106,7 @@ export function CinemaTheatre() {
           <span className="block w-16 md:w-24 h-px bg-gradient-to-l from-transparent to-[var(--color-copper)]/50" />
         </div>
         <p className="text-[var(--color-ivory)]/70 max-w-md mx-auto text-base md:text-lg font-light italic">
-          نروي قصة لا تُنسى — لا نسوّق منتجاً
+          ليس مجرد تسويق... بل قصة لا تُنسى
         </p>
       </div>
 

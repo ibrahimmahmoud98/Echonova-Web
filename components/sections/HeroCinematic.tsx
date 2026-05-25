@@ -150,7 +150,7 @@ export const HeroCinematic = ({
     }, [videoReady]);
 
     return (
-        <div className="absolute inset-0 z-0 overflow-hidden bg-black">
+        <div className="absolute inset-0 overflow-hidden bg-black">
             {/*
                 الطبقة ١: الفيديو + البوستر
                 البوستر يظهر فوراً للـ LCP، والفيديو يشتغل فوراً في الخلفية
@@ -182,8 +182,8 @@ export const HeroCinematic = ({
                     onCanPlay={() => setVideoReady(true)}
                     className="w-full h-full object-cover"
                 />
-                {/* تعتيم ٣٠٪ */}
-                <div className="absolute inset-0 bg-black/30 pointer-events-none" />
+                {/* تعتيم وتدرج ظل متباين في المنتصف */}
+                <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/45 to-black/30 pointer-events-none" />
             </div>
 
             {/*

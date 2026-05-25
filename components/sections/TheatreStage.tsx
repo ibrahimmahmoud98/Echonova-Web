@@ -168,7 +168,7 @@ export function TheatreStage() {
           </span>
         </h2>
         <p className="text-[var(--color-ivory)]/60 max-w-xl mx-auto text-base md:text-lg font-light">
-          ثلاثة عوالم. كل واحد يفتح بنبضة ضوء.
+          ثلاث تصنيفات... وعوالم بلا عدد
         </p>
       </div>
 
@@ -285,7 +285,7 @@ export function TheatreStage() {
                   </h3>
 
                   {/* Description */}
-                  <p className="text-sm md:text-base text-white/85 leading-relaxed font-light max-w-xl drop-shadow-lg mb-6">
+                  <p className="text-sm md:text-base text-white/85 leading-relaxed font-semibold max-w-xl drop-shadow-lg mb-6">
                     {active.description}
                   </p>
 
@@ -314,7 +314,7 @@ export function TheatreStage() {
                         boxShadow: `0 0 20px ${theme.accent}40`,
                       }}
                     >
-                      ابدأ مشروعك
+                      ابدأ رحلتك.. وارسم بصمتك
                     </button>
                   </div>
                 </div>
@@ -456,7 +456,7 @@ function SceneStack({
               sizes="(max-width: 768px) 100vw, 1200px"
             />
             {/* Cinematic darken to favor text legibility */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-transparent to-black/70" />
+            <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/20 to-black/85" />
             <div
               className="absolute inset-0 mix-blend-soft-light pointer-events-none transition-opacity duration-700"
               style={{

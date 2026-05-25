@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useMemo } from "react";
+import React, { useRef, useMemo, useEffect } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
@@ -30,52 +30,6 @@ const interactionState = {
   pendingClickY: 0.5,
   hasPendingClick: false,
 };
-
-if (typeof window !== "undefined") {
-  const w = window as unknown as { __ens_aurora_listener_attached?: boolean };
-  if (!w.__ens_aurora_listener_attached) {
-    w.__ens_aurora_listener_attached = true;
-
-    window.addEventListener(
-      "mousemove",
-      (e) => {
-        interactionState.mouseX = e.clientX / window.innerWidth;
-        interactionState.mouseY = 1 - e.clientY / window.innerHeight;
-      },
-      { passive: true }
-    );
-
-    window.addEventListener(
-      "scroll",
-      () => {
-        const max = document.body.scrollHeight - window.innerHeight;
-        interactionState.scroll = max > 0 ? Math.max(0, Math.min(1, window.scrollY / max)) : 0;
-      },
-      { passive: true }
-    );
-
-    // NEW v2: capture clicks anywhere on the page (incl. on top of buttons)
-    // We use mousedown + capture phase so we get the event before bubbling
-    // can be stopped by other handlers. Also handle touch.
-    const onPress = (clientX: number, clientY: number) => {
-      interactionState.pendingClickX = clientX / window.innerWidth;
-      interactionState.pendingClickY = 1 - clientY / window.innerHeight;
-      interactionState.hasPendingClick = true;
-    };
-    window.addEventListener(
-      "mousedown",
-      (e) => onPress(e.clientX, e.clientY),
-      { capture: true, passive: true }
-    );
-    window.addEventListener(
-      "touchstart",
-      (e) => {
-        if (e.touches[0]) onPress(e.touches[0].clientX, e.touches[0].clientY);
-      },
-      { capture: true, passive: true }
-    );
-  }
-}
 
 const vertexShader = `
   varying vec2 vUv;
@@ -240,6 +194,42 @@ const fragmentShader = `
 export const AuroraField: React.FC = () => {
   const meshRef = useRef<THREE.Mesh>(null);
   const { size, viewport } = useThree();
+
+  // Setup and clean up window event listeners inside lifecycle to prevent memory leaks and HMR closure issues
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      interactionState.mouseX = e.clientX / window.innerWidth;
+      interactionState.mouseY = 1 - e.clientY / window.innerHeight;
+    };
+
+    const handleScroll = () => {
+      const max = document.body.scrollHeight - window.innerHeight;
+      interactionState.scroll = max > 0 ? Math.max(0, Math.min(1, window.scrollY / max)) : 0;
+    };
+
+    const onPress = (clientX: number, clientY: number) => {
+      interactionState.pendingClickX = clientX / window.innerWidth;
+      interactionState.pendingClickY = 1 - clientY / window.innerHeight;
+      interactionState.hasPendingClick = true;
+    };
+
+    const handleMouseDown = (e: MouseEvent) => onPress(e.clientX, e.clientY);
+    const handleTouchStart = (e: TouchEvent) => {
+      if (e.touches[0]) onPress(e.touches[0].clientX, e.touches[0].clientY);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("mousedown", handleMouseDown, { capture: true, passive: true });
+    window.addEventListener("touchstart", handleTouchStart, { capture: true, passive: true });
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("mousedown", handleMouseDown, { capture: true });
+      window.removeEventListener("touchstart", handleTouchStart, { capture: true });
+    };
+  }, []);
 
   const uniforms = useMemo(
     () => ({

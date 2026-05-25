@@ -23,34 +23,12 @@ const SPIN_FACTOR = 1.4;
 const RANDOMNESS = 0.55;
 const THICKNESS = 1.6;
 
+// Global state to track interaction values across frames
 const galaxyState = {
   mouseX: 0.5,
   mouseY: 0.5,
   scroll: 0,
 };
-
-if (typeof window !== "undefined") {
-  const w = window as unknown as { __ens_galaxy_listener_attached?: boolean };
-  if (!w.__ens_galaxy_listener_attached) {
-    w.__ens_galaxy_listener_attached = true;
-    window.addEventListener(
-      "mousemove",
-      (e) => {
-        galaxyState.mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-        galaxyState.mouseY = -((e.clientY / window.innerHeight) * 2 - 1);
-      },
-      { passive: true }
-    );
-    window.addEventListener(
-      "scroll",
-      () => {
-        const max = window.innerHeight * 1.2; // Most effect happens in first viewport
-        galaxyState.scroll = Math.min(1, window.scrollY / max);
-      },
-      { passive: true }
-    );
-  }
-}
 
 const vertexShader = /* glsl */ `
   precision highp float;
@@ -137,9 +115,32 @@ const fragmentShader = /* glsl */ `
   }
 `;
 
+import { useEffect } from "react";
+
 export const ParticleGalaxy: React.FC = () => {
   const pointsRef = useRef<THREE.Points>(null);
   const { gl } = useThree();
+
+  // Setup and clean up window event listeners inside lifecycle to prevent leaks and HMR closures issues
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      galaxyState.mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+      galaxyState.mouseY = -((e.clientY / window.innerHeight) * 2 - 1);
+    };
+
+    const handleScroll = () => {
+      const max = window.innerHeight * 1.2;
+      galaxyState.scroll = Math.min(1, window.scrollY / max);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   // Build geometry once
   const geometry = useMemo(() => {
@@ -202,6 +203,14 @@ export const ParticleGalaxy: React.FC = () => {
       }),
     [gl]
   );
+
+  // Clean up geometry & material WebGL resources on unmount to prevent GPU memory leak
+  useEffect(() => {
+    return () => {
+      geometry.dispose();
+      material.dispose();
+    };
+  }, [geometry, material]);
 
   // Damped state for smooth interaction
   const dampedMouse = useRef(new THREE.Vector2(0, 0));

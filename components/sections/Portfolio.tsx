@@ -22,6 +22,7 @@ interface PortfolioWork {
     actualCost: string;
   };
   tags: string[];
+  comingSoon?: boolean;
 }
 
 const works: PortfolioWork[] = [
@@ -41,6 +42,7 @@ const works: PortfolioWork[] = [
       actualCost: "$7,200",
     },
     tags: ["Sci-Fi", "Action", "8K Render", "Anamorphic"],
+    comingSoon: true,
   },
   {
     id: 2,
@@ -58,6 +60,7 @@ const works: PortfolioWork[] = [
       actualCost: "$3,800",
     },
     tags: ["Luxury", "Product", "Photorealism", "Subsurface"],
+    comingSoon: true,
   },
   {
     id: 3,
@@ -75,6 +78,7 @@ const works: PortfolioWork[] = [
       actualCost: "$11,500",
     },
     tags: ["Sci-Fi", "Cityscape", "Cyberpunk", "VFX"],
+    comingSoon: true,
   },
 ];
 
@@ -100,95 +104,136 @@ export function Portfolio() {
   return (
     <section id="portfolio" className="py-24 relative">
       <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row items-end justify-between mb-16 gap-4">
-          <div>
-            <span className="text-[var(--color-copper)] text-xs font-mono tracking-[0.3em] uppercase mb-2 block">
-              Portfolio · Reveal The Process
+        <div className="mb-16">
+          <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-ivory)]">
+            بصمتنا في{" "}
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-copper)] to-[var(--color-champagne)]">
+              المستقبل
             </span>
-            <h2 className="text-4xl md:text-5xl font-bold text-[var(--color-ivory)]">
-              بصمتنا في{" "}
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-[var(--color-copper)] to-[var(--color-champagne)]">
-                المستقبل
-              </span>
-            </h2>
-            <p className="text-[var(--color-ivory)]/60 mt-3 text-sm max-w-md">
-              اضغط على أي عمل لكشف الفرق بين الإنتاج التقليدي وإنتاج إيكونوڤا.
-            </p>
-          </div>
-          <Button variant="outline">شاهد جميع الأعمال</Button>
+          </h2>
+          <p className="text-[var(--color-ivory)]/60 mt-3 text-sm max-w-xl">
+            قريبا سيتم الاعلان عن اعمالنا الابداعية لتكون مصدر إلهام لعلامتكم التجارية
+          </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {works.map((work, index) => (
-            <motion.button
-              key={work.id}
-              type="button"
-              initial={{ opacity: 0, scale: 0.92, y: 30 }}
-              whileInView={{ opacity: 1, scale: 1, y: 0 }}
-              viewport={{ once: true, margin: "-50px" }}
-              transition={{ delay: index * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-              onClick={() => setActiveWork(work)}
-              className="group relative h-[500px] rounded-2xl overflow-hidden cursor-pointer text-right block w-full focus:outline-none focus:ring-2 focus:ring-[var(--color-copper)]"
-              aria-label={`عرض تفاصيل ${work.title}`}
-            >
-              {/* Image */}
-              <Image
-                src={work.image}
-                alt={work.title}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover transition-transform duration-1000 group-hover:scale-110"
-              />
+          {works.map((work, index) => {
+            if (work.comingSoon) {
+              return (
+                <motion.div
+                  key={work.id}
+                  initial={{ opacity: 0, scale: 0.92, y: 30 }}
+                  whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ delay: index * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                  className="group relative h-[500px] rounded-2xl overflow-hidden cursor-default text-right block w-full focus:outline-none"
+                  aria-label={`${work.title} - قريباً`}
+                >
+                  {/* Image */}
+                  <Image
+                    src={work.image}
+                    alt={work.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    className="object-cover transition-transform duration-1000 blur-[8px] scale-105"
+                  />
 
-              {/* Gradient Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/10 transition-opacity duration-500" />
+                  {/* Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/10 transition-opacity duration-500" />
 
-              {/* Tags Strip (visible on hover) */}
-              <div className="absolute top-4 right-4 left-4 z-10 flex flex-wrap gap-2 justify-end opacity-0 translate-y-[-10px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
-                {work.tags.slice(0, 3).map((tag) => (
-                  <span
-                    key={tag}
-                    className="px-2.5 py-1 text-[10px] font-mono tracking-wider uppercase rounded-full bg-white/10 backdrop-blur-md text-white border border-white/20"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
+                  {/* "Coming Soon" Badge */}
+                  <div className="absolute inset-0 flex items-center justify-center z-20">
+                    <div className="px-6 py-3 rounded-2xl bg-black/60 backdrop-blur-xl border border-white/10 flex items-center gap-2.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
+                      <Clock className="w-5 h-5 text-[var(--color-copper)] animate-pulse" />
+                      <span className="text-base font-bold tracking-wider text-[var(--color-champagne)]">
+                        قريباً
+                      </span>
+                    </div>
+                  </div>
 
-              {/* "Reveal" CTA Badge - centered */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-90 group-hover:scale-100">
-                <div className="w-16 h-16 rounded-full bg-[var(--color-copper)]/20 backdrop-blur-md border-2 border-[var(--color-copper)] flex items-center justify-center shadow-[0_0_30px_rgba(217,112,64,0.5)]">
-                  <ArrowLeftRight className="w-7 h-7 text-[var(--color-champagne)]" />
+                  {/* Bottom Content */}
+                  <div className="absolute bottom-0 left-0 right-0 p-8 transform transition-all duration-500 blur-[6px] select-none">
+                    <span className="text-[var(--color-copper)] text-xs font-bold tracking-widest mb-2 block">
+                      {work.category}
+                    </span>
+                    <h4 className="text-2xl font-bold text-white mb-2">{work.title}</h4>
+                    <p className="text-gray-300/80 text-sm leading-relaxed">{work.desc}</p>
+                  </div>
+                </motion.div>
+              );
+            }
+
+            return (
+              <motion.button
+                key={work.id}
+                type="button"
+                initial={{ opacity: 0, scale: 0.92, y: 30 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: index * 0.12, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                onClick={() => setActiveWork(work)}
+                className="group relative h-[500px] rounded-2xl overflow-hidden cursor-pointer text-right block w-full focus:outline-none focus:ring-2 focus:ring-[var(--color-copper)]"
+                aria-label={`عرض تفاصيل ${work.title}`}
+              >
+                {/* Image */}
+                <Image
+                  src={work.image}
+                  alt={work.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  className="object-cover transition-transform duration-1000 group-hover:scale-110"
+                />
+
+                {/* Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-black/10 transition-opacity duration-500" />
+
+                {/* Tags Strip (visible on hover) */}
+                <div className="absolute top-4 right-4 left-4 z-10 flex flex-wrap gap-2 justify-end opacity-0 translate-y-[-10px] group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-500">
+                  {work.tags.slice(0, 3).map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2.5 py-1 text-[10px] font-mono tracking-wider uppercase rounded-full bg-white/10 backdrop-blur-md text-white border border-white/20"
+                    >
+                      {tag}
+                    </span>
+                  ))}
                 </div>
-                <span className="px-3 py-1 text-[11px] font-bold tracking-widest uppercase rounded-full bg-black/70 backdrop-blur-md text-white border border-white/20">
-                  كشف الفارق
-                </span>
-              </div>
 
-              {/* Bottom Content */}
-              <div className="absolute bottom-0 left-0 right-0 p-8 transform transition-all duration-500 group-hover:pb-10">
-                <span className="text-[var(--color-copper)] text-xs font-bold tracking-widest mb-2 block">
-                  {work.category}
-                </span>
-                <h4 className="text-2xl font-bold text-white mb-2">{work.title}</h4>
-                <p className="text-gray-300 text-sm">{work.desc}</p>
-
-                {/* Quick stat strip */}
-                <div className="mt-4 flex items-center gap-3 text-[11px] text-white/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-150">
-                  <span className="flex items-center gap-1">
-                    <Clock className="w-3 h-3" /> {work.stats.renderTime}
-                  </span>
-                  <span className="w-px h-3 bg-white/20" />
-                  <span className="flex items-center gap-1">
-                    <Sparkles className="w-3 h-3" /> {work.stats.iterations}
+                {/* "Reveal" CTA Badge - centered */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex flex-col items-center gap-3 opacity-0 group-hover:opacity-100 transition-all duration-500 scale-90 group-hover:scale-100">
+                  <div className="w-16 h-16 rounded-full bg-[var(--color-copper)]/20 backdrop-blur-md border-2 border-[var(--color-copper)] flex items-center justify-center shadow-[0_0_30px_rgba(217,112,64,0.5)]">
+                    <ArrowLeftRight className="w-7 h-7 text-[var(--color-champagne)]" />
+                  </div>
+                  <span className="px-3 py-1 text-[11px] font-bold tracking-widest uppercase rounded-full bg-black/70 backdrop-blur-md text-white border border-white/20">
+                    كشف الفارق
                   </span>
                 </div>
-              </div>
 
-              {/* Subtle copper border on hover */}
-              <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-[var(--color-copper)]/40 transition-colors duration-500 pointer-events-none" />
-            </motion.button>
-          ))}
+                {/* Bottom Content */}
+                <div className="absolute bottom-0 left-0 right-0 p-8 transform transition-all duration-500 group-hover:pb-10">
+                  <span className="text-[var(--color-copper)] text-xs font-bold tracking-widest mb-2 block">
+                    {work.category}
+                  </span>
+                  <h4 className="text-2xl font-bold text-white mb-2">{work.title}</h4>
+                  <p className="text-gray-300 text-sm">{work.desc}</p>
+
+                  {/* Quick stat strip */}
+                  <div className="mt-4 flex items-center gap-3 text-[11px] text-white/60 opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-150">
+                    <span className="flex items-center gap-1">
+                      <Clock className="w-3 h-3" /> {work.stats.renderTime}
+                    </span>
+                    <span className="w-px h-3 bg-white/20" />
+                    <span className="flex items-center gap-1">
+                      <Sparkles className="w-3 h-3" /> {work.stats.iterations}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Subtle copper border on hover */}
+                <div className="absolute inset-0 rounded-2xl border-2 border-transparent group-hover:border-[var(--color-copper)]/40 transition-colors duration-500 pointer-events-none" />
+              </motion.button>
+            );
+          })}
         </div>
       </div>
 

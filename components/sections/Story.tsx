@@ -272,7 +272,7 @@ export function Story() {
               {Array.from({ length: 8 }).map((_, i) => {
                 const startAngle = (i / 8) * 360;
                 const endAngle = ((i + 1) / 8) * 360;
-                const innerR = Math.round(apertureRadius * 70 * 1000) / 1000;
+                const innerR = Math.max(0.001, Math.round(apertureRadius * 70 * 1000) / 1000);
                 const outerR = 76;
                 const a1 = (startAngle * Math.PI) / 180;
                 const a2 = (endAngle * Math.PI) / 180;
@@ -358,7 +358,7 @@ export function Story() {
               {stanza.headline}
             </h2>
             <p
-              className="relative text-base md:text-lg text-[var(--color-ivory)] leading-relaxed font-light max-w-2xl mx-auto"
+              className="relative text-base md:text-lg text-[var(--color-ivory)] leading-relaxed font-semibold max-w-2xl mx-auto"
               style={{
                 textShadow:
                   "0 1px 3px rgba(0,0,0,0.95), 0 2px 10px rgba(0,0,0,0.85), 0 4px 20px rgba(0,0,0,0.7)",

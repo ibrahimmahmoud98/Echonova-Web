@@ -267,7 +267,7 @@ export const ContactPageReveal = () => {
                 {/* Header */}
                 <div className="mb-2 lg:mb-8 border-b border-white/5 pb-2 lg:pb-6">
                     <h2 className="text-2xl md:text-5xl font-bold text-white mb-1 lg:mb-2 text-right">
-                        ابدأ مشروعك
+                        ابدأ رحلتك.. وارسم بصمتك
                     </h2>
                     <p className="text-white/60 text-right text-sm lg:text-lg">
                         املأ النموذج وسنتواصل معك قريباً.

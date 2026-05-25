@@ -61,7 +61,7 @@ export default function AudioProductionPage() {
         <motion.div style={{ y: heroImgY, scale: 1.08 }} className="absolute inset-0 z-0">
           <Image
             src="/images/nova_whisper_void.png"
-            alt="NOVA WHISPER — صدى المشاعر"
+            alt="NOVA WHISPER — همس المشاعر"
             fill
             className="object-cover object-center"
             priority
@@ -150,7 +150,7 @@ export default function AudioProductionPage() {
           >
             <Link href="/contact">
               <button className="relative overflow-hidden px-7 py-3.5 rounded-full bg-[var(--color-copper)] text-white text-sm font-bold tracking-widest uppercase shadow-[0_0_30px_rgba(217,112,64,0.25)] hover:shadow-[0_0_50px_rgba(217,112,64,0.4)] hover:bg-[var(--color-copper-burn)] transition-all duration-500 hover:-translate-y-0.5">
-                ابدأ مشروعك
+                ابدأ رحلتك.. وارسم بصمتك
               </button>
             </Link>
             <span className="text-white/20 text-xs tracking-widest">

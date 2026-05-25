@@ -22,6 +22,7 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
 
   const hoverSound = useRef<HTMLAudioElement | null>(null);
   const clickSound = useRef<HTMLAudioElement | null>(null);
+  const fallbackCtxRef = useRef<AudioContext | null>(null);
 
   // Initialize audio elements + hydrate mute preference
   useEffect(() => {
@@ -65,6 +66,10 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
       } catch {}
       hoverSound.current = null;
       clickSound.current = null;
+      if (fallbackCtxRef.current) {
+        fallbackCtxRef.current.close().catch(() => {});
+        fallbackCtxRef.current = null;
+      }
     };
   }, []);
 
@@ -79,12 +84,21 @@ export function AudioProvider({ children }: { children: React.ReactNode }) {
   // WebAudio fallback tone (used if mp3 playback fails)
   const playFallbackTone = useCallback((freq: number, durationMs = 100) => {
     try {
+      if (typeof window === "undefined") return;
       const AudioContextClass =
         window.AudioContext ||
         (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       if (!AudioContextClass) return;
 
-      const ctx = new AudioContextClass();
+      if (!fallbackCtxRef.current) {
+        fallbackCtxRef.current = new AudioContextClass();
+      }
+
+      const ctx = fallbackCtxRef.current;
+      if (ctx.state === "suspended") {
+        ctx.resume().catch(() => {});
+      }
+
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
 

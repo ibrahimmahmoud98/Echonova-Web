@@ -82,7 +82,6 @@ export const CinematicShowcase = () => {
           <div className="flex items-center justify-center gap-3 mb-4 opacity-80">
               <span className="block w-8 h-px bg-[var(--color-copper)]/60" />
               <span className="text-[var(--color-copper)] text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase">
-                  Chapter 02 · Cinema
               </span>
               <span className="block w-8 h-px bg-[var(--color-copper)]/60" />
           </div>
@@ -101,7 +100,7 @@ export const CinematicShowcase = () => {
 
           {/* Tagline — italic, restrained */}
           <p className="text-[var(--color-ivory)]/70 text-sm md:text-base font-light italic max-w-md mx-auto leading-relaxed">
-              نروي قصة لا تُنسى — لا نسوّق منتجاً
+              ليس مجرد تسويق... بل قصة لا تُنسى
           </p>
       </div>
 

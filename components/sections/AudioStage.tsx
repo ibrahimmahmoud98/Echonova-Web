@@ -1,257 +1,51 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import Link from "next/link";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import { useAudio } from "@/components/audio/AudioEngine";
 import { LiquidButton } from "@/components/ui/LiquidButton";
 import { Mic2, Play, Square, Volume2, Heart, Shield, Globe, Activity } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 /**
- * AudioStage — replaces the static AudioShowcase.
+ * AudioStage — real-audio rebuild.
  *
- * The previous section was paradoxical: a "Sound" service with zero audio
- * playable on the page. This rebuild fixes that with a real WebAudio engine:
+ * Plays five ECHONOVA brand tracks through an <audio> element routed into a
+ * WebAudio analyser, so the radial visualizer still reacts to the live signal.
  *
- *   • Five procedurally-generated tracks (oscillator + envelope synthesis)
- *     covering the brand-anthem / ambient / sting / VO-bed / pulse moods
+ *   • Five real tracks served from /audio
  *   • Real-time frequency analyser feeding a Canvas visualizer
- *     (radial spectrum + reactive waveform line + ambient particles)
+ *     (radial spectrum + reactive waveform line + center glow)
  *   • Center play button — click to listen; click again to stop
- *   • Five "track cards" replace the old static thumbnails
- *   • Respects the global MuteToggle (won't autoplay if user has muted)
- *
- * NB: tracks are generated client-side from AudioContext primitives so we
- * don't need to ship audio files. They sound minimal but musical, designed
- * to demonstrate the "we engineer sound, not just generate it" thesis.
+ *   • Five "track cards" switch the active song
+ *   • Respects the global MuteToggle
  */
 
 interface Track {
   id: string;
   name: string;
-  sub: string;
-  duration: number; // seconds
-  generator: (ctx: AudioContext, dest: AudioNode) => () => void;
-  feature: { icon: React.ComponentType<{ className?: string }>; title: string };
-}
-
-// ====================================================================
-// TRACK GENERATORS — each returns a stop function
-// ====================================================================
-
-function brandAnthem(ctx: AudioContext, dest: AudioNode) {
-  // Sustained pad with arpeggio bell on top
-  const now = ctx.currentTime;
-  const stops: (() => void)[] = [];
-
-  // PAD: detuned saw stack -> low pass -> long envelope
-  const padNotes = [98, 147, 196]; // G2, D3, G3
-  padNotes.forEach((freq, i) => {
-    const o1 = ctx.createOscillator();
-    const o2 = ctx.createOscillator();
-    o1.type = "sawtooth";
-    o2.type = "sawtooth";
-    o1.frequency.setValueAtTime(freq, now);
-    o2.frequency.setValueAtTime(freq * 1.005, now); // detune
-    const filter = ctx.createBiquadFilter();
-    filter.type = "lowpass";
-    filter.frequency.setValueAtTime(400, now);
-    filter.frequency.linearRampToValueAtTime(1200, now + 4);
-    filter.Q.value = 4;
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0.0001, now);
-    g.gain.exponentialRampToValueAtTime(0.07, now + 1.5);
-    g.gain.setValueAtTime(0.07, now + 9);
-    g.gain.exponentialRampToValueAtTime(0.0001, now + 12);
-    o1.connect(filter); o2.connect(filter); filter.connect(g); g.connect(dest);
-    o1.start(now + i * 0.1); o2.start(now + i * 0.1);
-    o1.stop(now + 12); o2.stop(now + 12);
-    stops.push(() => { try { o1.stop(); o2.stop(); } catch {} });
-  });
-
-  // ARP: triangle pings on a pentatonic
-  const arp = [392, 587, 784, 587, 659, 784]; // G4 D5 G5 D5 E5 G5
-  for (let i = 0; i < 16; i++) {
-    const t = now + 2 + i * 0.4;
-    const note = arp[i % arp.length] * (i > 8 ? 2 : 1);
-    const o = ctx.createOscillator();
-    o.type = "triangle";
-    o.frequency.setValueAtTime(note, t);
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0.0001, t);
-    g.gain.exponentialRampToValueAtTime(0.06, t + 0.01);
-    g.gain.exponentialRampToValueAtTime(0.0001, t + 0.4);
-    o.connect(g); g.connect(dest);
-    o.start(t); o.stop(t + 0.5);
-    stops.push(() => { try { o.stop(); } catch {} });
-  }
-
-  return () => stops.forEach((s) => s());
-}
-
-function ambient(ctx: AudioContext, dest: AudioNode) {
-  const now = ctx.currentTime;
-  const stops: (() => void)[] = [];
-
-  // Slow evolving sine drone with LFO modulation
-  const drones = [55, 82, 110, 165]; // A1 E2 A2 E3
-  drones.forEach((freq, i) => {
-    const o = ctx.createOscillator();
-    o.type = "sine";
-    o.frequency.setValueAtTime(freq, now);
-    const lfo = ctx.createOscillator();
-    lfo.frequency.value = 0.1 + i * 0.05;
-    const lfoGain = ctx.createGain();
-    lfoGain.gain.value = freq * 0.005;
-    lfo.connect(lfoGain); lfoGain.connect(o.frequency);
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0.0001, now);
-    g.gain.exponentialRampToValueAtTime(0.04, now + 3);
-    g.gain.setValueAtTime(0.04, now + 12);
-    g.gain.exponentialRampToValueAtTime(0.0001, now + 15);
-    o.connect(g); g.connect(dest);
-    o.start(now); lfo.start(now);
-    o.stop(now + 15); lfo.stop(now + 15);
-    stops.push(() => { try { o.stop(); lfo.stop(); } catch {} });
-  });
-
-  return () => stops.forEach((s) => s());
-}
-
-function cinematicSting(ctx: AudioContext, dest: AudioNode) {
-  const now = ctx.currentTime;
-  const stops: (() => void)[] = [];
-
-  // Low rumble + bright stab + tail noise
-  const rumble = ctx.createOscillator();
-  rumble.type = "sine";
-  rumble.frequency.setValueAtTime(40, now);
-  rumble.frequency.exponentialRampToValueAtTime(28, now + 5);
-  const rumbleGain = ctx.createGain();
-  rumbleGain.gain.setValueAtTime(0.4, now);
-  rumbleGain.gain.exponentialRampToValueAtTime(0.001, now + 5);
-  rumble.connect(rumbleGain); rumbleGain.connect(dest);
-  rumble.start(now); rumble.stop(now + 5);
-  stops.push(() => { try { rumble.stop(); } catch {} });
-
-  // Stab — square + filter sweep
-  const stab = ctx.createOscillator();
-  stab.type = "square";
-  stab.frequency.setValueAtTime(330, now + 0.05);
-  const stabFilter = ctx.createBiquadFilter();
-  stabFilter.type = "lowpass";
-  stabFilter.frequency.setValueAtTime(2400, now + 0.05);
-  stabFilter.frequency.exponentialRampToValueAtTime(180, now + 1.5);
-  const stabGain = ctx.createGain();
-  stabGain.gain.setValueAtTime(0.0001, now + 0.05);
-  stabGain.gain.exponentialRampToValueAtTime(0.18, now + 0.08);
-  stabGain.gain.exponentialRampToValueAtTime(0.0001, now + 1.5);
-  stab.connect(stabFilter); stabFilter.connect(stabGain); stabGain.connect(dest);
-  stab.start(now + 0.05); stab.stop(now + 1.6);
-  stops.push(() => { try { stab.stop(); } catch {} });
-
-  // Tail noise (like cymbal swell)
-  const buf = ctx.createBuffer(1, ctx.sampleRate * 4, ctx.sampleRate);
-  const data = buf.getChannelData(0);
-  for (let i = 0; i < data.length; i++) {
-    const t = i / data.length;
-    data[i] = (Math.random() * 2 - 1) * Math.pow(1 - t, 1.5);
-  }
-  const noise = ctx.createBufferSource();
-  noise.buffer = buf;
-  const noiseFilter = ctx.createBiquadFilter();
-  noiseFilter.type = "highpass";
-  noiseFilter.frequency.value = 4000;
-  const noiseGain = ctx.createGain();
-  noiseGain.gain.setValueAtTime(0.0001, now);
-  noiseGain.gain.exponentialRampToValueAtTime(0.06, now + 0.5);
-  noiseGain.gain.exponentialRampToValueAtTime(0.0001, now + 4);
-  noise.connect(noiseFilter); noiseFilter.connect(noiseGain); noiseGain.connect(dest);
-  noise.start(now);
-  stops.push(() => { try { noise.stop(); } catch {} });
-
-  return () => stops.forEach((s) => s());
-}
-
-function voBed(ctx: AudioContext, dest: AudioNode) {
-  const now = ctx.currentTime;
-  const stops: (() => void)[] = [];
-
-  // Soft warm pad — 3rd + 5th
-  const notes = [110, 138.6, 165]; // A2 C#3 E3
-  notes.forEach((freq, i) => {
-    const o = ctx.createOscillator();
-    o.type = "triangle";
-    o.frequency.setValueAtTime(freq, now);
-    const filter = ctx.createBiquadFilter();
-    filter.type = "lowpass";
-    filter.frequency.value = 800;
-    const g = ctx.createGain();
-    g.gain.setValueAtTime(0.0001, now);
-    g.gain.exponentialRampToValueAtTime(0.06 - i * 0.01, now + 2);
-    g.gain.setValueAtTime(0.06 - i * 0.01, now + 8);
-    g.gain.exponentialRampToValueAtTime(0.0001, now + 10);
-    o.connect(filter); filter.connect(g); g.connect(dest);
-    o.start(now + i * 0.05); o.stop(now + 10);
-    stops.push(() => { try { o.stop(); } catch {} });
-  });
-
-  return () => stops.forEach((s) => s());
-}
-
-function tribalPulse(ctx: AudioContext, dest: AudioNode) {
-  const now = ctx.currentTime;
-  const stops: (() => void)[] = [];
-
-  // Sub bass kick on beat + percussive blip
-  const bpm = 92;
-  const beat = 60 / bpm;
-  const totalBeats = 16;
-
-  for (let i = 0; i < totalBeats; i++) {
-    const t = now + i * beat * 0.5;
-
-    // Kick
-    if (i % 2 === 0) {
-      const k = ctx.createOscillator();
-      k.frequency.setValueAtTime(80, t);
-      k.frequency.exponentialRampToValueAtTime(35, t + 0.08);
-      const kg = ctx.createGain();
-      kg.gain.setValueAtTime(0.4, t);
-      kg.gain.exponentialRampToValueAtTime(0.001, t + 0.15);
-      k.connect(kg); kg.connect(dest);
-      k.start(t); k.stop(t + 0.2);
-      stops.push(() => { try { k.stop(); } catch {} });
-    }
-
-    // Tick
-    if (i % 4 === 1 || i % 4 === 3) {
-      const o = ctx.createOscillator();
-      o.type = "square";
-      o.frequency.value = 1200 + (Math.random() * 400);
-      const filter = ctx.createBiquadFilter();
-      filter.type = "highpass";
-      filter.frequency.value = 800;
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0.05, t);
-      g.gain.exponentialRampToValueAtTime(0.001, t + 0.06);
-      o.connect(filter); filter.connect(g); g.connect(dest);
-      o.start(t); o.stop(t + 0.1);
-      stops.push(() => { try { o.stop(); } catch {} });
-    }
-  }
-
-  return () => stops.forEach((s) => s());
+  src: string;
+  duration: number; // seconds — used for the card label
+  icon: React.ComponentType<{ className?: string }>;
 }
 
 const TRACKS: Track[] = [
-  { id: "anthem",  name: "نشيد البراند",   sub: "Brand Anthem",     duration: 12, generator: brandAnthem,    feature: { icon: Heart,    title: "الارتباط الوجداني" } },
-  { id: "ambient", name: "فضاء صوتي",       sub: "Ambient",          duration: 15, generator: ambient,        feature: { icon: Globe,    title: "بُعد لانهائي" } },
-  { id: "sting",   name: "نبرة سينمائية",  sub: "Cinematic Sting",  duration: 5,  generator: cinematicSting, feature: { icon: Activity, title: "وقع لحظي" } },
-  { id: "vo",      name: "بطانة صوت",       sub: "VO Bed",           duration: 10, generator: voBed,          feature: { icon: Mic2,     title: "حضن للصوت" } },
-  { id: "pulse",   name: "نبض قبَلي",       sub: "Tribal Pulse",     duration: 12, generator: tribalPulse,    feature: { icon: Shield,   title: "إيقاع جذري" } },
+  { id: "wing",  name: "إيكونوڤا جناح",                     src: "/audio/echonova-wing.mp3",      duration: 229, icon: Heart },
+  { id: "eid",   name: "أغنية العيد الرسمية لوزارة الاسكان", src: "/audio/housing-eid-anthem.mp3", duration: 46,  icon: Globe },
+  { id: "asia",  name: "كبير آسيا",                         src: "/audio/kabeer-asia.mp3",        duration: 61,  icon: Activity },
+  { id: "eidna", name: "عيدنا افراح و هَنا",                src: "/audio/eidna-afrah.mp3",        duration: 88,  icon: Mic2 },
+  { id: "azrag", name: "ازرق ازرق كحل يا كبير",             src: "/audio/azrag-azrag.mp3",        duration: 136, icon: Shield },
 ];
+
+/** Formats a seconds count as m:ss. */
+function formatTime(total: number): string {
+  if (!isFinite(total) || total < 0) total = 0;
+  const m = Math.floor(total / 60);
+  const s = Math.round(total % 60);
+  if (s === 60) return `${m + 1}:00`;
+  return `${m}:${String(s).padStart(2, "0")}`;
+}
 
 // ====================================================================
 // COMPONENT
@@ -265,33 +59,38 @@ export function AudioStage() {
   const [progress, setProgress] = useState(0);
   const [hasInteracted, setHasInteracted] = useState(false);
 
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const ctxRef = useRef<AudioContext | null>(null);
   const masterGainRef = useRef<GainNode | null>(null);
   const analyserRef = useRef<AnalyserNode | null>(null);
-  const stopFnRef = useRef<(() => void) | null>(null);
-  const startTimeRef = useRef(0);
+  const sourceRef = useRef<MediaElementAudioSourceNode | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rafRef = useRef<number | null>(null);
-  const stopTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const active = TRACKS.find((t) => t.id === activeId)!;
 
-  // Lazy AudioContext
-  const ensureContext = useCallback(() => {
+  // Lazily wire the WebAudio graph: <audio> -> master gain -> analyser -> out.
+  // Must run inside a user gesture so the AudioContext is allowed to start.
+  const ensureGraph = useCallback(() => {
+    const audioEl = audioRef.current;
+    if (!audioEl) return null;
     if (!ctxRef.current) {
       const Ctx = window.AudioContext ||
         (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
       const ctx = new Ctx();
       ctxRef.current = ctx;
       const master = ctx.createGain();
-      master.gain.value = isMuted ? 0 : 0.7;
+      master.gain.value = isMuted ? 0 : 1;
       const analyser = ctx.createAnalyser();
       analyser.fftSize = 512;
       analyser.smoothingTimeConstant = 0.78;
+      const source = ctx.createMediaElementSource(audioEl);
+      source.connect(master);
       master.connect(analyser);
       analyser.connect(ctx.destination);
       masterGainRef.current = master;
       analyserRef.current = analyser;
+      sourceRef.current = source;
     }
     if (ctxRef.current.state === "suspended") {
       ctxRef.current.resume();
@@ -303,42 +102,41 @@ export function AudioStage() {
   useEffect(() => {
     if (masterGainRef.current && ctxRef.current) {
       masterGainRef.current.gain.linearRampToValueAtTime(
-        isMuted ? 0 : 0.7,
+        isMuted ? 0 : 1,
         ctxRef.current.currentTime + 0.1
       );
     }
   }, [isMuted]);
 
   const stopPlayback = useCallback(() => {
-    if (stopFnRef.current) { stopFnRef.current(); stopFnRef.current = null; }
-    if (stopTimerRef.current) { clearTimeout(stopTimerRef.current); stopTimerRef.current = null; }
+    const audioEl = audioRef.current;
+    if (audioEl) {
+      audioEl.pause();
+      audioEl.currentTime = 0;
+    }
     setIsPlaying(false);
     setProgress(0);
   }, []);
 
   const startPlayback = useCallback((trackId: string) => {
     const track = TRACKS.find((t) => t.id === trackId);
-    if (!track) return;
+    const audioEl = audioRef.current;
+    if (!track || !audioEl) return;
 
-    if (stopFnRef.current) {
-      stopFnRef.current();
-      stopFnRef.current = null;
+    ensureGraph();
+
+    // Swap the source only when switching to a different track
+    if (!audioEl.src || !audioEl.src.endsWith(track.src)) {
+      audioEl.src = track.src;
     }
+    audioEl.currentTime = 0;
+    const playPromise = audioEl.play();
+    if (playPromise) playPromise.catch(() => {});
 
-    const ctx = ensureContext();
-    const master = masterGainRef.current!;
-    const stopFn = track.generator(ctx, master);
-    stopFnRef.current = stopFn;
-    startTimeRef.current = ctx.currentTime;
     setActiveId(trackId);
     setIsPlaying(true);
     setHasInteracted(true);
-
-    if (stopTimerRef.current) clearTimeout(stopTimerRef.current);
-    stopTimerRef.current = setTimeout(() => {
-      stopPlayback();
-    }, track.duration * 1000);
-  }, [ensureContext, stopPlayback]);
+  }, [ensureGraph]);
 
   const handlePlayToggle = useCallback(() => {
     playClick();
@@ -355,12 +153,24 @@ export function AudioStage() {
     }
   }, [isPlaying, startPlayback, playClick]);
 
+  // Reset play state when a track finishes on its own
+  useEffect(() => {
+    const audioEl = audioRef.current;
+    if (!audioEl) return;
+    const onEnded = () => {
+      setIsPlaying(false);
+      setProgress(0);
+    };
+    audioEl.addEventListener("ended", onEnded);
+    return () => audioEl.removeEventListener("ended", onEnded);
+  }, []);
+
   // Cleanup on unmount
   useEffect(() => {
+    const audioEl = audioRef.current;
     return () => {
-      if (stopFnRef.current) stopFnRef.current();
-      if (stopTimerRef.current) clearTimeout(stopTimerRef.current);
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      if (audioEl) audioEl.pause();
       if (ctxRef.current) ctxRef.current.close().catch(() => {});
     };
   }, []);
@@ -479,27 +289,29 @@ export function AudioStage() {
   // Progress tracking
   useEffect(() => {
     if (!isPlaying) return;
-    const ctx = ctxRef.current;
-    if (!ctx) return;
-    const total = active.duration;
+    const audioEl = audioRef.current;
+    if (!audioEl) return;
     let raf: number;
     const tick = () => {
-      const elapsed = ctx.currentTime - startTimeRef.current;
-      setProgress(Math.min(1, elapsed / total));
+      if (audioEl.duration > 0) {
+        setProgress(Math.min(1, audioEl.currentTime / audioEl.duration));
+      }
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [isPlaying, active.duration]);
+  }, [isPlaying]);
 
   return (
     <section className="relative w-full py-20 md:py-28">
+      {/* Hidden audio element — routed into the WebAudio graph */}
+      <audio ref={audioRef} preload="none" crossOrigin="anonymous" className="hidden" />
+
       {/* Header */}
       <div className="container mx-auto px-4 mb-14 text-center">
         <div className="flex items-center justify-center gap-3 mb-4 opacity-80">
           <span className="block w-8 h-px bg-[var(--color-copper)]/60" />
           <span className="text-[var(--color-copper)] text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase">
-            Chapter 03 · Sound
           </span>
           <span className="block w-8 h-px bg-[var(--color-copper)]/60" />
         </div>
@@ -512,7 +324,7 @@ export function AudioStage() {
           <span className="block w-16 md:w-24 h-px bg-gradient-to-l from-transparent to-[var(--color-copper)]/50" />
         </div>
         <p className="text-[var(--color-ivory)]/70 max-w-md mx-auto text-base md:text-lg font-light italic">
-          نهندس الصدى — الموسيقى تأتي بعد ذلك
+          ليست مجرد اغنية بل احساس يلامس روح المستمع
         </p>
       </div>
 
@@ -575,11 +387,8 @@ export function AudioStage() {
             </motion.button>
           </div>
 
-          {/* Track meta — bottom-left of visualizer */}
+          {/* Track meta — bottom-right of visualizer */}
           <div className="absolute bottom-6 right-6 z-10 pointer-events-none text-right" dir="rtl">
-            <div className="text-[10px] font-mono tracking-[0.3em] text-[var(--color-copper)]/80 uppercase mb-1">
-              {active.sub}
-            </div>
             <div className="text-xl md:text-2xl font-bold text-white drop-shadow-lg">
               {active.name}
             </div>
@@ -631,7 +440,7 @@ export function AudioStage() {
         <div className="mt-10 grid grid-cols-2 md:grid-cols-5 gap-3">
           {TRACKS.map((track) => {
             const isActive = track.id === activeId;
-            const Icon = track.feature.icon;
+            const Icon = track.icon;
             return (
               <motion.button
                 key={track.id}
@@ -656,9 +465,6 @@ export function AudioStage() {
                       isActive ? "text-[var(--color-copper)]" : "text-white/40"
                     )}
                   />
-                  <span className="text-[9px] font-mono tracking-[0.3em] uppercase opacity-60" dir="ltr">
-                    {track.sub}
-                  </span>
                 </div>
                 <div
                   className={cn(
@@ -669,7 +475,7 @@ export function AudioStage() {
                   {track.name}
                 </div>
                 <div className="text-[10px] text-white/40 font-mono">
-                  {track.duration}s
+                  {formatTime(track.duration)}
                 </div>
                 {isActive && isPlaying && (
                   <div className="absolute top-2 left-2 flex items-end gap-px h-3">

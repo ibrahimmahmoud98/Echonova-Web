@@ -1,0 +1,14 @@
+[27:54:07.182] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/client/components/builtin/global-not-found'
+Require stack:
+- /Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO lab/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO lab/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO lab/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO lab/node_modules/next/dist/server/lib/router-server.js
+- /Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO lab/node_modules/next/dist/server/lib/start-server.js
+[27:54:22.307] Server  ERROR   ⨯ Error: Cannot find module 'next/dist/client/components/builtin/global-not-found'
+Require stack:
+- /Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO lab/node_modules/next/dist/server/dev/on-demand-entry-handler.js
+- /Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO lab/node_modules/next/dist/server/dev/hot-reloader-turbopack.js
+- /Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO lab/node_modules/next/dist/server/lib/router-utils/setup-dev-bundler.js
+- /Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO lab/node_modules/next/dist/server/lib/router-server.js
+- /Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO lab/node_modules/next/dist/server/lib/start-server.js

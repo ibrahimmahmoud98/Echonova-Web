@@ -62,6 +62,11 @@ export function AuraGallery() {
   const { playClick, playHover } = useAudio();
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
   // Track which 14 indices we're showing. Periodically rotate one out.
   const [visibleIndices, setVisibleIndices] = useState<number[]>(
     () => Array.from({ length: VISIBLE_COUNT }, (_, i) => i)
@@ -214,7 +219,6 @@ export function AuraGallery() {
         <div className="flex items-center justify-center gap-3 mb-4 opacity-80">
           <span className="block w-8 h-px bg-[var(--color-copper)]/60" />
           <span className="text-[var(--color-copper)] text-[10px] md:text-xs font-mono tracking-[0.4em] uppercase">
-            Chapter 04 · Identity
           </span>
           <span className="block w-8 h-px bg-[var(--color-copper)]/60" />
         </div>
@@ -230,7 +234,7 @@ export function AuraGallery() {
           <span className="block w-16 md:w-24 h-px bg-gradient-to-l from-transparent to-[var(--color-copper)]/50" />
         </div>
         <p className="text-[var(--color-ivory)]/70 max-w-xl mx-auto text-sm md:text-base font-light italic">
-          مكتبة وجوه افتراضية مولّدة بالذكاء الاصطناعي. حرّك المؤشر لتستكشف. اضغط أي صورة لتغوص داخلها.
+          نبني موديلز رقميين يعبرون عن علامتكم التجارية و ينقلون رسائلكم لجمهوركم كما ينبغي
         </p>
       </div>
 
@@ -409,7 +413,7 @@ export function AuraGallery() {
       </div>
 
       {/* ============ FOCUS MODE (Portal to body to escape GSAP transform) ============ */}
-      {typeof document !== "undefined" && createPortal(
+      {isMounted && createPortal(
         <AnimatePresence>
           {focusIndex !== null && (
             <motion.div

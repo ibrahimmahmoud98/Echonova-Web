@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import crypto from 'crypto';
 
 import { escapeHtml } from '@/lib/sanitize-html';
 
@@ -34,6 +35,45 @@ function isRateLimited(ip: string): { limited: boolean; remaining: number } {
 }
 
 // ============================================
+// CRYPTOGRAPHIC RATE LIMITING (Serverless State via Signed Cookies)
+// ============================================
+const COOKIE_SECRET = process.env.RESEND_API_KEY || 'echonova-studio-fallback-secret-key-1823908';
+
+function signPayload(payload: string): string {
+  return crypto.createHmac('sha256', COOKIE_SECRET).update(payload).digest('hex');
+}
+
+function verifyAndRotateCookie(request: Request, clientIP: string): { limited: boolean; count: number; resetTime: number } {
+  const now = Date.now();
+  try {
+    const cookieHeader = request.headers.get('cookie') || '';
+    const match = cookieHeader.match(/ens_rl_token=([^;]+)/);
+    if (match) {
+      const token = decodeURIComponent(match[1]);
+      const [payload, signature] = token.split('.');
+      if (payload && signature) {
+        const expectedSignature = signPayload(payload);
+        if (signature === expectedSignature) {
+          const [cookieIP, timestampStr, countStr] = payload.split(':');
+          const timestamp = parseInt(timestampStr, 10);
+          const count = parseInt(countStr, 10);
+
+          if (cookieIP === clientIP && now < timestamp) {
+            if (count >= RATE_LIMIT_MAX) {
+              return { limited: true, count, resetTime: timestamp };
+            }
+            return { limited: false, count: count + 1, resetTime: timestamp };
+          }
+        }
+      }
+    }
+  } catch (e) {
+    // Ignore error and fallback
+  }
+  return { limited: false, count: 1, resetTime: now + RATE_LIMIT_WINDOW_MS };
+}
+
+// ============================================
 // CSRF VALIDATION
 // ============================================
 function validateCSRFToken(request: Request): boolean {
@@ -50,8 +90,22 @@ function validateCSRFToken(request: Request): boolean {
     allowedOrigins.push('http://localhost:3000');
   }
   
-  if (origin && allowedOrigins.some(o => origin.startsWith(o))) return true;
-  if (referer && allowedOrigins.some(o => referer.startsWith(o))) return true;
+  const verifyHost = (urlStr: string): boolean => {
+    try {
+      const url = new URL(urlStr);
+      return allowedOrigins.includes(url.origin);
+    } catch {
+      return false;
+    }
+  };
+
+  if (origin) {
+    return verifyHost(origin);
+  }
+  
+  if (referer) {
+    return verifyHost(referer);
+  }
   
   return false;
 }
@@ -67,7 +121,14 @@ export async function POST(request: Request) {
 
   // 1. Rate Limiting Check
   const clientIP = getClientIP(request);
-  const { limited, remaining } = isRateLimited(clientIP);
+
+  // 1.1 Check cryptographically signed cookie (Serverless State)
+  const cookieCheck = verifyAndRotateCookie(request, clientIP);
+
+  // 1.2 Check in-memory store (Fallback for programmatic/non-cookie clients)
+  const inMemoryCheck = isRateLimited(clientIP);
+
+  const limited = cookieCheck.limited || inMemoryCheck.limited;
   
   if (limited) {
     return NextResponse.json(
@@ -172,7 +233,24 @@ export async function POST(request: Request) {
       );
     }
 
-    return NextResponse.json({ success: true, id: data.data?.id });
+    const response = NextResponse.json({ success: true, id: data.data?.id });
+
+    // Set signed cookie to persist rate limit state in browser across serverless boots
+    const newCount = cookieCheck.count;
+    const resetTime = cookieCheck.resetTime;
+    const payload = `${clientIP}:${resetTime}:${newCount}`;
+    const signature = signPayload(payload);
+    const token = `${payload}.${signature}`;
+    
+    response.cookies.set('ens_rl_token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      path: '/api/send-email',
+      maxAge: Math.max(0, Math.ceil((resetTime - Date.now()) / 1000)),
+    });
+
+    return response;
 
   } catch (error: any) {
     // 6. Global Catch - Prevent Header/Crash Issues

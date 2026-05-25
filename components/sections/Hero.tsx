@@ -53,7 +53,7 @@ export function Hero() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1.5 }}
-            className="relative z-10 container mx-auto px-4 text-center pointer-events-none"
+            className="relative container mx-auto px-4 text-center pointer-events-none"
           >
             <ScrollReveal variant="fade-up">
               <div className="pointer-events-auto">
@@ -68,8 +68,12 @@ export function Hero() {
                 </motion.h1>
 
                 <motion.p
-                  style={{ y: subtitleY, opacity: subtitleOpacity }}
-                  className="text-lg md:text-2xl text-[var(--color-ivory)]/80 max-w-2xl mx-auto mb-12 font-light drop-shadow-lg will-change-transform"
+                  style={{ 
+                    y: subtitleY, 
+                    opacity: subtitleOpacity,
+                    textShadow: "0 2px 10px rgba(0, 0, 0, 0.9), 0 4px 30px rgba(0, 0, 0, 0.6)"
+                  }}
+                  className="text-lg md:text-2xl text-[var(--color-ivory)] max-w-2xl mx-auto mb-12 font-semibold will-change-transform"
                 >
                   نحن نوڤا الإبداع وصدى الأثر. ندمج الخيال البشري بالذكاء الاصطناعي لنصنع ما لا يمكن تصويره.
                 </motion.p>
