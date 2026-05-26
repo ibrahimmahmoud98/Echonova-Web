@@ -1,0 +1,66 @@
+# robots.txt — ECHONOVA STUDIO
+# Created on 2026-05-26 audit pass.
+# Source of truth: change here, not via <meta> tags.
+
+# --- Default crawlers ---
+User-Agent: *
+Allow: /
+Disallow: /api/
+Disallow: /_next/static/chunks/
+Disallow: /admin/
+
+# --- Generative AI crawlers (explicitly allowed — strengthens GEO) ---
+User-Agent: GPTBot
+Allow: /
+
+User-Agent: ChatGPT-User
+Allow: /
+
+User-Agent: OAI-SearchBot
+Allow: /
+
+User-Agent: ClaudeBot
+Allow: /
+
+User-Agent: Claude-Web
+Allow: /
+
+User-Agent: anthropic-ai
+Allow: /
+
+User-Agent: PerplexityBot
+Allow: /
+
+User-Agent: Perplexity-User
+Allow: /
+
+User-Agent: Google-Extended
+Allow: /
+
+User-Agent: Applebot
+Allow: /
+
+User-Agent: Applebot-Extended
+Allow: /
+
+User-Agent: Amazonbot
+Allow: /
+
+User-Agent: cohere-ai
+Allow: /
+
+User-Agent: Meta-ExternalAgent
+Allow: /
+
+User-Agent: Bytespider
+Allow: /
+
+# --- Denied (commercial scrapers, brand-risk) ---
+User-Agent: CCBot
+Disallow: /
+
+User-Agent: ImagesiftBot
+Disallow: /
+
+# --- Discovery ---
+Sitemap: https://www.echonovastudio.com/sitemap.xml
