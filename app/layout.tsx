@@ -92,7 +92,7 @@ export default function RootLayout({
               <WorldWrapper />
 
               {/* Main Content (Scrollable Z-10) */}
-              <div className="relative z-10 overflow-x-hidden">
+              <div className="relative z-10 overflow-x-clip">
                   {children}
               </div>
 
