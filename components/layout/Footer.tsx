@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 
-import { Twitter, Instagram, Youtube, Video } from "lucide-react";
+import { Twitter, Instagram, Youtube, Video, Linkedin } from "lucide-react";
 
 // Custom TikTok Icon since it's not in standard Lucide import
 const TikTok = ({ className }: { className?: string }) => (
@@ -53,6 +53,9 @@ export function Footer() {
                 </a>
                 <a href="https://youtube.com/@echonova_studio?si=p_E0sOxiUh_CqDU8" target="_blank" rel="noopener noreferrer" className="relative p-2 rounded-full border border-white/10 text-white hover:border-[var(--color-copper)] hover:text-[var(--color-copper)] hover:shadow-[0_0_15px_var(--color-copper)] transition-all duration-300 group" aria-label="YouTube">
                     <Youtube className="w-5 h-5 relative z-10" />
+                </a>
+                <a href="https://www.linkedin.com/company/echonovastudio-ai/?viewAsMember=true" target="_blank" rel="noopener noreferrer" className="relative p-2 rounded-full border border-white/10 text-white hover:border-[var(--color-copper)] hover:text-[var(--color-copper)] hover:shadow-[0_0_15px_var(--color-copper)] transition-all duration-300 group" aria-label="LinkedIn">
+                    <Linkedin className="w-5 h-5 relative z-10" />
                 </a>
             </div>
           </div>
