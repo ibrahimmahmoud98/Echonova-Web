@@ -1,0 +1,29 @@
+# جدول المهام المجدولة (Cron Jobs) لخط تنقيب العملاء - Echonova Studio
+# يرجى تشغيل الأمر: crontab /Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA\ STUDIO/scripts/cron_jobs.txt لتفعيلها
+
+# 1. مهمة التجميع العام: يتم تشغيلها كل يوم سبت الساعة 9:00 صباحاً
+0 9 * * 6 /usr/bin/python3 "/Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO/scripts/leads_pipeline.py" --stage 1 >> "/Users/suckmyballz/Desktop/ECHONOVA STUDIO/عملاء/العملاء المحتملين/cron_stage1.log" 2>&1
+
+# 2. مهمة المراجعة والتصنيف الأولية: يتم تشغيلها كل يوم أحد الساعة 9:00 صباحاً
+0 9 * * 7 /usr/bin/python3 "/Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO/scripts/leads_pipeline.py" --stage 2 >> "/Users/suckmyballz/Desktop/ECHONOVA STUDIO/عملاء/العملاء المحتملين/cron_stage2.log" 2>&1
+
+# 3. مهمة إعادة التحقق والتأهيل: يتم تشغيلها كل يوم أحد الساعة 12:00 ظهراً
+0 12 * * 7 /usr/bin/python3 "/Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO/scripts/leads_pipeline.py" --stage 3 >> "/Users/suckmyballz/Desktop/ECHONOVA STUDIO/عملاء/العملاء المحتملين/cron_stage3.log" 2>&1
+
+# 4. مهمة أولوية الاستهداف (حساب النقاط): يتم تشغيلها كل يوم اثنين الساعة 9:00 صباحاً
+0 9 * * 1 /usr/bin/python3 "/Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO/scripts/leads_pipeline.py" --stage 4 >> "/Users/suckmyballz/Desktop/ECHONOVA STUDIO/عملاء/العملاء المحتملين/cron_stage4.log" 2>&1
+
+# 5. مهمة دقة أولوية الاستهداف (المراجعة): يتم تشغيلها كل يوم اثنين الساعة 12:00 ظهراً
+0 12 * * 1 /usr/bin/python3 "/Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO/scripts/leads_pipeline.py" --stage 5 >> "/Users/suckmyballz/Desktop/ECHONOVA STUDIO/عملاء/العملاء المحتملين/cron_stage5.log" 2>&1
+
+# 6. مهمة جمع بيانات التواصل لصناع القرار: يتم تشغيلها كل يوم ثلاثاء الساعة 9:00 صباحاً
+0 9 * * 2 /usr/bin/python3 "/Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO/scripts/leads_pipeline.py" --stage 6 >> "/Users/suckmyballz/Desktop/ECHONOVA STUDIO/عملاء/العملاء المحتملين/cron_stage6.log" 2>&1
+
+# 7. مهمة التحقق من صحة بيانات التواصل (Hunter.io): يتم تشغيلها كل يوم ثلاثاء الساعة 12:00 ظهراً
+0 12 * * 2 /usr/bin/python3 "/Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO/scripts/leads_pipeline.py" --stage 7 >> "/Users/suckmyballz/Desktop/ECHONOVA STUDIO/عملاء/العملاء المحتملين/cron_stage7.log" 2>&1
+
+# 8/9. مهمة تقييم أولوية التواصل لصناع القرار: يتم تشغيلها كل يوم أربعاء الساعة 9:00 صباحاً
+0 9 * * 3 /usr/bin/python3 "/Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO/scripts/leads_pipeline.py" --stage 8 >> "/Users/suckmyballz/Desktop/ECHONOVA STUDIO/عملاء/العملاء المحتملين/cron_stage8_9.log" 2>&1
+
+# 10. مهمة التقييم العامة وتصدير التقارير: يتم تشغيلها كل يوم خميس الساعة 9:00 صباحاً
+0 9 * * 4 /usr/bin/python3 "/Users/suckmyballz/.gemini/antigravity/scratch/ECHONOVA STUDIO/scripts/leads_pipeline.py" --stage 10 >> "/Users/suckmyballz/Desktop/ECHONOVA STUDIO/عملاء/العملاء المحتملين/cron_stage10.log" 2>&1

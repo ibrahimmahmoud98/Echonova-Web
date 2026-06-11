@@ -37,9 +37,18 @@ const ICON_MAP: Record<string, LucideIcon> = {
 };
 const getIcon = (name: string): LucideIcon => ICON_MAP[name] || Film;
 
-export function CinemaTheatre() {
+interface CinemaTheatreProps {
+  /** تحكم خارجي في الوضع (مثل تابات صفحة الإنتاج السينمائي). اختياري — بدونه يعمل المكوّن كما في الصفحة القديمة. */
+  controlledMode?: Mode;
+  /** إخفاء مبدّل SAGA/CINEMA الداخلي عندما يكون التبديل من تابات الصفحة. */
+  hideToggle?: boolean;
+  /** إخفاء زر «اعرف أكثر» عند العرض داخل صفحة /services/cinema نفسها. */
+  hideMoreLink?: boolean;
+}
+
+export function CinemaTheatre({ controlledMode, hideToggle = false, hideMoreLink = false }: CinemaTheatreProps = {}) {
   const { playClick, playHover } = useAudio();
-  const [mode, setMode] = useState<Mode>("saga");
+  const [mode, setMode] = useState<Mode>(controlledMode ?? "saga");
   const [selectedIndex, setSelectedIndex] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const [featureIdx, setFeatureIdx] = useState(0);
@@ -74,6 +83,13 @@ export function CinemaTheatre() {
     },
     [mode, transitioning, playClick]
   );
+
+  // مزامنة الوضع مع التحكم الخارجي (تابات الصفحة) — بنفس انتقال البروجيكتور
+  useEffect(() => {
+    if (controlledMode && controlledMode !== mode && !transitioning) {
+      handleModeChange(controlledMode);
+    }
+  }, [controlledMode, mode, transitioning, handleModeChange]);
 
   const handleFrameSelect = useCallback(
     (idx: number) => {
@@ -338,7 +354,8 @@ export function CinemaTheatre() {
         <div className="mt-12 grid lg:grid-cols-3 gap-8 items-start">
           {/* LEFT: mode toggle + features (occupies 1 col) */}
           <div className="space-y-6">
-            {/* Mode toggle */}
+            {/* Mode toggle — يُخفى عندما يكون التبديل من تابات الصفحة الخارجية */}
+            {!hideToggle && (
             <div className="flex bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl p-1.5 gap-1.5">
               <button
                 onClick={() => handleModeChange("saga")}
@@ -369,6 +386,7 @@ export function CinemaTheatre() {
                 NOVA CINEMA
               </button>
             </div>
+            )}
 
             {/* Feature stack — vertical, rotating highlight */}
             <div className="space-y-1.5">
@@ -434,17 +452,19 @@ export function CinemaTheatre() {
             </AnimatePresence>
 
             <div className="flex flex-wrap gap-3">
+              {!hideMoreLink && (
               <Link href="/services/cinema">
                 <LiquidButton variant="secondary" className="px-6 py-2.5 text-sm">
                   اعرف أكثر
                 </LiquidButton>
               </Link>
+              )}
               <button
                 onClick={() => {
                   playClick();
-                  document
-                    .getElementById("contact")
-                    ?.scrollIntoView({ behavior: "smooth" });
+                  const el = document.getElementById("contact");
+                  if (el) el.scrollIntoView({ behavior: "smooth" });
+                  else window.location.href = "/contact";
                 }}
                 onMouseEnter={playHover}
                 className="px-6 py-2.5 text-sm font-bold rounded-full bg-gradient-to-r from-[var(--color-copper)] to-orange-500 text-white hover:shadow-[0_0_30px_rgba(217,112,64,0.5)] transition-shadow"

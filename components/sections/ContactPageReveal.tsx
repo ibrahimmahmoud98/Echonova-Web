@@ -35,14 +35,14 @@ const SERVICE_CATEGORIES = [
   }
 ];
 
-const ServiceDropdown = ({ 
-    category, 
-    selectedServices, 
-    onToggle 
-}: { 
-    category: { title: string, items: string[] }, 
-    selectedServices: string[], 
-    onToggle: (s: string) => void 
+const ServiceDropdown = ({
+    category,
+    selectedServices,
+    onToggle
+}: {
+    category: { title: string, items: string[] },
+    selectedServices: string[],
+    onToggle: (s: string) => void
 }) => {
     const [isOpen, setIsOpen] = useState(false);
     const hasActive = category.items.some(item => selectedServices.includes(item));
@@ -72,7 +72,7 @@ const ServiceDropdown = ({
                         transition={{ duration: 0.2 }}
                         className="overflow-hidden absolute top-full left-0 right-0 z-50 bg-[#020B16] border border-white/10 rounded-xl mt-1 p-2 shadow-xl"
                     >
-                        <div className="flex flex-col gap-1"> 
+                        <div className="flex flex-col gap-1">
                             {category.items.map(item => {
                                 const isActive = selectedServices.includes(item);
                                 return (
@@ -82,8 +82,8 @@ const ServiceDropdown = ({
                                         onClick={() => onToggle(item)}
                                         className={cn(
                                             "flex items-center gap-2 px-2 py-1.5 rounded-lg text-xs text-right w-full transition-all",
-                                            isActive 
-                                                ? "bg-[var(--color-copper)] text-white" 
+                                            isActive
+                                                ? "bg-[var(--color-copper)] text-white"
                                                 : "text-white/50 hover:bg-white/10 hover:text-white"
                                         )}
                                     >
@@ -147,7 +147,7 @@ export const ContactPageReveal = () => {
      email: false,
      phone: false,
      services: false,
-     country: true 
+     country: true
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
@@ -159,7 +159,7 @@ export const ContactPageReveal = () => {
   useEffect(() => {
      const isNameValid = formData.name.trim().length > 2;
      const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email);
-     const isPhoneValid = /^\d{8,15}$/.test(formData.phone); 
+     const isPhoneValid = /^\d{8,15}$/.test(formData.phone);
      const isServicesValid = formData.services.length > 0;
      const isCountryValid = !!formData.countryKey;
 
@@ -193,7 +193,7 @@ export const ContactPageReveal = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
       e.preventDefault();
-      if (formProgress < 100) return; 
+      if (formProgress < 100) return;
       if (isSending) return;
 
       setIsSending(true);
@@ -212,8 +212,8 @@ export const ContactPageReveal = () => {
         setTimeout(() => {
             setIsSubmitted(false);
             setFormData({ name: '', email: '', phone: '', services: [], message: '', countryKey: '+966', countryCode: '+966' });
-        }, 5000); 
-      
+        }, 5000);
+
       } catch (error) {
           setSubmitError('حدث خطأ أثناء الإرسال. يرجى المحاولة مرة أخرى.');
       } finally {
@@ -253,13 +253,13 @@ export const ContactPageReveal = () => {
 
        {/* LEFT COLUMN: FORM (Mobile: Bottom / Desktop: Left) */}
        <div className="relative flex flex-col justify-start items-center px-4 pt-4 pb-8 lg:p-12 order-2 lg:order-1 lg:pt-20 bg-[#020B16] lg:bg-transparent -mt-6 lg:mt-0 z-10">
-           
+
             {/* Background Gradient for Form Side */}
             <div className="absolute inset-0 bg-gradient-to-b from-[#020B16] via-[#050A14] to-[#01060C] -z-10 lg:hidden" />
             <div className="absolute top-0 right-0 w-[40vh] h-[40vh] bg-[var(--color-copper)]/5 blur-[100px] rounded-full pointer-events-none hidden lg:block" />
 
-            <motion.div 
-                initial={{ y: 20, opacity: 0 }} 
+            <motion.div
+                initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
                 className="w-full max-w-lg z-10 bg-[#020B16]/80 lg:bg-transparent backdrop-blur-xl lg:backdrop-blur-none border-t border-white/10 lg:border-none rounded-t-3xl lg:rounded-none p-4 lg:p-0"
@@ -276,7 +276,7 @@ export const ContactPageReveal = () => {
 
                 {/* Form */}
                 {isSubmitted ? (
-                   <motion.div 
+                   <motion.div
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         className="flex flex-col items-center justify-center py-12 text-center"
@@ -292,8 +292,8 @@ export const ContactPageReveal = () => {
                     <div className="grid grid-cols-2 gap-3 lg:gap-5">
                             <div className="relative group text-right">
                                 <label className="block text-white/60 text-xs mb-2 pr-1">الاسم الكامل</label>
-                                <input 
-                                    type="text" 
+                                <input
+                                    type="text"
                                     name="name"
                                     value={formData.name}
                                     onChange={handleInputChange}
@@ -304,8 +304,8 @@ export const ContactPageReveal = () => {
 
                             <div className="relative group text-right">
                                 <label className="block text-white/60 text-xs mb-2 pr-1">البريد الإلكتروني</label>
-                                <input 
-                                    type="email" 
+                                <input
+                                    type="email"
                                     name="email"
                                     value={formData.email}
                                     onChange={handleInputChange}
@@ -318,7 +318,7 @@ export const ContactPageReveal = () => {
                     <div className="flex gap-4 text-right">
                         <div className="relative w-1/3">
                             <label className="block text-white/60 text-xs mb-2 pr-1">الرمز</label>
-                            <select 
+                            <select
                                 name="countryKey"
                                 value={formData.countryKey}
                                 onChange={(e) => setFormData(prev => ({...prev, countryKey: e.target.value}))}
@@ -331,8 +331,8 @@ export const ContactPageReveal = () => {
                         </div>
                         <div className="relative w-2/3">
                             <label className="block text-white/60 text-xs mb-2 pr-1">رقم الهاتف</label>
-                            <input 
-                                type="tel" 
+                            <input
+                                type="tel"
                                 name="phone"
                                 value={formData.phone}
                                 onChange={handleInputChange}
@@ -347,7 +347,7 @@ export const ContactPageReveal = () => {
                         <label className="block text-white/60 text-xs mb-2 pr-1">الخدمات المهتم بها</label>
                         <div className="w-full">
                             {SERVICE_CATEGORIES.map((category, idx) => (
-                                <ServiceDropdown 
+                                <ServiceDropdown
                                     key={idx}
                                     category={category}
                                     selectedServices={formData.services}
@@ -359,7 +359,7 @@ export const ContactPageReveal = () => {
 
                     <div className="text-right">
                         <label className="block text-white/60 text-xs mb-2 pr-1">تفاصيل إضافية</label>
-                        <textarea 
+                        <textarea
                             name="message"
                             value={formData.message}
                             onChange={handleInputChange}
@@ -370,8 +370,8 @@ export const ContactPageReveal = () => {
                     </div>
 
                     <div className="flex justify-center pt-4">
-                        <LiquidButton 
-                            type="submit" 
+                        <LiquidButton
+                            type="submit"
                             disabled={formProgress < 100 || isSending}
                             className={cn(
                                 "w-full",
@@ -392,13 +392,13 @@ export const ContactPageReveal = () => {
 
                 {/* Cards */}
                 <div className="hidden lg:grid lg:grid-cols-2 gap-4 mt-8 pt-8 border-t border-white/5">
-                    <ContactCard 
+                    <ContactCard
                         icon={<Mail className="w-5 h-5" />}
                         title="البريد الإلكتروني"
                         value="contact@echonovastudio.com"
                         link="mailto:contact@echonovastudio.com"
                     />
-                    <ContactCard 
+                    <ContactCard
                         icon={<Phone className="w-5 h-5" />}
                         title="واتساب"
                         value="ابدأ المحادثة الآن"

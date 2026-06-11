@@ -10,9 +10,8 @@
 //   4. Mounts the existing ReelsImmersive UX inside <Suspense> so the
 //      cinematic interaction stays identical for human users.
 
-import { Suspense } from "react";
 import type { Metadata } from "next";
-import { ReelsImmersive } from "@/components/features/reels/ReelsImmersive";
+import { TheatreStage } from "@/components/sections/TheatreStage";
 import { COMMERCIAL_LEVELS } from "@/lib/data/services-content";
 
 const VALID_LEVELS = COMMERCIAL_LEVELS.map((l) => l.id) as readonly string[];
@@ -133,10 +132,9 @@ export default async function ReelsPage({
         ))}
       </section>
 
-      {/* Existing immersive client UX — unchanged */}
-      <Suspense fallback={<div className="w-full h-screen bg-[#020B16]" />}>
-        <ReelsImmersive />
-      </Suspense>
+      {/* تصميم قسم «الفيديوهات القصيرة» المنقول من الصفحة الرئيسية القديمة —
+          مسرح العرض الكامل بتصنيفاته الثلاثة NOVA LIFE / ACTION / MAGIC */}
+      <TheatreStage />
 
       {/* Anchored canonical signal — emits a known indexable URL in the HTML */}
       <link

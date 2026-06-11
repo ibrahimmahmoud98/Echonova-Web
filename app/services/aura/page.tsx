@@ -8,6 +8,7 @@ import { ArrowRight, Fingerprint, Dna, ScanFace, Sparkles, Activity } from "luci
 import Link from "next/link";
 import { TextDecode } from "@/components/ui/TextDecode";
 import IdentityShowcase from "@/components/features/aura/showcase/IdentityShowcase";
+import { AuraGallery } from "@/components/sections/AuraGallery";
 import cloudinaryLoader from "@/lib/cloudinary-loader";
 
 export default function IdentityPage() {
@@ -172,6 +173,10 @@ export default function IdentityPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* قسم نوفا أورا — الجدار المغناطيسي المنقول من الصفحة الرئيسية القديمة
+          (بعد قسم DNA وقبل الأرشيف الرقمي) */}
+      <AuraGallery />
 
       {/* Identity Portfolio Showcase */}
       <IdentityShowcase />

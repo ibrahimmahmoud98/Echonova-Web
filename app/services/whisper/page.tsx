@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { AUDIO_PRODUCTION_PAGE_CONTENT } from "@/lib/data/services-content";
+import { AudioStage } from "@/components/sections/AudioStage";
 
 // ── Official Copper System ────────────────────────────────────────────────
 // --color-copper:      #D97040  (Electric Copper)
@@ -169,6 +170,12 @@ export default function AudioProductionPage() {
           <span className="text-[9px] tracking-[0.25em] text-[var(--color-copper)]/35 rotate-90 origin-center translate-x-3">SCROLL</span>
         </motion.div>
       </section>
+
+      {/* ═══════════════════════════════════════════
+          قسم الإنتاج الصوتي المنقول من الصفحة الرئيسية القديمة —
+          مشغّل الاستوديو الحي (بعد الهيرو وقبل آلية البناء الوجداني)
+      ═══════════════════════════════════════════ */}
+      <AudioStage />
 
       {/* ═══════════════════════════════════════════
           CONTENT — Asymmetric Cinematic Layout

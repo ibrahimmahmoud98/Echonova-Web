@@ -13,7 +13,7 @@ import type { NextConfig } from "next";
 
 const cspDirectives = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://vercel.live https://*.google-analytics.com https://*.googletagmanager.com",
+  "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com https://vercel.live https://*.google-analytics.com https://*.googletagmanager.com https://cdnjs.cloudflare.com",
   "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
   "img-src 'self' data: blob: https://res.cloudinary.com https://picsum.photos https://*.google-analytics.com https://*.googletagmanager.com",
   "media-src 'self' blob: https://res.cloudinary.com",
@@ -65,6 +65,15 @@ const nextConfig: NextConfig = {
         ],
       },
     ];
+  },
+  async rewrites() {
+    // الصفحة الرئيسية الغامرة (v2) تُقدَّم من public/home-v2.html عبر rewrite،
+    // بينما التصميم السابق محفوظ كما هو في app/page.tsx ومتاح على /home-classic.
+    return {
+      beforeFiles: [{ source: "/", destination: "/home-v2.html" }],
+      afterFiles: [],
+      fallback: [],
+    };
   },
   async redirects() {
     // Preserve legacy ?level= deep-links; canonical SSR landing remains
