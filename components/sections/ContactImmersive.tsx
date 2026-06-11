@@ -55,7 +55,8 @@ const N = STEPS.length;
 
 // أزمنة توقّف الكاميرا داخل الفيديو المولّد (ثوانٍ) — معالم المشاهد الستة
 const STATION_TIMES = [0.4, 2.2, 4.6, 5.65, 7.4, 9.55];
-const VIDEO_SRC = "/videos/contact-journey.mp4";
+const VIDEO_SRC_WEBM = "/videos/contact_bg.webm";
+const VIDEO_SRC_MP4 = "/videos/contact_bg.mp4";
 const VIDEO_POSTER = "/videos/contact-journey-poster.jpg";
 const SLOT_VH = 110; // طول شريحة التمرير لكل محطة
 
@@ -216,7 +217,7 @@ export const ContactImmersive = () => {
         const cur = curTimeRef.current;
         const next = reduceMotion ? target : cur + (target - cur) * 0.22;
         curTimeRef.current = next;
-        if (Math.abs(video.currentTime - next) > 0.01) {
+        if (primedRef.current && Math.abs(video.currentTime - next) > 0.01) {
           try { video.currentTime = next; } catch { /* قبل التحميل */ }
         }
       }
@@ -244,15 +245,67 @@ export const ContactImmersive = () => {
     return () => cancelAnimationFrame(raf);
   }, [reduceMotion]);
 
-  // iOS: تجهيز الفيديو للسحب بأول لمسة (تشغيل/إيقاف صامت)
-  const primeVideo = () => {
+  // iOS/الجوال: سفاري لا يرسم فريمات عند تغيير currentTime قبل "تهيئة" الفيديو
+  // بتشغيل ناجح ضمن إيماءة مستخدم. لا نعلّم التهيئة إلا بعد نجاح play() فعلياً،
+  // ونعيد المحاولة مع كل لمسة تالية إن فشلت.
+  const primeVideo = useCallback(() => {
     if (primedRef.current) return;
-    primedRef.current = true;
     const v = videoRef.current;
     if (!v) return;
     const pr = v.play();
-    if (pr) pr.then(() => v.pause()).catch(() => {});
-  };
+    if (pr && typeof pr.then === "function") {
+      pr.then(() => {
+        v.pause();
+        primedRef.current = true;
+        // ركلة فك ترميز أولية ثم العودة للزمن المستهدف الحالي
+        try { v.currentTime = Math.max(0.05, curTimeRef.current); } catch { /* قبل التحميل */ }
+      }).catch(() => { /* سيُعاد مع اللمسة القادمة */ });
+    } else {
+      v.pause();
+      primedRef.current = true;
+    }
+  }, []);
+
+  // ضمان سمات الجوال التي لا يكتبها React كـ attributes (شرط iOS للتشغيل الصامت المضمّن)
+  useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    v.muted = true;
+    v.setAttribute("muted", "");
+    v.setAttribute("playsinline", "");
+    v.setAttribute("webkit-playsinline", "");
+    v.setAttribute("autoplay", "");
+
+    // تهيئة تلقائية إذا نجح التشغيل التلقائي (Autoplay)
+    const handleAutoplayInit = () => {
+      if (!primedRef.current) {
+        v.pause();
+        primedRef.current = true;
+        try { v.currentTime = Math.max(0.05, curTimeRef.current); } catch { /* قبل التحميل */ }
+      }
+    };
+
+    v.addEventListener("play", handleAutoplayInit);
+    v.addEventListener("playing", handleAutoplayInit);
+
+    // إذا كان الفيديو شغال بالفعل (بسبب autoplay) عند عمل الـ mount
+    if (!v.paused) {
+      handleAutoplayInit();
+    }
+
+    const retry = () => primeVideo();
+    window.addEventListener("touchstart", retry, { passive: true });
+    window.addEventListener("touchend", retry, { passive: true });
+    window.addEventListener("click", retry, { passive: true });
+
+    return () => {
+      v.removeEventListener("play", handleAutoplayInit);
+      v.removeEventListener("playing", handleAutoplayInit);
+      window.removeEventListener("touchstart", retry);
+      window.removeEventListener("touchend", retry);
+      window.removeEventListener("click", retry);
+    };
+  }, [primeVideo]);
 
   // رنين الصدى عند أي لمسة
   const onStageDown = (e: React.PointerEvent) => {
@@ -403,13 +456,16 @@ export const ContactImmersive = () => {
         {/* الفيديو — لا يتشغّل أبداً: التمرير يقوده */}
         <video
           ref={videoRef}
-          src={VIDEO_SRC}
           poster={VIDEO_POSTER}
           muted
           playsInline
+          autoPlay
           preload="auto"
           className="absolute inset-0 w-full h-full object-cover"
-        />
+        >
+          <source src={VIDEO_SRC_WEBM} type="video/webm" />
+          <source src={VIDEO_SRC_MP4} type="video/mp4" />
+        </video>
 
         {/* تظليل سينمائي لقراءة النصوص */}
         <div className="absolute inset-0 z-[1] bg-[radial-gradient(85%_70%_at_50%_45%,transparent_0%,rgba(2,11,22,0.5)_80%,rgba(2,11,22,0.82)_100%)] pointer-events-none" />
