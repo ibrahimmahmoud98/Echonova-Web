@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import crypto from 'crypto';
 
-import { escapeHtml } from '@/lib/sanitize-html';
+import { escapeHtml } from '@/lib/escape-html';
 
 // ============================================
 // RATE LIMITING (In-Memory Store)
