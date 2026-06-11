@@ -1,20 +1,7 @@
 import DOMPurify from 'isomorphic-dompurify';
 
-/**
- * Escapes HTML special characters into entities.
- * Used for plain text inputs (like form fields) to prevent ANY HTML from rendering.
- * Defends against phishing links <a> and tracking pixels <img> in emails.
- */
-export function escapeHtml(value: unknown): string {
-  if (value === null || value === undefined) return '';
-  return String(value)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;')
-    .replace(/\//g, '&#x2F;');
-}
+export { escapeHtml } from './escape-html';
+
 
 /**
  * Robust HTML sanitizer using DOMPurify.
