@@ -150,7 +150,7 @@ export const Manifesto = () => {
                 {/* Scroll-Scrubbed Video */}
                 <video
                     ref={videoRef}
-                    poster="/videos/contact-journey-poster.jpg"
+                    poster="/videos/about-bg-poster.jpg"
                     muted
                     playsInline
                     autoPlay
