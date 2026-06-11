@@ -293,14 +293,50 @@ export const ContactImmersive = () => {
   };
 
   // التنقل = تمرير حقيقي إلى مركز المحطة
+  const programmaticRef = useRef<number>(0);
   const scrollToStation = useCallback((i: number) => {
     const track = trackRef.current; if (!track) return;
     const vh = window.innerHeight;
     const top = track.getBoundingClientRect().top + window.scrollY;
     const total = track.offsetHeight - vh;
     const target = top + CENTERS[Math.max(0, Math.min(N - 1, i))] * total;
+    programmaticRef.current = Date.now();
     window.scrollTo({ top: target, behavior: reduceMotion ? "auto" : "smooth" });
   }, [reduceMotion]);
+
+  // ── حركة محطات لا حرّة: أي توقف تمرير يستقر على أقرب محطة (لا وقوف بين مشهدين) ──
+  useEffect(() => {
+    let t: ReturnType<typeof setTimeout> | null = null;
+    const onScroll = () => {
+      if (t) clearTimeout(t);
+      t = setTimeout(() => {
+        if (isSubmitted) return;
+        if (Date.now() - programmaticRef.current < 750) return; // تمرير برمجي جارٍ
+        const track = trackRef.current; if (!track) return;
+        const vh = window.innerHeight;
+        const rect = track.getBoundingClientRect();
+        const total = rect.height - vh;
+        if (total <= 0) return;
+        const p = Math.min(1, Math.max(0, -rect.top / total));
+        const nearest = Math.round(p * (N - 1));
+        const targetP = CENTERS[nearest];
+        if (Math.abs(p - targetP) * total > 6) scrollToStation(nearest);
+      }, 170);
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => { window.removeEventListener("scroll", onScroll); if (t) clearTimeout(t); };
+  }, [isSubmitted, scrollToStation]);
+
+  // ── إكمال الحقل = الانتقال للمحطة التالية تلقائياً (بعد لحظة هدوء قصيرة) ──
+  useEffect(() => {
+    if (isSubmitted) return;
+    if (active > 3) return; // التفاصيل اختيارية والإرسال يدوي
+    if (!stepValid[active]) return;
+    const delay = active === 3 ? 1600 : 1200;
+    const t = setTimeout(() => scrollToStation(active + 1), delay);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData, active, isSubmitted]);
 
   const nextStep = () => { if (stepValid[active]) scrollToStation(active + 1); };
   const prevStep = () => scrollToStation(active - 1);
@@ -573,6 +609,16 @@ export const ContactImmersive = () => {
                       {submitError}
                     </div>
                   )}
+                  {/* رجوع من محطة الإرسال — لمراجعة البيانات أو إعادة المحاولة */}
+                  <div className="flex justify-center mt-6">
+                    <button
+                      type="button"
+                      onClick={() => scrollToStation(4)}
+                      className="px-8 py-3 rounded-full border border-white/15 bg-[#020B16]/40 backdrop-blur-md text-white/70 hover:text-white hover:border-[#FFD6A5]/40 transition-all duration-300 text-sm"
+                    >
+                      رجوع
+                    </button>
+                  </div>
                 </div>
               )}
 
