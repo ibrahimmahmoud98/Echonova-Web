@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { motion, useScroll, useMotionValueEvent, AnimatePresence } from "framer-motion";
+import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 // import { LiquidButton } from "@/components/ui/LiquidButton"; // Removed as per original, or keep if needed? Original had it imported but not used in the snippet I saw? Wait, snippet had LiquidButton imported. I will keep imports.
 import { LiquidButton } from "@/components/ui/LiquidButton";
@@ -58,12 +59,20 @@ const navItems: NavItem[] = [
 ];
 
 export function Navbar() {
+  const pathname = usePathname();
   const { scrollY } = useScroll();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
+
+  // Reset scroll and visibility states on route change to prevent persistent dark background
+  React.useEffect(() => {
+    setIsScrolled(false);
+    setIsVisible(true);
+    setLastScrollY(0);
+  }, [pathname]);
 
   useMotionValueEvent(scrollY, "change", (latest) => {
     const currentScrollY = latest;
