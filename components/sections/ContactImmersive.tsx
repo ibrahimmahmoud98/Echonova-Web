@@ -468,6 +468,7 @@ export const ContactImmersive = () => {
         </video>
 
         {/* تظليل سينمائي لقراءة النصوص */}
+        <div className="absolute inset-0 z-[1] bg-black/30 pointer-events-none" />
         <div className="absolute inset-0 z-[1] bg-[radial-gradient(85%_70%_at_50%_45%,transparent_0%,rgba(2,11,22,0.5)_80%,rgba(2,11,22,0.82)_100%)] pointer-events-none" />
         <div className="absolute inset-0 z-[1] bg-gradient-to-t from-[#020B16]/70 via-transparent to-[#020B16]/45 pointer-events-none" />
 
