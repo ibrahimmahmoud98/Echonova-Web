@@ -59,15 +59,12 @@ const VIDEO_SRC = "/videos/contact-journey.mp4";
 const VIDEO_POSTER = "/videos/contact-journey-poster.jpg";
 const SLOT_VH = 110; // طول شريحة التمرير لكل محطة
 
-// مراكز المحطات على محور التقدم 0..1
-const CENTERS = STEPS.map((_, i) => (i + 0.5) / N);
+// مراكز المحطات على محور التقدم 0..1 — المحطة الأولى مستقرة عند فتح الصفحة
+// (p=0) والأخيرة عند نهاية التمرير (p=1)
+const CENTERS = STEPS.map((_, i) => i / (N - 1));
 
 // خريطة تقدم التمرير → زمن الفيديو (خطية مقطعية عبر المراسي)
-const TIMELINE: [number, number][] = [
-  [0, 0.05],
-  ...CENTERS.map((c, i) => [c, STATION_TIMES[i]] as [number, number]),
-  [1, 9.97],
-];
+const TIMELINE: [number, number][] = CENTERS.map((c, i) => [c, STATION_TIMES[i]] as [number, number]);
 function progressToTime(p: number) {
   const t = Math.min(1, Math.max(0, p));
   for (let i = 1; i < TIMELINE.length; i++) {
@@ -228,7 +225,7 @@ export const ContactImmersive = () => {
       for (let i = 0; i < N; i++) {
         const el = panelRefs.current[i];
         if (!el) continue;
-        const local = (p - CENTERS[i]) * N; // 0 عند مركز المحطة
+        const local = (p - CENTERS[i]) * (N - 1); // 0 عند مركز المحطة
         const t = Math.max(-1, Math.min(1, local / 0.5));
         const drift = Math.sign(t) * Math.max(0, Math.abs(t) - 0.25) / 0.75; // هضبة استقرار ±0.25
         const x = -drift * 72; // vw — موجب يمين (RTL: دخول من اليمين، خروج لليسار)
@@ -437,7 +434,9 @@ export const ContactImmersive = () => {
             key={s.id}
             ref={el => { panelRefs.current[i] = el; }}
             className="absolute inset-0 z-10 flex items-center justify-end px-6 md:px-14 lg:px-24"
-            style={{ opacity: 0, visibility: "hidden", pointerEvents: "none", willChange: "transform, opacity" }}
+            style={i === 0
+              ? { opacity: 1, visibility: "visible", pointerEvents: "auto", willChange: "transform, opacity" }
+              : { opacity: 0, visibility: "hidden", pointerEvents: "none", willChange: "transform, opacity" }}
           >
             <div className="w-full max-w-2xl text-right">
               {/* افتتاحية المشهد الأول فقط */}
