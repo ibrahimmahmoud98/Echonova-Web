@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicyPage() {
   return (
-    <main className="min-h-screen bg-[var(--cinematic-bg)] text-white selection:bg-[var(--nova-gold)] selection:text-black relative">
+    <main className="min-h-screen bg-[#020B16] text-white selection:bg-[var(--nova-gold)] selection:text-black relative">
       <PrivacyContent />
     </main>
   );

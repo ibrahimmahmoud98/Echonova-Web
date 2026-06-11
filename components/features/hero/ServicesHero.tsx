@@ -16,7 +16,7 @@ export const ServicesHero = () => {
     return (
         <section ref={containerRef} className="relative h-screen flex items-center justify-center overflow-hidden">
             {/* Background Atmosphere */}
-            <div className="absolute inset-0 bg-[var(--cinematic-bg)] z-0" />
+            <div className="absolute inset-0 bg-[#020B16] z-0" />
             
             {/* Animated Spotlights */}
             <div className="absolute top-0 left-1/4 w-96 h-96 bg-[var(--nova-gold)]/20 blur-[150px] rounded-full animate-pulse" />

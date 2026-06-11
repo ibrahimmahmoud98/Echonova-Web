@@ -123,18 +123,18 @@ export const VisionMission = () => {
     return (
         <section className="py-32 px-4 max-w-7xl mx-auto">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {/* Vision Card - Purple Theme */}
+                {/* Vision Card - Copper Theme */}
                 <FlipCard 
                     className=""
                     frontContent={
                         <>
                             <h2 className="text-3xl md:text-5xl font-bold text-white mb-2">{VISION_MISSION.vision.title}</h2>
-                            <h3 className="text-sm md:text-xl text-[#A78BFA] tracking-[0.3em] md:tracking-[0.5em] font-bold uppercase">{VISION_MISSION.vision.subtitle}</h3>
+                            <h3 className="text-sm md:text-xl text-[#D97040] tracking-[0.3em] md:tracking-[0.5em] font-bold uppercase">{VISION_MISSION.vision.subtitle}</h3>
                         </>
                     }
                     backContent={
                         <>
-                            <h2 className="text-xl md:text-3xl font-bold text-[#A78BFA] mb-4 md:mb-6">{VISION_MISSION.vision.title}</h2>
+                            <h2 className="text-xl md:text-3xl font-bold text-[#D97040] mb-4 md:mb-6">{VISION_MISSION.vision.title}</h2>
                             <p className="text-base md:text-xl text-white/90 leading-relaxed font-light">
                                 {VISION_MISSION.vision.description}
                             </p>

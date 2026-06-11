@@ -6,7 +6,7 @@ import { PartnersShowcase } from '@/components/about/partners/PartnersShowcase';
 
 export default function AboutPage() {
     return (
-        <main className="min-h-screen bg-[var(--cinematic-bg)] text-white selection:bg-[var(--nova-gold)] selection:text-black">
+        <main className="min-h-screen bg-[#020B16] text-white selection:bg-[var(--nova-gold)] selection:text-black">
             {/* The Manifesto / Philosophy Section (Scrollytelling) */}
             <Manifesto />
 

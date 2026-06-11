@@ -8,7 +8,7 @@ import { WhyUsSection } from '@/components/features/why-us/WhyUsSection';
 
 export default function ServicesPage() {
     return (
-        <main className="min-h-screen bg-[var(--cinematic-bg)] text-white selection:bg-[var(--nova-gold)] selection:text-black">
+        <main className="min-h-screen bg-[#020B16] text-white selection:bg-[var(--nova-gold)] selection:text-black">
             {/* Hero Section */}
             <ServicesHero />
 
