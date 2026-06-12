@@ -6,6 +6,7 @@ import { X, ChevronLeft, ChevronRight, Share2, Info } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { LiquidButton } from '@/components/ui/LiquidButton';
 
 interface InspectionModalProps {
   item: PortfolioItem | null;
@@ -177,9 +178,9 @@ export default function InspectionModal({ item, isOpen, onClose }: InspectionMod
                     </div>
 
                     <div className="mt-auto pt-6 border-t border-white/10 flex gap-3">
-                         <button className="flex-1 py-3 bg-[#D97040] hover:bg-[#c66030] text-black font-bold rounded flex items-center justify-center gap-2 transition-colors">
-                            طلب تصميم مشابه
-                         </button>
+                          <LiquidButton className="flex-1 py-3 text-sm">
+                             طلب تصميم مشابه
+                          </LiquidButton>
                          <button className="p-3 bg-white/5 hover:bg-white/10 rounded border border-white/10 transition-colors">
                             <Share2 size={20} className="text-[#FFD6A5]" />
                          </button>

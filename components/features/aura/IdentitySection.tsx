@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import { LiquidButton } from '@/components/ui/LiquidButton';
 import { IdentityHUD } from './IdentityHUD';
 import { VIRTUAL_IDENTITY } from '@/lib/data/services-content';
 import { InteractiveCarousel } from '@/components/ui/InteractiveCarousel';
@@ -49,9 +50,9 @@ export const IdentitySection = () => {
 
                     <div className="pt-6 md:pt-8 flex justify-end">
                         <Link href="/services/aura" className="inline-block">
-                            <button className="px-5 py-2.5 md:px-8 md:py-4 text-sm md:text-base rounded-full border border-[var(--color-copper)] text-[var(--color-copper)] hover:bg-[var(--color-copper)] hover:text-white transition-all duration-300 font-bold">
+                            <LiquidButton variant="secondary" className="px-5 py-2.5 md:px-8 md:py-4 text-sm md:text-base font-bold">
                                 اعرف أكثر
-                            </button>
+                            </LiquidButton>
                         </Link>
                     </div>
                 </div>

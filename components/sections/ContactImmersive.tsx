@@ -668,13 +668,14 @@ export const ContactImmersive = () => {
                   )}
                   {/* رجوع من محطة الإرسال — لمراجعة البيانات أو إعادة المحاولة */}
                   <div className="flex justify-center mt-6">
-                    <button
+                    <LiquidButton
                       type="button"
+                      variant="secondary"
                       onClick={() => scrollToStation(4)}
-                      className="px-8 py-3 rounded-full border border-white/15 bg-[#020B16]/40 backdrop-blur-md text-white/70 hover:text-white hover:border-[#FFD6A5]/40 transition-all duration-300 text-sm"
+                      className="px-8 py-3 text-sm"
                     >
                       رجوع
-                    </button>
+                    </LiquidButton>
                   </div>
                 </div>
               )}
@@ -683,27 +684,26 @@ export const ContactImmersive = () => {
               {i < 5 && (
                 <div className="flex items-center justify-end gap-3 mt-10">
                   {i > 0 && (
-                    <button
+                    <LiquidButton
                       type="button"
+                      variant="secondary"
                       onClick={prevStep}
-                      className="px-6 py-3 rounded-full border border-white/15 bg-[#020B16]/40 backdrop-blur-md text-white/70 hover:text-white hover:border-[#FFD6A5]/40 transition-all duration-300 text-sm"
+                      className="px-6 py-3 text-sm"
                     >
                       رجوع
-                    </button>
+                    </LiquidButton>
                   )}
-                  <button
+                  <LiquidButton
                     type="button"
                     onClick={nextStep}
                     disabled={!stepValid[i]}
                     className={cn(
-                      "px-10 py-3 rounded-full border text-sm font-bold transition-all duration-300",
-                      stepValid[i]
-                        ? "border-[#FFD6A5]/45 bg-[linear-gradient(160deg,rgba(217,112,64,0.5),rgba(217,112,64,0.2)_55%,rgba(255,214,165,0.25))] backdrop-blur-md text-[#FFE9CF] shadow-[inset_0_1px_0_rgba(255,255,255,0.35),0_16px_40px_-16px_rgba(217,112,64,0.65)] hover:-translate-y-0.5"
-                        : "border-white/10 bg-[#020B16]/30 text-white/30 cursor-not-allowed"
+                      "px-10 py-3 text-sm",
+                      !stepValid[i] && "opacity-40 cursor-not-allowed pointer-events-none"
                     )}
                   >
                     التالي
-                  </button>
+                  </LiquidButton>
                 </div>
               )}
             </div>

@@ -11,6 +11,7 @@ import { MagneticCursor } from '@/components/ui/MagneticCursor';
 import { ArticleSidebar } from '@/components/articles/ArticleSidebar';
 import { RelatedArticles } from '@/components/articles/RelatedArticles';
 import { Clock, Calendar, User, ArrowLeft } from 'lucide-react';
+import { LiquidButton } from '@/components/ui/LiquidButton';
 
 interface ArticlePageProps {
   params: Promise<{
@@ -209,12 +210,10 @@ export default async function ArticlePage({ params }: ArticlePageProps) {
       <div className="py-20 border-t border-white/10 flex flex-col items-center justify-center text-center bg-gradient-to-b from-[#020B16] to-[var(--color-navy)]">
             <h3 className="text-2xl font-bold mb-8 text-white">ألهمك هذا المقال؟ لنصنع المستحيل معاً.</h3>
             <Link href="/contact">
-                <button className="group relative px-10 py-5 bg-[var(--color-copper)] text-white font-bold rounded-full overflow-hidden transition-all hover:bg-[#A05D3D] shadow-2xl hover:shadow-[var(--color-copper)]/30">
-                    <span className="relative z-10 flex items-center gap-3 text-lg">
-                        ابدأ رحلتك.. وارسم بصمتك
-                        <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
-                    </span>
-                </button>
+                <LiquidButton className="px-10 py-5">
+                    ابدأ رحلتك.. وارسم بصمتك
+                    <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
+                </LiquidButton>
             </Link>
       </div>
 

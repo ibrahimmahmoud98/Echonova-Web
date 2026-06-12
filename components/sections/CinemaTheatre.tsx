@@ -459,7 +459,7 @@ export function CinemaTheatre({ controlledMode, hideToggle = false, hideMoreLink
                 </LiquidButton>
               </Link>
               )}
-              <button
+              <LiquidButton
                 onClick={() => {
                   playClick();
                   const el = document.getElementById("contact");
@@ -467,10 +467,11 @@ export function CinemaTheatre({ controlledMode, hideToggle = false, hideMoreLink
                   else window.location.href = "/contact";
                 }}
                 onMouseEnter={playHover}
-                className="px-6 py-2.5 text-sm font-bold rounded-full bg-gradient-to-r from-[var(--color-copper)] to-orange-500 text-white hover:shadow-[0_0_30px_rgba(217,112,64,0.5)] transition-shadow"
+                variant="primary"
+                className="px-6 py-2.5 text-sm"
               >
                 {data.ctaText}
-              </button>
+              </LiquidButton>
             </div>
           </div>
         </div>

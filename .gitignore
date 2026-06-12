@@ -47,3 +47,10 @@ next-env.d.ts
 *.mov
 *.png
 *.jpg
+
+# Exceptions for metadata and icons
+!app/opengraph-image.png
+!app/twitter-image.png
+!public/opengraph-image.png
+!public/twitter-image.png
+

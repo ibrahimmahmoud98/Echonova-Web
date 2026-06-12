@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="268 267 490 490">
+  <!-- ECHONOVA - Mark 03: Breaking the Circle (v3)
+       Gaps widened (18/14 deg half-angles) so the rings read as deliberately broken,
+       not as a C; ray lengthened to 265 so its emergence past the outer ring is
+       unmistakable. Rings centered (479,512). -->
+  
+  <path d="M621.66,465.65 A150,150 0 1 0 621.66,558.35" fill="none" stroke="#E75A20" stroke-width="24"/>
+  <path d="M669.18,464.58 A196,196 0 1 0 669.18,559.42" fill="none" stroke="#E75A20" stroke-width="16"/>
+  <path d="M744,512 L495.97,495.03 L479,417 L462.03,495.03 L384,512 L462.03,528.97 L479,607 L495.97,528.97 Z" fill="#FFA133"/>
+</svg>

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { AUDIO_PRODUCTION_PAGE_CONTENT } from "@/lib/data/services-content";
 import { AudioStage } from "@/components/sections/AudioStage";
+import { LiquidButton } from "@/components/ui/LiquidButton";
 
 // ── Official Copper System ────────────────────────────────────────────────
 // --color-copper:      #D97040  (Electric Copper)
@@ -150,9 +151,9 @@ export default function AudioProductionPage() {
             className="flex items-center gap-6"
           >
             <Link href="/contact">
-              <button className="relative overflow-hidden px-7 py-3.5 rounded-full bg-[var(--color-copper)] text-white text-sm font-bold tracking-widest uppercase shadow-[0_0_30px_rgba(217,112,64,0.25)] hover:shadow-[0_0_50px_rgba(217,112,64,0.4)] hover:bg-[var(--color-copper-burn)] transition-all duration-500 hover:-translate-y-0.5">
+              <LiquidButton variant="primary" className="px-7 py-3.5 text-sm tracking-widest uppercase">
                 ابدأ رحلتك.. وارسم بصمتك
-              </button>
+              </LiquidButton>
             </Link>
             <span className="text-white/20 text-xs tracking-widest">
               24-BIT · 96kHz · LOSSLESS
@@ -313,9 +314,9 @@ export default function AudioProductionPage() {
               </p>
             </div>
             <Link href="/contact">
-              <button className="px-8 py-4 rounded-full border border-[var(--color-copper)]/35 text-[var(--color-copper)] text-sm font-semibold tracking-widest uppercase hover:bg-[var(--color-copper)]/8 hover:border-[var(--color-copper)]/55 hover:text-white transition-all duration-500 whitespace-nowrap hover:shadow-[0_0_30px_rgba(217,112,64,0.12)]">
+              <LiquidButton variant="secondary" className="px-8 py-4 text-sm whitespace-nowrap">
                 ابدأ الآن
-              </button>
+              </LiquidButton>
             </Link>
           </motion.div>
         </div>

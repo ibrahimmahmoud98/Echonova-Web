@@ -380,16 +380,16 @@ export function AuraGallery() {
                   اعرف أكثر
                 </LiquidButton>
               </Link>
-              <button
+              <LiquidButton
                 onClick={() => {
                   playClick();
                   document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
                 }}
                 onMouseEnter={playHover}
-                className="px-6 py-2.5 text-sm font-bold rounded-full bg-gradient-to-r from-[var(--color-copper)] to-orange-500 text-white hover:shadow-[0_0_30px_rgba(217,112,64,0.5)] transition-shadow"
+                className="px-6 py-2.5 text-sm"
               >
                 اطلب هويتك
-              </button>
+              </LiquidButton>
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">

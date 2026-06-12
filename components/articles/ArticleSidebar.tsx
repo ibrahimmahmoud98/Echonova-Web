@@ -2,6 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 import { ArrowLeft, Share2, Facebook, Twitter, Linkedin, Link as LinkIcon } from 'lucide-react';
 import { ArticleData } from '@/lib/data/knowledge-content';
+import { LiquidButton } from '@/components/ui/LiquidButton';
 
 interface ArticleSidebarProps {
   recentArticles: ArticleData[];
@@ -64,9 +65,9 @@ export function ArticleSidebar({ recentArticles }: ArticleSidebarProps) {
        <div className="p-8 bg-gradient-to-br from-[var(--color-copper)]/20 to-transparent border border-[var(--color-copper)]/30 rounded-2xl text-center">
             <h4 className="text-white font-bold mb-2">اشترك في النشرة البريدية</h4>
             <p className="text-sm text-white/70 mb-4">احصل على أحدث تحليلات الذكاء الاصطناعي السينمائي.</p>
-            <button className="w-full py-2 bg-[var(--color-copper)] text-white font-bold rounded-lg hover:bg-[#A05D3D] transition-colors text-sm">
+            <LiquidButton className="w-full text-sm py-2">
                 قريباً
-            </button>
+            </LiquidButton>
        </div>
     </aside>
   );

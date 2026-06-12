@@ -321,7 +321,7 @@ export function TheatreStage() {
                       تفاصيل أكثر
                     </LiquidButton>
                   </Link>
-                  <button
+                  <LiquidButton
                     onClick={() => {
                       playClick();
                       document
@@ -329,15 +329,10 @@ export function TheatreStage() {
                         ?.scrollIntoView({ behavior: "smooth" });
                     }}
                     onMouseEnter={playHover}
-                    className="px-6 py-2.5 text-sm font-bold rounded-full border-2 transition-all hover:scale-105"
-                    style={{
-                      borderColor: theme.primary,
-                      color: theme.primary,
-                      boxShadow: `0 0 20px ${theme.accent}40`,
-                    }}
+                    className="px-6 py-2.5 text-sm"
                   >
                     ابدأ رحلتك.. وارسم بصمتك
-                  </button>
+                  </LiquidButton>
                 </div>
               </div>
             </motion.div>

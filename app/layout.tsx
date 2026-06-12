@@ -44,13 +44,13 @@ export const metadata: Metadata = {
   },
   title: {
     template: '%s | ECHONOVA STUDIO',
-    default: 'ECHONOVA | ECHONOVA STUDIO - AI Creative Studio',
+    default: 'ECHONOVA STUDIO — عالمٌ يتخطّى حدود الكاميرا',
   },
-  description: "إيكونوڤا (ECHONOVA): Global AI-driven creative studio redefining visual content. From cinema to virtual identity.",
+  description: "إيكونوڤا (ECHONOVA): استوديو إبداعي عالمي يقود مستقبل الإنتاج السينمائي والترفيه الموجه بالذكاء الاصطناعي. نهندس الخيال لنحقق أثرًا رياديًا لعلامتك التجارية.",
   keywords: ["Creative Studio", "Global Studio", "AI Video", "Virtual Production", "Middle East", "Branding", "ECHONOVA", "إيكونوڤا"],
   openGraph: {
-    title: 'ECHONOVA | ECHONOVA STUDIO',
-    description: 'إيكونوڤا (ECHONOVA) - Where AI meets Cinema. The new era of creative production in the Middle East.',
+    title: 'ECHONOVA STUDIO — عالمٌ يتخطّى حدود الكاميرا',
+    description: 'إيكونوڤا (ECHONOVA): استوديو إبداعي عالمي يقود مستقبل الإنتاج السينمائي والترفيه الموجه بالذكاء الاصطناعي. نهندس الخيال لنحقق أثرًا رياديًا لعلامتك التجارية.',
     url: 'https://www.echonovastudio.com',
     siteName: 'ECHONOVA STUDIO',
     locale: 'ar_SA',
@@ -58,8 +58,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'ECHONOVA | ECHONOVA STUDIO',
-    description: 'إيكونوڤا (ECHONOVA): Redefining visual storytelling with AI & Cinema.',
+    title: 'ECHONOVA STUDIO — عالمٌ يتخطّى حدود الكاميرا',
+    description: 'إيكونوڤا (ECHONOVA): استوديو إبداعي عالمي يقود مستقبل الإنتاج السينمائي والترفيه الموجه بالذكاء الاصطناعي. نهندس الخيال لنحقق أثرًا رياديًا لعلامتك التجارية.',
   },
 };
 

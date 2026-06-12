@@ -7,6 +7,7 @@ import { useAudio } from "@/components/audio/AudioEngine";
 import { CINEMATIC_SHOWCASE_DATA } from "@/lib/data/services-content";
 import { ArrowRight, ArrowLeft, Crosshair, Aperture, Battery } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { LiquidButton } from "@/components/ui/LiquidButton";
 
 type Phase = "split" | "saga" | "cinema";
 type HoverState = "saga" | "cinema" | null;
@@ -145,12 +146,12 @@ export function PremiumCinematicShowcase() {
                 <p className="text-lg text-white/70 leading-relaxed font-light mb-8">
                   {CINEMATIC_SHOWCASE_DATA.saga.description}
                 </p>
-                <button
+                <LiquidButton
                   onClick={(e) => { e.stopPropagation(); playClick(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
-                  className="px-8 py-3 rounded-full bg-[var(--color-copper)] text-white font-bold hover:shadow-[0_0_30px_rgba(217,112,64,0.6)] transition-all"
+                  variant="primary"
                 >
                   {CINEMATIC_SHOWCASE_DATA.saga.ctaText}
-                </button>
+                </LiquidButton>
               </div>
 
               {/* Whip-Pan to Cinema Button */}
@@ -257,12 +258,12 @@ export function PremiumCinematicShowcase() {
                 <p className="text-lg text-white/70 leading-relaxed font-light mb-8">
                   {CINEMATIC_SHOWCASE_DATA.cinema.description}
                 </p>
-                <button
+                <LiquidButton
                   onClick={(e) => { e.stopPropagation(); playClick(); document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" }); }}
-                  className="px-8 py-3 rounded-full bg-blue-600 text-white font-bold hover:shadow-[0_0_30px_rgba(37,99,235,0.6)] transition-all"
+                  variant="primary"
                 >
                   {CINEMATIC_SHOWCASE_DATA.cinema.ctaText}
-                </button>
+                </LiquidButton>
               </div>
             </div>
           </motion.div>

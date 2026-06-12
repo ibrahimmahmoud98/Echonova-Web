@@ -217,8 +217,8 @@ export const ENTERTAINMENT_DATA: EntertainmentType[] = [
         id: 'cinema',
         brandName: "NOVA CINEMA",
         title: "فيلم قصير",
-        posterImage: "/images/nova_cinema_scene.png",
-        scriptExcerpt: "المشهد خارجي. ليل. يقف البطل أمام ناطحة السحاب، ينظر للأعلى بينما ينعكس ضوء الشعار على وجهه...",
+        posterImage: "https://res.cloudinary.com/da1dtiu2x/image/upload/v1781285045/Echonova_Assets/services/posters/nova_cinema_sada_poster.jpg",
+        scriptExcerpt: "المشهد داخلي: ممر رخامي طويل ذو إضاءة خافتة، صوت خطوات البطل يتردد كصدى غامض بين الجدران بينما يبحث عن الحقيقة المفقودة خلف الأبواب المغلقة...",
         integrationMethods: [
             { title: "الدمج المكاني", description: "أن تدور أحداث الفيلم داخل مقر الشركة أو معرضها." },
             { title: "الدمج الوظيفي", description: "المنتج هو الأداة التي تنقذ البطل." }
@@ -228,8 +228,8 @@ export const ENTERTAINMENT_DATA: EntertainmentType[] = [
         id: 'saga',
         brandName: "NOVA SAGA",
         title: "مسلسل درامي",
-        posterImage: "/images/nova_saga_poster.png",
-        scriptExcerpt: "الحلقة الأولى. غرفة المعيشة. العائلة تجتمع حول الطاولة. المنتج يتوسط المشهد كجزء أساسي من الحديث...",
+        posterImage: "https://res.cloudinary.com/da1dtiu2x/image/upload/v1781285039/Echonova_Assets/services/posters/nova_saga_matab_poster.jpg",
+        scriptExcerpt: "الحلقة الأولى: لقطة مقربة لعجلة القيادة بينما تنحرف السيارة فجأة لتتفادى مطباً غير متوقع على طريق جبلي وعر، لتبدأ رحلة مليئة بالمفاجآت والقرارات المصيرية...",
         integrationMethods: [
             { title: "المرافقة اليومية", description: "تحويل العلامة إلى رفيق يومي للمشاهد." },
             { title: "تجسيد القيم", description: "قيم العلامة تنعكس في تصرفات الأبطال." }
@@ -327,27 +327,27 @@ export const CINEMATIC_SHOWCASE_DATA = {
       { title: "بناء ولاء تلقائي", description: "تحويل المشاهدين إلى محامين عن العلامة التجارية.", icon_name: "Users" }
     ],
     images: [
-      "/images/nova_saga_poster.png",
-      "/images/nova_saga_storyboard.png",
-      "/images/story_concept.png",
-      "/images/nova_cinema_scene.png",
-      "/images/service_magic.png"
+      "https://res.cloudinary.com/da1dtiu2x/image/upload/v1781263023/Echonova_Assets/page_cinema/saga/saga_desert_spaceship.jpg",
+      "https://res.cloudinary.com/da1dtiu2x/image/upload/v1781263027/Echonova_Assets/page_cinema/saga/saga_astronaut_spacestation.jpg",
+      "https://res.cloudinary.com/da1dtiu2x/image/upload/v1781263031/Echonova_Assets/page_cinema/saga/saga_detective_argument.jpg",
+      "https://res.cloudinary.com/da1dtiu2x/image/upload/v1781263035/Echonova_Assets/page_cinema/saga/saga_majlis_confrontation.jpg",
+      "https://res.cloudinary.com/da1dtiu2x/image/upload/v1781263039/Echonova_Assets/page_cinema/saga/saga_desert_campfire.jpg"
     ],
     imageAlts: [
-      "بوستر مسلسل درامي قصير (Nova Saga) يظهر شخصيات واقعية",
-      "لوحة قصة (Storyboard) لمسلسل درامي من إنتاج إيكونوڤا",
-      "مفهوم فني (Concept Art) لمشهد روائي طويل",
-      "مشهد سينمائي ليلي لناطحة سحاب",
-      "مشهد خيالي سريالي يعبر عن الإبداع اللامحدود"
+      "مشهد سينمائي لرجل خليجي في الصحراء يتطلع إلى مركبة فضائية تهبط من السماء",
+      "رائد فضاء في محطة فضائية دولية يتأمل لوح طاقة غذائي يطفو في انعدام الجاذبية",
+      "محققان سعوديان في نقاش حاد داخل مكتب تحقيق مغلق مع ظهور طبيعي لمنتج محلي",
+      "لقطة سينمائية واسعة لمجلس سعودي تقليدي يشهد مواجهة درامية ساخنة بين الحضور",
+      "مجموعة من الرجال في جلسة تفكر وتسامر حول شبة نار في قلب الكثبان الرملية عند الغروب"
     ],
     // Short captions shown as overlay on thumbnail hover/active.
     // Kept punchy and Arabic-first to match brand language.
     captions: [
-      "بوستر المسلسل",
-      "لوحة القصة",
-      "مفهوم فني",
-      "مشهد ليلي",
-      "حلم سريالي"
+      "سريالي فضائي",
+      "خيال علمي",
+      "حبكة درامية",
+      "دراما اجتماعية",
+      "حكاية الصحراء"
     ]
   },
   cinema: {
@@ -364,25 +364,25 @@ export const CINEMATIC_SHOWCASE_DATA = {
       { title: "ارتباط ذهني خاطف", description: "ربط المنتج بلحظات أيقونية لا تنسى.", icon_name: "Zap" }
     ],
     images: [
-      "/images/nova_cinema_camera_rig_dark_1766262384875.png",
-      "/images/nova_cinema_film_set_lighting_1766262399248.png",
-      "/images/nova_cinema_clapperboard_action_1766262414432.png",
-      "/images/nova_cinema_color_grading_suite_1766262427888.png",
-      "/images/nova_cinema_anamorphic_lens_flare_1766262442202.png"
+      "https://res.cloudinary.com/da1dtiu2x/image/upload/v1781263044/Echonova_Assets/page_cinema/cinema/cinema_luxury_car_watch.jpg",
+      "https://res.cloudinary.com/da1dtiu2x/image/upload/v1781263048/Echonova_Assets/page_cinema/cinema/cinema_luxury_perfume.jpg",
+      "https://res.cloudinary.com/da1dtiu2x/image/upload/v1781263053/Echonova_Assets/page_cinema/cinema/cinema_architect_workspace.jpg",
+      "https://res.cloudinary.com/da1dtiu2x/image/upload/v1781263058/Echonova_Assets/page_cinema/cinema/cinema_doctor_hospital.jpg",
+      "https://res.cloudinary.com/da1dtiu2x/image/upload/v1781263062/Echonova_Assets/page_cinema/cinema/cinema_detective_noir.jpg"
     ],
     imageAlts: [
-      "معدات تصوير سينمائي متطورة في بيئة مظلمة (AI Generated)",
-      "إعدادات إضاءة في موقع تصوير سينمائي افتراضي",
-      "كلاكيت تصوير لمشهد أكشن سينمائي",
-      "جناح تلوين سينمائي (Color Grading Suite) لإنتاج الفيديو",
-      "تأثير عدسة أنامورفيك (Lens Flare) لإضفاء طابع سينمائي"
+      "لقطة قريبة تبرز اندماج ساعة يد فاخرة وحقيبة جلدية داخل سيارة رياضية فارهة",
+      "رجل سعودي أمام مرآة يضع عطر عود فاخر في لقطة سينمائية تبرز جمالية تصميم زجاجة العطر",
+      "مهندسة معمارية ترتدي الحجاب تدرس مخططات هندسية ليلاً برفقة كوب قهوة دافئ في بيئة عمل عصرية",
+      "طبيب سعودي يسير في ممر المستشفى حاملاً زجاجة مياه معدنية بلقطة تتبع سينمائية انسيابية",
+      "لقطة سينمائية بأسلوب سينما النوار (Noir) لمحقق يقرأ ملفاً سرياً داخل سيارة تحت المطر"
     ],
     captions: [
-      "الكاميرا",
-      "الإضاءة",
-      "أكشن!",
-      "التلوين",
-      "أنامورفيك"
+      "هيبة الفخامة",
+      "أناقة العطر",
+      "شغف العمل",
+      "إشراقة الأمل",
+      "غموض الليل"
     ]
   },
   whisper: {

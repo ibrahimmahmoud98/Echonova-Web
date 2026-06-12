@@ -10,6 +10,7 @@ import { TextDecode } from "@/components/ui/TextDecode";
 import IdentityShowcase from "@/components/features/aura/showcase/IdentityShowcase";
 import { AuraGallery } from "@/components/sections/AuraGallery";
 import cloudinaryLoader from "@/lib/cloudinary-loader";
+import { LiquidButton } from "@/components/ui/LiquidButton";
 
 export default function IdentityPage() {
   const { scrollY } = useScroll();
@@ -203,10 +204,11 @@ export default function IdentityPage() {
               {IDENTITY_PAGE_CONTENT.valueProp.text}
             </p>
 
-            <Link href="/contact" className="group relative inline-flex items-center gap-2 bg-[#F7F5F0] text-[#020B16] px-10 py-5 rounded-full font-bold overflow-hidden">
-              <span className="relative z-10 group-hover:text-[#F7F5F0] transition-colors duration-300">اطلب هويتك الافتراضية</span>
-              <ArrowRight size={20} className="relative z-10 rotate-180 group-hover:text-[#F7F5F0] transition-colors duration-300" />
-              <div className="absolute inset-0 bg-[#D97040] transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left duration-300 ease-out" />
+            <Link href="/contact">
+              <LiquidButton className="px-10 py-5 text-lg">
+                اطلب هويتك الافتراضية
+                <ArrowRight size={20} className="rotate-180" />
+              </LiquidButton>
             </Link>
          </div>
       </section>

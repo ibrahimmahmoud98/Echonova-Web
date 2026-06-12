@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { cn } from '@/lib/utils';
 import { Poster3D } from './Poster3D';
 import { ENTERTAINMENT_DATA } from '@/lib/data/services-content';
+import { LiquidButton } from '@/components/ui/LiquidButton';
 
 export const EntertainmentSection = () => {
     const [cinemaMode, setCinemaMode] = useState(false);
@@ -57,9 +58,9 @@ export const EntertainmentSection = () => {
                                     {item["scriptExcerpt"]}
                                 </p>
                                 <Link href="/services/cinema" className="inline-block mt-2 md:mt-0">
-                                    <button className="px-4 py-2 md:px-8 md:py-4 text-xs md:text-sm rounded-full border border-[var(--color-copper)] text-[var(--color-copper)] hover:bg-[var(--color-copper)] hover:text-white transition-all duration-300 font-bold whitespace-nowrap">
+                                    <LiquidButton variant="secondary" className="px-4 py-2 md:px-8 md:py-4 text-xs md:text-sm font-bold whitespace-nowrap">
                                         اعرف أكثر
-                                    </button>
+                                    </LiquidButton>
                                 </Link>
                             </div>
                         </div>

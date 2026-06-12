@@ -5,6 +5,7 @@ import { AUDIO_PRODUCTION_DATA } from '@/lib/data/services-content';
 import Link from 'next/link';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import Image from 'next/image';
+import { LiquidButton } from '@/components/ui/LiquidButton';
 
 // Copper system palette (matches --color-copper: #D97040, --color-copper-burn: #8A3A1B)
 // Gradient: from-[#F2C49B] via-[#D97040] to-[#8A3A1B]  (light → copper → burnt)
@@ -245,10 +246,9 @@ export const AudioProductionSection = () => {
                                         transition={{ duration: 0.6, delay: 0.45 }}
                                     >
                                         <Link href={`/services/nova-${item.id}`}>
-                                            <button className="group/btn relative overflow-hidden px-8 py-4 rounded-full bg-transparent border border-[var(--color-copper)]/35 text-[var(--color-copper)] text-sm font-semibold tracking-widest uppercase transition-all duration-500 hover:border-[var(--color-copper)]/60 hover:text-white hover:shadow-[0_0_30px_rgba(217,112,64,0.15)]">
-                                                <span className="relative z-10">استكشف الخدمة</span>
-                                                <div className="absolute inset-0 bg-gradient-to-r from-[var(--color-copper)]/0 to-[var(--color-copper-burn)]/0 group-hover/btn:from-[var(--color-copper)]/10 group-hover/btn:to-[var(--color-copper-burn)]/5 transition-all duration-500" />
-                                            </button>
+                                            <LiquidButton variant="secondary" className="px-8 py-4 text-sm font-semibold tracking-widest uppercase">
+                                                استكشف الخدمة
+                                            </LiquidButton>
                                         </Link>
                                     </motion.div>
                                 </motion.div>

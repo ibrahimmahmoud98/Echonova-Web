@@ -515,18 +515,19 @@ export function AudioStage() {
                 اعرف أكثر
               </LiquidButton>
             </Link>
-            <button
+            <LiquidButton
               onClick={() => {
                 playClick();
-                document
-                  .getElementById("contact")
-                  ?.scrollIntoView({ behavior: "smooth" });
+                const el = document.getElementById("contact");
+                if (el) el.scrollIntoView({ behavior: "smooth" });
+                else window.location.href = "/contact";
               }}
               onMouseEnter={playHover}
-              className="w-full px-5 py-2.5 text-sm font-bold rounded-full bg-gradient-to-r from-[var(--color-copper)] to-orange-500 text-white hover:shadow-[0_0_30px_rgba(217,112,64,0.5)] transition-shadow"
+              variant="primary"
+              className="w-full px-5 py-2.5 text-sm"
             >
               ابدأ التوزيع الصوتي
-            </button>
+            </LiquidButton>
           </div>
         </div>
       </div>
